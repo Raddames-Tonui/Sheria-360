@@ -7,6 +7,7 @@ import Lawyers from "./pages/Lawyers";
 import Login from "./authentication/Login"; // Ensure this path is correct
 import Registration from "./authentication/Registration"; // Ensure this path is correct
 import { AuthProvider } from "./context/AuthContext";
+import LawyerRegistration from "./authentication/LawyerRegistration";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="/lawyers" element={<Lawyers />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Registration />} />
+          <Route path="/lawyer-registration" element={<LawyerRegistration />}/>
           <Route path="*" element={<NoPage />} />
         </Route>
       </Routes>

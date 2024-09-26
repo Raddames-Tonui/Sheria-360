@@ -31,7 +31,7 @@ const Navbar = () => {
             <Link to="/lawyers" className="hover:bg-blue-400 px-3 py-2 rounded-md text-sm font-medium">Lawyers</Link>
             <Link to="/courts" className="hover:bg-blue-400 px-3 py-2 rounded-md text-sm font-medium">Courts</Link>
             <Link to="/track-cases" className="hover:bg-blue-400 px-3 py-2 rounded-md text-sm font-medium">Track Cases</Link>
-            <Link to="/help" className="hover:bg-blue-400 px-3 py-2 rounded-md text-sm font-medium">Help</Link>
+            <Link to="/lawyer-registration" className="hover:bg-blue-400 px-3 py-2 rounded-md text-sm font-medium">Help</Link>
 
             {userLoggedIn ? (
               <button onClick={handleSignOut} className='bg-red-500 p-2 rounded-md'>
