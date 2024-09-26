@@ -3,22 +3,25 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./Layout";
 import Home from "./pages/Home";
 import NoPage from "./pages/NoPage";
-import Login from "./pages/Login";
-import SignUpForm from "./pages/SignUpForm";
-
+import Lawyers from "./pages/Lawyers";
+import Login from "./authentication/Login"; // Ensure this path is correct
+import Registration from "./authentication/Registration"; // Ensure this path is correct
+import { AuthProvider } from "./context/AuthContext";
 
 function App() {
   return (
     <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Layout />}>
-              <Route index element={<Home />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<SignUpForm />} />
-              
-              <Route path="*" element={<NoPage />} />
-            </Route>
-          </Routes>
+      <AuthProvider>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Home />} />
+          <Route path="/lawyers" element={<Lawyers />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Registration />} />
+          <Route path="*" element={<NoPage />} />
+        </Route>
+      </Routes>
+      </AuthProvider>
     </BrowserRouter>
   );
 }
