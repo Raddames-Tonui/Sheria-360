@@ -14,8 +14,17 @@ const Registration = () => {
     e.preventDefault();
     try {
       await createUserWithEmailAndPassword(auth, email, password);
-      toast.success('Registration successful! You can now log in.');
-      navigate('/login');
+      toast.success('Registration successful!');
+
+      // Prompt the user if they are a lawyer
+      const isLawyer = window.confirm("Are you a lawyer?");
+
+      // Navigate based on user's response
+      if (isLawyer) {
+        navigate('/lawyer-registration');
+      } else {
+        navigate('/lawyers');
+      }
     } catch (err) {
       toast.error(`Registration failed: ${err.message}`);
     }

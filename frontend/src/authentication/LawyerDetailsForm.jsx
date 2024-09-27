@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { AuthContext } from '../context/AuthContext'; 
+import { server_url } from '../../config.json';
 
 const counties = [
   { name: "Mombasa", number: 1 },
@@ -51,6 +53,8 @@ const counties = [
 ];
 
 const LawyerDetailsForm = () => {
+  const { getToken } = useContext(AuthContext); 
+
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -62,6 +66,10 @@ const LawyerDetailsForm = () => {
     location: '',
   });
 
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(false);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -70,10 +78,35 @@ const LawyerDetailsForm = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Lawyer Details Submitted:', formData);
-    // Here, you would typically send the formData to your backend
+    setLoading(true);
+    setError(null);
+    setSuccess(false);
+
+    try {
+      const token = await getToken();
+      const response = await fetch(`${server_url}/api/lawyer`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`, 
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to submit form');
+      }
+
+      const data = await response.json();
+      setSuccess(true);
+      console.log('Lawyer Details Submitted:', data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -135,10 +168,10 @@ const LawyerDetailsForm = () => {
               required
               className="block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring focus:ring-blue-500"
             >
-              <option value="" disabled>Select County</option>
+              <option value="">Select County</option>
               {counties.map((county) => (
                 <option key={county.number} value={county.name}>
-                  {county.number}. {county.name}
+                  {county.name}
                 </option>
               ))}
             </select>
@@ -150,13 +183,13 @@ const LawyerDetailsForm = () => {
               value={formData.expertise}
               onChange={handleChange}
               required
-              placeholder="Area of Expertise"
+              placeholder="Expertise"
               className="block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring focus:ring-blue-500"
             />
           </div>
           <div>
             <input
-              type="number"
+              type="text"
               name="experience"
               value={formData.experience}
               onChange={handleChange}
@@ -171,16 +204,20 @@ const LawyerDetailsForm = () => {
               value={formData.bio}
               onChange={handleChange}
               required
-              placeholder="Brief Bio"
-              className="block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring focus:ring-blue-500 h-24"
+              placeholder="Short Bio"
+              className="block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring focus:ring-blue-500"
+              rows="3"
             />
           </div>
           <button
             type="submit"
-            className="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-md transition duration-300"
+            disabled={loading}
+            className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring focus:ring-blue-500"
           >
-            Submit
+            {loading ? 'Submitting...' : 'Submit'}
           </button>
+          {error && <p className="text-red-500 text-sm">{error}</p>}
+          {success && <p className="text-green-500 text-sm">Details submitted successfully!</p>}
         </form>
       </div>
     </div>

@@ -1,14 +1,13 @@
 import firebase_admin
-from firebase_admin import credentials
+from firebase_admin import credentials, auth
 
-cred = credentials.Certificate('config/serviceAccountKey.json') 
+cred = credentials.Certificate("config/serviceAccountKey.json")
 firebase_admin.initialize_app(cred)
 
-
 def verify_token(token):
-    """Verify the Firebase token and return the user's UID."""
     try:
-        decoded_token =auth.verify_id_token(token)
-        return decoded_token['uid']
-    except Exception:
+        decoded_token = auth.verify_id_token(token)
+        return decoded_token['uid']  # Return the user ID from the decoded token
+    except Exception as e:
+        print(f"Token verification failed: {e}")
         return None

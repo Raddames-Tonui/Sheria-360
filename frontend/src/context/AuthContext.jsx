@@ -8,7 +8,7 @@ export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [userLoggedIn, setUserLoggedIn] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null); // State to handle errors
+  const [error, setError] = useState(null); 
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, initializeUser);
@@ -17,7 +17,7 @@ export const AuthProvider = ({ children }) => {
 
   async function initializeUser(user) {
     if (user) {
-      setCurrentUser({ ...user });
+      setCurrentUser(user); // Keep currentUser as Firebase User object
       setUserLoggedIn(true);
     } else {
       setCurrentUser(null);
@@ -28,30 +28,38 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      setError(null); // Clear previous errors
+      setError(null); 
       await signInWithEmailAndPassword(auth, email, password);
     } catch (err) {
-      setError(err.message); // Set error message for UI feedback
+      setError(err.message); 
     }
   };
 
   const loginWithGoogle = async () => {
     const provider = new GoogleAuthProvider();
     try {
-      setError(null); // Clear previous errors
+      setError(null); 
       await signInWithPopup(auth, provider);
     } catch (err) {
-      setError(err.message); // Set error message for UI feedback
+      setError(err.message); 
     }
   };
 
   const logout = async () => {
     try {
-      setError(null); // Clear previous errors
+      setError(null);
       await signOut(auth);
     } catch (err) {
-      setError(err.message); // Set error message for UI feedback
+      setError(err.message);
     }
+  };
+
+  // Function to get the current user's token
+  const getToken = async () => {
+    if (currentUser) {
+      return await currentUser.getIdToken(); // This will now work as currentUser is the Firebase User
+    }
+    return null; // Return null if user is not logged in
   };
 
   const contextData = {
@@ -60,8 +68,9 @@ export const AuthProvider = ({ children }) => {
     loading,
     error, 
     login, 
-    loginWithGoogle, // Add the new function to context
+    loginWithGoogle, 
     logout,
+    getToken, 
   };
 
   return (
