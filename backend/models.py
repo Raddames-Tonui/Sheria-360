@@ -1,6 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import MetaData, Column, Integer, String, Text, DateTime
-from sqlalchemy.ext.declarative import declared_attr
+from sqlalchemy import MetaData
 from sqlalchemy_serializer import SerializerMixin
 
 # Define metadata naming conventions
@@ -14,18 +13,20 @@ metadata = MetaData(
 db = SQLAlchemy(metadata=metadata)
 
 class User(db.Model, SerializerMixin):
-    __tablename__ = 'users'  # Specify the table name
+    __tablename__ = 'users'
     
-    id = Column(Integer, primary_key=True)
-    first_name = Column(String(100))
-    last_name = Column(String(100))
-    email = Column(String(100), unique=True)
-    phone = Column(String(50))
-    expertise = Column(String(100))
-    experience = Column(Integer)
-    bio = Column(Text)
-    location = Column(String(100))
-    firebase_uid = Column(String(100), unique=True)
+    id = db.Column(db.Integer, primary_key=True)
+    first_name = db.Column(db.String(100))
+    last_name = db.Column(db.String(100))
+    email = db.Column(db.String(100), unique=True)
+    work_email = db.Column(db.String(100))
+    law_firm = db.Column(db.String(100))
+    phone = db.Column(db.String(50))
+    expertise = db.Column(db.String(100))
+    experience = db.Column(db.Integer)
+    bio = db.Column(db.Text)
+    location = db.Column(db.String(50))
+    firebase_uid = db.Column(db.String(100), unique=True)
 
     created_at = db.Column(db.DateTime, server_default=db.func.now())
     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
@@ -37,11 +38,13 @@ class User(db.Model, SerializerMixin):
             'first_name': self.first_name,
             'last_name': self.last_name,
             'email': self.email,
+            'work_email': self.work_email,
             'phone': self.phone,
             'expertise': self.expertise,
             'experience': self.experience,
             'bio': self.bio,
             'location': self.location,
-            
+            'law_firm': self.law_firm,
+            'created_at': self.created_at,
+            'updated_at': self.updated_at,
         }
-

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { AuthContext } from '../context/AuthContext'; 
 import { server_url } from '../../config.json';
 
@@ -53,12 +53,12 @@ const counties = [
 ];
 
 const LawyerDetailsForm = () => {
-  const { getToken } = useContext(AuthContext); 
+  const { token } = useContext(AuthContext); 
 
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
-    email: '',
+    workEmail: '',  
     phone: '',
     expertise: '',
     experience: '',
@@ -85,9 +85,9 @@ const LawyerDetailsForm = () => {
     setSuccess(false);
 
     try {
-      const token = await getToken();
-      const response = await fetch(`${server_url}/api/lawyer`, {
-        method: 'POST',
+      
+      const response = await fetch(`${server_url}/api/lawyer/update`, {
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`, 
@@ -96,12 +96,12 @@ const LawyerDetailsForm = () => {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to submit form');
+        throw new Error('Failed to update details');
       }
 
       const data = await response.json();
       setSuccess(true);
-      console.log('Lawyer Details Submitted:', data);
+      console.log('Lawyer Details Updated:', data);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -109,10 +109,28 @@ const LawyerDetailsForm = () => {
     }
   };
 
+  // Optionally, you can fetch the current lawyer's details when the component mounts
+  useEffect(() => {
+    const fetchLawyerDetails = async () => {
+      const response = await fetch(`${server_url}/api/lawyer/details`, { 
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setFormData(data); // Assuming the API returns the necessary fields
+      }
+    };
+
+    fetchLawyerDetails();
+  }, [token]);
+
   return (
     <div className="flex items-center justify-center h-screen bg-gray-100">
       <div className="w-full max-w-md bg-white rounded-lg shadow-md p-6">
-        <h2 className="text-2xl font-bold text-center mb-6">Lawyer Details</h2>
+        <h2 className="text-2xl font-bold text-center mb-6">Update Lawyer Details</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="flex space-x-2">
             <div className="flex-1">
@@ -141,11 +159,11 @@ const LawyerDetailsForm = () => {
           <div>
             <input
               type="email"
-              name="email"
-              value={formData.email}
+              name="workEmail"
+              value={formData.workEmail}
               onChange={handleChange}
               required
-              placeholder="Email Address"
+              placeholder="Work Email Address"
               className="block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring focus:ring-blue-500"
             />
           </div>
@@ -161,29 +179,13 @@ const LawyerDetailsForm = () => {
             />
           </div>
           <div>
-            <select
-              name="location"
-              value={formData.location}
-              onChange={handleChange}
-              required
-              className="block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring focus:ring-blue-500"
-            >
-              <option value="">Select County</option>
-              {counties.map((county) => (
-                <option key={county.number} value={county.name}>
-                  {county.name}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div>
             <input
               type="text"
               name="expertise"
               value={formData.expertise}
               onChange={handleChange}
               required
-              placeholder="Expertise"
+              placeholder="Area of Expertise"
               className="block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring focus:ring-blue-500"
             />
           </div>
@@ -206,18 +208,33 @@ const LawyerDetailsForm = () => {
               required
               placeholder="Short Bio"
               className="block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring focus:ring-blue-500"
-              rows="3"
             />
+          </div>
+          <div>
+            <select
+              name="location"
+              value={formData.location}
+              onChange={handleChange}
+              required
+              className="block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring focus:ring-blue-500"
+            >
+              <option value="">Select County</option>
+              {counties.map((county) => (
+                <option key={county.number} value={county.name}>
+                  {county.name}
+                </option>
+              ))}
+            </select>
           </div>
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring focus:ring-blue-500"
+            className={`w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 focus:outline-none ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
           >
-            {loading ? 'Submitting...' : 'Submit'}
+            {loading ? 'Updating...' : 'Update Details'}
           </button>
-          {error && <p className="text-red-500 text-sm">{error}</p>}
-          {success && <p className="text-green-500 text-sm">Details submitted successfully!</p>}
+          {error && <p className="text-red-500">{error}</p>}
+          {success && <p className="text-green-500">Details updated successfully!</p>}
         </form>
       </div>
     </div>

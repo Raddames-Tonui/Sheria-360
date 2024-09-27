@@ -6,7 +6,7 @@ import { Outlet } from 'react-router-dom';
 function Layout() {
   return (
     <div>
-      <Navbar  />
+      <Navbar />
       <Toaster
         position="top-right"
         reverseOrder={true}
@@ -18,6 +18,7 @@ function Layout() {
             border: '1px solid #ddd',
             borderRadius: '8px',
             padding: '10px',
+            top: '12vh', // Position toast 12vh below the top
           },
           success: {
             duration: 4000,
