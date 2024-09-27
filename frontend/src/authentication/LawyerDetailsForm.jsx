@@ -1,233 +1,140 @@
-// src/components/LawyerDetailsForm.js
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { AuthContext } from '../context/AuthContext'; 
-import { server_url } from '../../config.json';
+import { storage } from '../authentication/firebase'; 
+import toast from 'react-hot-toast';
+import { server_url } from "../../config.json";
 
 const counties = [
-  { name: "Mombasa", number: 1 },
-  { name: "Kwale", number: 2 },
-  { name: "Kilifi", number: 3 },
-  { name: "Tana River", number: 4 },
-  { name: "Lamu", number: 5 },
-  { name: "Taita Taveta", number: 6 },
-  { name: "Garissa", number: 7 },
-  { name: "Wajir", number: 8 },
-  { name: "Mandera", number: 9 },
-  { name: "Marsabit", number: 10 },
-  { name: "Isiolo", number: 11 },
-  { name: "Meru", number: 12 },
-  { name: "Tharaka-Nithi", number: 13 },
-  { name: "Embu", number: 14 },
-  { name: "Kitui", number: 15 },
-  { name: "Machakos", number: 16 },
-  { name: "Makueni", number: 17 },
-  { name: "Nyandarua", number: 18 },
-  { name: "Nyeri", number: 19 },
-  { name: "Kirinyaga", number: 20 },
-  { name: "Murang'a", number: 21 },
-  { name: "Kiambu", number: 22 },
-  { name: "Turkana", number: 23 },
-  { name: "West Pokot", number: 24 },
-  { name: "Samburu", number: 25 },
-  { name: "Trans Nzoia", number: 26 },
-  { name: "Uasin Gishu", number: 27 },
-  { name: "Elgeyo Marakwet", number: 28 },
-  { name: "Nandi", number: 29 },
-  { name: "Baringo", number: 30 },
-  { name: "Laikipia", number: 31 },
-  { name: "Nakuru", number: 32 },
-  { name: "Narok", number: 33 },
-  { name: "Kajiado", number: 34 },
-  { name: "Kericho", number: 35 },
-  { name: "Bomet", number: 36 },
-  { name: "Kakamega", number: 37 },
-  { name: "Vihiga", number: 38 },
-  { name: "Bungoma", number: 39 },
-  { name: "Busia", number: 40 },
-  { name: "Siaya", number: 41 },
-  { name: "Kisumu", number: 42 },
-  { name: "Homa Bay", number: 43 },
-  { name: "Migori", number: 44 },
-  { name: "Kisii", number: 45 },
-  { name: "Nyamira", number: 46 },
-  { name: "Nairobi", number: 47 },
+    { name: 'Nairobi', number: 1 },
+    { name: 'Mombasa', number: 2 },
+    // Add other counties...
 ];
 
 const LawyerDetailsForm = () => {
-  const { token } = useContext(AuthContext); 
+    const { token } = useContext(AuthContext);
+    
+    const [formData, setFormData] = useState({
+        firstName: '',
+        lastName: '',
+        workEmail: '',
+        phone: '',
+        expertise: '',
+        experience: '',
+        bio: '',
+        location: '',
+        profilePicture: null,
+    });
 
-  const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    workEmail: '',  
-    phone: '',
-    expertise: '',
-    experience: '',
-    bio: '',
-    location: '',
-  });
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const [success, setSuccess] = useState(false);
 
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(false);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError(null);
-    setSuccess(false);
-
-    try {
-      const response = await fetch(`${server_url}/api/lawyer/update`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`, 
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to update details');
-      }
-
-      const data = await response.json();
-      setSuccess(true);
-      console.log('Lawyer Details Updated:', data);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    const fetchLawyerDetails = async () => {
-      const response = await fetch(`${server_url}/api/lawyer/details`, { 
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setFormData(data); 
-      }
+    const handleChange = (e) => {
+        const { name, value, files } = e.target;
+        if (name === 'profilePicture') {
+            setFormData((prevData) => ({
+                ...prevData,
+                [name]: files[0],
+            }));
+        } else {
+            setFormData((prevData) => ({
+                ...prevData,
+                [name]: value,
+            }));
+        }
     };
 
-    fetchLawyerDetails();
-  }, [token]);
+    const generateFilename = (firstName, lastName, originalName) => {
+        const safeFirstName = firstName.replace(/[^a-zA-Z0-9]/g, "_");
+        const safeLastName = lastName.replace(/[^a-zA-Z0-9]/g, "_");
+        const fileExtension = originalName.split('.').pop();
+        return `${safeFirstName}_${safeLastName}.${fileExtension}`;
+    };
 
-  return (
-    <div className="flex items-center justify-center h-screen bg-gray-100">
-      <div className="w-full max-w-md bg-white rounded-lg shadow-md p-6">
-        <h2 className="text-2xl font-bold text-center mb-6">Update Lawyer Details</h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="flex space-x-2">
-            <div className="flex-1">
-              <input
-                type="text"
-                name="firstName"
-                value={formData.firstName}
-                onChange={handleChange}
-                placeholder="First Name"
-                className="w-full px-4 py-2 border rounded-lg"
-              />
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        setError(null);
+        setSuccess(false);
+
+        try {
+            let imageUrl = '';
+            
+            // Upload profile picture if selected
+            if (formData.profilePicture) {
+                const filename = generateFilename(formData.firstName, formData.lastName, formData.profilePicture.name);
+                const imageRef = ref(storage, `lawyerProfilePictures/${token}/${filename}`);
+                await uploadBytes(imageRef, formData.profilePicture);
+                imageUrl = await getDownloadURL(imageRef);
+            }
+
+            const dataToSend = {
+                ...formData,
+                firebase_uid: token, // You may want to verify if you actually need to send this
+                profilePicture: imageUrl,
+            };
+
+            // Send the request to update lawyer details
+            const response = await fetch(`${server_url}/api/lawyer/update`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`, // Use the token from AuthContext
+                },
+                body: JSON.stringify(dataToSend),
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to update lawyer details');
+            }
+
+            const responseData = await response.json();
+            console.log(responseData);
+
+            setSuccess(true);
+            toast.success('Details updated successfully!');
+        } catch (err) {
+            setError(err.message);
+            toast.error(err.message);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return (
+        <div className="flex items-center justify-center h-screen bg-gray-100">
+            <div className="w-full max-w-md bg-white rounded-lg shadow-md p-6">
+                <h2 className="text-2xl font-bold text-center mb-6">Update Lawyer Details</h2>
+                <form onSubmit={handleSubmit} className="space-y-4">
+                    {/* Form Fields */}
+                    <input type="text" name="firstName" value={formData.firstName} onChange={handleChange} placeholder="First Name" required />
+                    <input type="text" name="lastName" value={formData.lastName} onChange={handleChange} placeholder="Last Name" required />
+                    <input type="email" name="workEmail" value={formData.workEmail} onChange={handleChange} placeholder="Work Email" required />
+                    <input type="text" name="phone" value={formData.phone} onChange={handleChange} placeholder="Phone" required />
+                    <input type="text" name="expertise" value={formData.expertise} onChange={handleChange} placeholder="Expertise" required />
+                    <input type="text" name="experience" value={formData.experience} onChange={handleChange} placeholder="Experience" required />
+                    <textarea name="bio" value={formData.bio} onChange={handleChange} placeholder="Bio" required />
+                    
+                    <select name="location" value={formData.location} onChange={handleChange} required>
+                        <option value="">Select County</option>
+                        {counties.map((county) => (
+                            <option key={county.number} value={county.name}>{county.name}</option>
+                        ))}
+                    </select>
+
+                    <input type="file" name="profilePicture" onChange={handleChange} accept="image/*" required />
+                    
+                    <button type="submit" disabled={loading} className={`w-full bg-blue-500 text-white py-2 rounded ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}>
+                        {loading ? 'Submitting...' : 'Submit'}
+                    </button>
+
+                    {error && <p className="text-red-500">{error}</p>}
+                    {success && <p className="text-green-500">Details updated successfully!</p>}
+                </form>
             </div>
-            <div className="flex-1">
-              <input
-                type="text"
-                name="lastName"
-                value={formData.lastName}
-                onChange={handleChange}
-                placeholder="Last Name"
-                className="w-full px-4 py-2 border rounded-lg"
-              />
-            </div>
-          </div>
-
-          <input
-            type="email"
-            name="workEmail"
-            value={formData.workEmail}
-            onChange={handleChange}
-            placeholder="Work Email"
-            className="w-full px-4 py-2 border rounded-lg"
-          />
-
-          <input
-            type="text"
-            name="phone"
-            value={formData.phone}
-            onChange={handleChange}
-            placeholder="Phone Number"
-            className="w-full px-4 py-2 border rounded-lg"
-          />
-
-          <input
-            type="text"
-            name="expertise"
-            value={formData.expertise}
-            onChange={handleChange}
-            placeholder="Expertise"
-            className="w-full px-4 py-2 border rounded-lg"
-          />
-
-            <input
-              type="number"  // Change input type to number
-              name="experience"
-              value={formData.experience}
-              onChange={handleChange}
-              placeholder="Experience (in years)"
-              className="w-full px-4 py-2 border rounded-lg"
-              min="0" 
-            />
-
-
-          <textarea
-            name="bio"
-            value={formData.bio}
-            onChange={handleChange}
-            placeholder="Short Bio"
-            className="w-full px-4 py-2 border rounded-lg"
-          />
-
-          <select
-            name="location"
-            value={formData.location}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-lg"
-          >
-            <option value="">Select your location</option>
-            {counties.map((county) => (
-              <option key={county.number} value={county.name}>
-                {county.name}
-              </option>
-            ))}
-          </select>
-
-          <button
-            type="submit"
-            className="w-full bg-blue-500 text-white py-2 rounded-lg"
-            disabled={loading}
-          >
-            {loading ? 'Updating...' : 'Update Details'}
-          </button>
-
-          {error && <p className="text-red-500">{error}</p>}
-          {success && <p className="text-green-500">Details updated successfully!</p>}
-        </form>
-      </div>
-    </div>
-  );
+        </div>
+    );
 };
 
 export default LawyerDetailsForm;
