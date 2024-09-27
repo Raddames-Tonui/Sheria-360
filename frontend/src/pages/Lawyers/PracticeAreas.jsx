@@ -1,6 +1,9 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const PracticeAreas = () => {
+  const navigate = useNavigate(); 
+
   const areas = [
     { category: 'Commercial Law', areas: ['Banking & Finance', 'Real Estate', 'Intellectual Property'] },
     { category: 'Public Law', areas: ['Constitutional Law', 'Environmental Law', 'Administrative Law'] },
@@ -8,6 +11,11 @@ const PracticeAreas = () => {
     { category: 'Criminal Law', areas: ['Criminal Defense', 'Traffic Offenses', 'Anti-Corruption'] },
     { category: 'Specialized Areas', areas: ['Maritime Law', 'Aviation Law', 'Sports Law'] }
   ];
+
+  const handleAreaClick = (area) => {
+    // Navigate to the lawyers page for the selected area
+    navigate(`/lawyers/${encodeURIComponent(area)}`);
+  };
 
   return (
     <div className="bg-white shadow-lg p-8">
@@ -18,7 +26,13 @@ const PracticeAreas = () => {
             <h2 className="font-semibold text-lg text-gray-800 mb-2">{group.category}</h2>
             <ul>
               {group.areas.map((area, i) => (
-                <li key={i} className="text-gray-600 hover:text-blue-600 cursor-pointer">{area}</li>
+                <li
+                  key={i}
+                  className="text-gray-600 hover:text-blue-600 cursor-pointer"
+                  onClick={() => handleAreaClick(area)} // Navigate to new page
+                >
+                  {area}
+                </li>
               ))}
             </ul>
           </div>

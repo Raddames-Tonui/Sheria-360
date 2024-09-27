@@ -1,16 +1,26 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
+
+const counties = [
+  'Nairobi', 'Mombasa', 'Kisumu', 'Nakuru', 'Eldoret', 'Nyeri', 'Meru',
+  'Machakos', 'Uasin Gishu', 'Kakamega', 'Kitui', 'Bomet', 'Trans Nzoia', 'Kirinyaga',
+  'Embu', 'Homa Bay', 'Busia', 'Siaya', 'Taita Taveta', 'Narok', 'Laikipia'
+];
 
 const PracticeLocations = () => {
+  const navigate = useNavigate();
+
+  const handleCountyClick = (county) => navigate(`/lawyers-county/${encodeURIComponent(county)}`);
+
   return (
     <div className="container mx-auto p-8">
       {/* FAQ and Get Listed Buttons */}
       <div className="flex justify-center mb-8">
-        <button className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-6 rounded-md mx-2">
-          FAQ
-        </button>
-        <button className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-6 rounded-md mx-2">
-          Lawyers Get Listed
-        </button>
+        {['FAQ', 'Lawyers Get Listed'].map((text, idx) => (
+          <button key={idx} className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-6 rounded-md mx-2">
+            {text}
+          </button>
+        ))}
       </div>
 
       {/* Counties Section */}
@@ -19,33 +29,13 @@ const PracticeLocations = () => {
 
       {/* Counties Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <ul className="space-y-2 text-gray-700">
-          <li>Nairobi</li>
-          <li>Mombasa</li>
-          <li>Kisumu</li>
-          <li>Nakuru</li>
-          <li>Eldoret</li>
-          <li>Nyeri</li>
-          <li>Meru</li>
-        </ul>
-        <ul className="space-y-2 text-gray-700">
-          <li>Machakos</li>
-          <li>Uasin Gishu</li>
-          <li>Kakamega</li>
-          <li>Kitui</li>
-          <li>Bomet</li>
-          <li>Trans Nzoia</li>
-          <li>Kirinyaga</li>
-        </ul>
-        <ul className="space-y-2 text-gray-700">
-          <li>Embu</li>
-          <li>Homa Bay</li>
-          <li>Busia</li>
-          <li>Siaya</li>
-          <li>Taita Taveta</li>
-          <li>Narok</li>
-          <li>Laikipia</li>
-        </ul>
+        {counties.map((county, index) => (
+          <ul key={index} className="space-y-2 text-gray-700">
+            <li className="hover:text-blue-600 cursor-pointer" onClick={() => handleCountyClick(county)}>
+              {county}
+            </li>
+          </ul>
+        ))}
       </div>
     </div>
   );
