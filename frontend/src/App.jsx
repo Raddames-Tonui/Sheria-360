@@ -11,6 +11,7 @@ import LawyerDetailsForm from "./authentication/LawyerDetailsForm";
 
 import LawyersPage from "./pages/Lawyers/LawyersPage";
 import LawyersByCountyPage from "./pages/Lawyers/LawyersByCountyPage";
+import SheriaAi from "./pages/SheriaAi";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           <Route path="/lawyer-registration" element={<LawyerDetailsForm />}/>
           <Route path="/lawyers/:area" element={<LawyersPage />} />
           <Route path="/lawyers-county/:county" element={<LawyersByCountyPage />} />
+          <Route path="/sheria/chat" element={<SheriaAi />} />
           <Route path="*" element={<NoPage />} />
         </Route>
       </Routes>
