@@ -75,6 +75,8 @@ def update_lawyer():
         user.bio = data.get('bio', user.bio)
         user.location = data.get('location', user.location)
         user.law_firm = data.get('law_firm', user.law_firm)
+        user.profile_picture = data.get('profilePicture', user.profile_picture) 
+
 
         db.session.commit()
 

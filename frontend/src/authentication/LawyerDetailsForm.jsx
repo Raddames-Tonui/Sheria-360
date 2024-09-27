@@ -71,8 +71,8 @@ const LawyerDetailsForm = () => {
 
             const dataToSend = {
                 ...formData,
-                firebase_uid: token, // You may want to verify if you actually need to send this
-                profilePicture: imageUrl,
+                firebase_uid: token, // Use the token from AuthContext
+                profilePicture: imageUrl, // Send the uploaded image URL
             };
 
             // Send the request to update lawyer details
