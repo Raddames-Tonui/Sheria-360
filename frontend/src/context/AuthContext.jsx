@@ -39,6 +39,7 @@ export const AuthProvider = ({ children }) => {
       const user = userCredential.user;
       const token = await user.getIdToken();
       setToken(token);
+      console.log("User Token:", token); // Log the token to the console
     } catch (err) {
       setError(err.message);
     }
@@ -52,6 +53,7 @@ export const AuthProvider = ({ children }) => {
       const user = userCredential.user;
       const token = await user.getIdToken();
       setToken(token);
+      console.log("User Token:", token); // Log the token to the console
     } catch (err) {
       setError(err.message);
     }

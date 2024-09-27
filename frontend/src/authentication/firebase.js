@@ -1,21 +1,24 @@
-// src/firebase.js
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage"; // Import Storage
 
-// Your web app's Firebase configuration
+// Your web app's Firebase configuration using environment variables
 const firebaseConfig = {
-  apiKey: "AIzaSyBkloAugrxN4TI_1iRyNkOtpFqcDGsSjdU",
-  authDomain: "sheria-365.firebaseapp.com",
-  projectId: "sheria-365",
-  storageBucket: "sheria-365.appspot.com",
-  messagingSenderId: "997156812414",
-  appId: "1:997156812414:web:eed532df1992983c030a2f",
-  measurementId: "G-JPE474ST58"
+  apiKey: import.meta.env.VITE_API_KEY,
+  authDomain: import.meta.env.VITE_AUTHDOMAIN,
+  projectId: import.meta.env.VITE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_APP_ID,
+  measurementId: import.meta.env.VITE_MEASUREMENT_ID,
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const db = getFirestore(app); // Initialize Firestore
+const storage = getStorage(app); // Initialize Storage
 
-// Export the auth instance
-export { auth, app };
+// Export the auth, db, and storage instances
+export { auth, db, storage, app }; // Make sure to export storage here
