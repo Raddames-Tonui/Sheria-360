@@ -20,29 +20,32 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-[#162F25] text-white shadow-lg">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16">
-          <div className="flex-shrink-0">
-            <h1 className="text-lg font-bold">Legal Tracker</h1>
-          </div>
-          <div className="hidden md:flex space-x-4 items-center">
-            <Link to="/" className="hover:bg-blue-400 px-3 py-2 rounded-md text-sm font-medium">Home</Link>
-            <Link to="/lawyers" className="hover:bg-blue-400 px-3 py-2 rounded-md text-sm font-medium">Lawyers</Link>
-            <Link to="/courts" className="hover:bg-blue-400 px-3 py-2 rounded-md text-sm font-medium">Courts</Link>
-            <Link to="/track-cases" className="hover:bg-blue-400 px-3 py-2 rounded-md text-sm font-medium">Track Cases</Link>
-            <Link to="/lawyer-registration" className="hover:bg-blue-400 px-3 py-2 rounded-md text-sm font-medium">Help</Link>
 
+    <nav className="bg-white text-lime-600 ">
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-20 ">
+          <div className="">
+            <img src="/logo/Sheria360.png" alt="" className='object-cover h-16 w-40 '  />
+          </div>
+          <div className="hidden bg-gray-300 rounded-lg md:flex mt-4 space-x-4  items-center">
+            <Link to="/" className="hover:bg-lime-600 hover:text-white  px-6 py-2 rounded-md text-md font-medium">Home</Link>
+            <Link to="/lawyers" className="hover:bg-lime-600 hover:text-white px-6 py-2 rounded-md text-md font-medium">Lawyers</Link>
+            <Link to="/courts" className="hover:bg-lime-600 hover:text-white px-6 py-2 rounded-md text-md font-medium">Courts</Link>
+            <Link to="/track-cases" className="hover:bg-lime-600 hover:text-white px-6 py-2 rounded-md text-md font-medium">Track Cases</Link>
+            <Link to="/lawyer-registration" className="hover:bg-lime-600 hover:text-white px-6 py-2 rounded-md text-md font-medium">Help</Link>
+            </div>
+            <div className='mt-4'>
             {userLoggedIn ? (
-              <button onClick={handleSignOut} className='bg-red-500 p-2 rounded-md'>
+              <button onClick={handleSignOut} className='border-red-500 border-2 text-red-500 p-2 rounded-md text-md'>
                 Sign Out
               </button>
             ) : (
-              <div>
-                <Link to="/login" className="hover:bg-blue-400 px-3 py-2 rounded-md text-sm font-medium">
+              <div className='space-x-6'>
+                <Link to="/login" className="hover:bg-lime-600 border-2 border-lime-700 hover:text-white px-3 py-2 rounded-md text-md font-medium">
                   Login
                 </Link>
-                <Link to="/signup" className="hover:bg-blue-400 px-3 py-2 rounded-md text-sm font-medium">
+                <Link to="/signup" className="bg-lime-700 text-white border-2 border-lime-700 px-3 py-2 rounded-md text-md font-medium">
                   Sign up
                 </Link>
               </div>
