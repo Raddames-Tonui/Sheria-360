@@ -1,17 +1,16 @@
-# app.py (Your main Flask application)
+# app.py ( main Flask application)
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from functools import wraps
-from models import db, User  # Ensure you have a User model defined in models.py
+from models import db, User 
 from flask_cors import CORS
-from firebase import verify_token  # Import your verify_token function
+from firebase import verify_token  # Import only the verify_token function
 
 # Initialize the Flask application
 app = Flask(__name__)
 
 # Database configuration
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'  # Update as needed
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db' 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Initialize the database and migration
@@ -20,25 +19,6 @@ migrate = Migrate(app, db)
 
 # Enable CORS for all routes
 CORS(app)
-
-def firebase_auth_required(f):
-    """Decorator to protect routes with Firebase authentication."""
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        token = request.headers.get('Authorization')
-        if not token:
-            return jsonify({'error': 'Authorization header is missing'}), 401
-
-        # Extract the token from the 'Bearer' prefix
-        token = token.split("Bearer ")[-1]
-        
-        uid = verify_token(token)  # Use the verify_token function from firebase.py
-        if uid is None:
-            return jsonify({'error': 'Invalid token'}), 401
-
-        return f(uid, *args, **kwargs)
-
-    return decorated_function
 
 # ========================================= USER ==========================================
 
@@ -67,8 +47,18 @@ def register_user():
 
 # Update User details
 @app.route('/api/lawyer/update', methods=['PUT'])
-@firebase_auth_required
-def update_lawyer(uid):
+def update_lawyer():
+    token = request.headers.get('Authorization')
+    if not token:
+        return jsonify({'error': 'Authorization header is missing'}), 401
+
+    # Extract the token from the 'Bearer' prefix
+    token = token.split("Bearer ")[-1]
+    
+    uid = verify_token(token)  # Use the verify_token function from firebase.py
+    if uid is None:
+        return jsonify({'error': 'Invalid token'}), 401
+
     data = request.json
     try:
         user = User.query.filter_by(firebase_uid=uid).first()
@@ -94,8 +84,18 @@ def update_lawyer(uid):
 
 # Fetch user details 
 @app.route('/api/lawyer/details', methods=['GET'])
-@firebase_auth_required
-def get_lawyer_details(uid):
+def get_lawyer_details():
+    token = request.headers.get('Authorization')
+    if not token:
+        return jsonify({'error': 'Authorization header is missing'}), 401
+
+    # Extract the token from the 'Bearer' prefix
+    token = token.split("Bearer ")[-1]
+    
+    uid = verify_token(token)  # Use the verify_token function from firebase.py
+    if uid is None:
+        return jsonify({'error': 'Invalid token'}), 401
+
     """Fetch the lawyer's details using their Firebase UID."""
     try:
         user = User.query.filter_by(firebase_uid=uid).first()
