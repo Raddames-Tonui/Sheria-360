@@ -1,3 +1,4 @@
+// src/context/AuthContext.js
 import { createContext, useEffect, useState } from "react";
 import { auth } from "../authentication/firebase"; 
 import { onAuthStateChanged, signInWithEmailAndPassword, signOut, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
@@ -9,52 +10,50 @@ export const AuthProvider = ({ children }) => {
   const [userLoggedIn, setUserLoggedIn] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null); 
-  const [token, setToken] = useState(null); // State to hold the token
+  const [token, setToken] = useState(null);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, initializeUser);
-    return () => unsubscribe(); 
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        setCurrentUser({
+          uid: user.uid,
+          email: user.email,
+        });
+        setUserLoggedIn(true);
+        const token = await user.getIdToken();
+        setToken(token);
+      } else {
+        setCurrentUser(null);
+        setUserLoggedIn(false);
+        setToken(null);
+      }
+      setLoading(false);
+    });
+    return () => unsubscribe();
   }, []);
-
-  async function initializeUser(user) {
-    if (user) {
-      setCurrentUser({
-        uid: user.uid,
-        email: user.email,
-      });
-      setUserLoggedIn(true);
-      const token = await user.getIdToken(); // Get token when user logs in
-      setToken(token); // Save token in state
-    } else {
-      setCurrentUser(null);
-      setUserLoggedIn(false);
-      setToken(null); // Clear token on logout
-    }
-    setLoading(false);
-  }
 
   const login = async (email, password) => {
     try {
-      setError(null); 
+      setError(null);
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
-      const token = await user.getIdToken(); // Get token after login
-      setToken(token); // Store token in state
+      const token = await user.getIdToken();
+      setToken(token);
     } catch (err) {
-      setError(err.message); 
+      setError(err.message);
     }
   };
 
   const loginWithGoogle = async () => {
     const provider = new GoogleAuthProvider();
     try {
-      setError(null); 
+      setError(null);
       const userCredential = await signInWithPopup(auth, provider);
       const user = userCredential.user;
-      const token = await user.getIdToken(); // Get token after login
-      setToken(token); // Store token in state
+      const token = await user.getIdToken();
+      setToken(token);
     } catch (err) {
-      setError(err.message); 
+      setError(err.message);
     }
   };
 
@@ -62,17 +61,16 @@ export const AuthProvider = ({ children }) => {
     try {
       setError(null);
       await signOut(auth);
-      setToken(null); // Clear token on logout
+      setToken(null);
     } catch (err) {
       setError(err.message);
     }
   };
 
-  // Function to refresh the token
   const refreshToken = async () => {
     if (currentUser) {
-      const newToken = await currentUser.getIdToken(true); // Force refresh the token
-      setToken(newToken); // Update token in state
+      const newToken = await currentUser.getIdToken(true);
+      setToken(newToken);
       return newToken;
     }
     return null;
