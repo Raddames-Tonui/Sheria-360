@@ -143,6 +143,32 @@ def get_users_by_filters():
     
     return jsonify(users_list), 200 
 
+@app.route('/api/users/search', methods=['GET'])
+def search_users():
+    query = request.args.get('query', '').lower()  # Get the search query
+    location = request.args.get('location', '')  # Get the location for sorting
+
+    # Search by first name, last name, or practice area
+    search_filter = User.query.filter(
+        db.or_(
+            db.func.lower(User.first_name).like(f"%{query}%"),
+            db.func.lower(User.last_name).like(f"%{query}%"),
+            db.func.lower(User.expertise).like(f"%{query}%")
+        )
+    )
+
+    # Sort by location if provided
+    if location:
+        search_filter = search_filter.order_by(User.location.asc())
+
+    users = search_filter.all()  # Fetch the filtered and sorted users
+
+    # Convert each user to a dictionary
+    users_list = [user.to_dict() for user in users]
+
+    return jsonify(users_list), 200
+
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=5555)

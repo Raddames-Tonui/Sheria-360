@@ -4,9 +4,9 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import { MdArrowUpward } from 'react-icons/md';
 
 const SheriaAi = () => {
-  const [query, setQuery] = useState(''); // State to hold user input
-  const [chatHistory, setChatHistory] = useState([]); // State to hold chat history
-  const [loading, setLoading] = useState(false); // State to handle loading status
+  const [query, setQuery] = useState(''); 
+  const [chatHistory, setChatHistory] = useState([]); 
+  const [loading, setLoading] = useState(false); 
 
   // Access the API key from environment variables using Vite's import.meta.env
   const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
