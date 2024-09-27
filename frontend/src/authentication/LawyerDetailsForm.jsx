@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { AuthContext } from '../context/AuthContext'; 
-import { storage } from '../authentication/firebase'; 
+import { AuthContext } from '../context/AuthContext';
+import { storage } from '../authentication/firebase';
 import toast from 'react-hot-toast';
 import { server_url } from "../../config.json";
 
@@ -11,9 +11,17 @@ const counties = [
     // Add other counties...
 ];
 
+const areas = [
+    { category: 'Commercial Law', areas: ['Banking & Finance', 'Real Estate', 'Intellectual Property'] },
+    { category: 'Public Law', areas: ['Constitutional Law', 'Environmental Law', 'Administrative Law'] },
+    { category: 'Private Law', areas: ['Family Law', 'Probate & Estate Administration', 'Employment Law'] },
+    { category: 'Criminal Law', areas: ['Criminal Defense', 'Traffic Offenses', 'Anti-Corruption'] },
+    { category: 'Specialized Areas', areas: ['Maritime Law', 'Aviation Law', 'Sports Law'] }
+];
+
 const LawyerDetailsForm = () => {
     const { token } = useContext(AuthContext);
-    
+
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
@@ -24,6 +32,7 @@ const LawyerDetailsForm = () => {
         bio: '',
         location: '',
         profilePicture: null,
+        lawFirm: '', // New field for law firm
     });
 
     const [loading, setLoading] = useState(false);
@@ -60,7 +69,7 @@ const LawyerDetailsForm = () => {
 
         try {
             let imageUrl = '';
-            
+
             // Upload profile picture if selected
             if (formData.profilePicture) {
                 const filename = generateFilename(formData.firstName, formData.lastName, formData.profilePicture.name);
@@ -103,34 +112,122 @@ const LawyerDetailsForm = () => {
     };
 
     return (
-        <div className="flex items-center justify-center h-screen bg-gray-100">
-            <div className="w-full max-w-md bg-white rounded-lg shadow-md p-6">
-                <h2 className="text-2xl font-bold text-center mb-6">Update Lawyer Details</h2>
+        <div className="flex items-center justify-center h-screen bg-gray-200 p-4">
+            <div className="w-full max-w-lg bg-white rounded-lg shadow-lg p-8">
+                <h2 className="text-3xl font-bold text-center text-blue-600 mb-6">Update Lawyer Details</h2>
                 <form onSubmit={handleSubmit} className="space-y-4">
                     {/* Form Fields */}
-                    <input type="text" name="firstName" value={formData.firstName} onChange={handleChange} placeholder="First Name" required />
-                    <input type="text" name="lastName" value={formData.lastName} onChange={handleChange} placeholder="Last Name" required />
-                    <input type="email" name="workEmail" value={formData.workEmail} onChange={handleChange} placeholder="Work Email" required />
-                    <input type="text" name="phone" value={formData.phone} onChange={handleChange} placeholder="Phone" required />
-                    <input type="text" name="expertise" value={formData.expertise} onChange={handleChange} placeholder="Expertise" required />
-                    <input type="text" name="experience" value={formData.experience} onChange={handleChange} placeholder="Experience" required />
-                    <textarea name="bio" value={formData.bio} onChange={handleChange} placeholder="Bio" required />
+                    <input
+                        type="text"
+                        name="firstName"
+                        value={formData.firstName}
+                        onChange={handleChange}
+                        placeholder="First Name"
+                        className="w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        required
+                    />
+                    <input
+                        type="text"
+                        name="lastName"
+                        value={formData.lastName}
+                        onChange={handleChange}
+                        placeholder="Last Name"
+                        className="w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        required
+                    />
+                    <input
+                        type="email"
+                        name="workEmail"
+                        value={formData.workEmail}
+                        onChange={handleChange}
+                        placeholder="Work Email"
+                        className="w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        required
+                    />
+                    <input
+                        type="text"
+                        name="phone"
+                        value={formData.phone}
+                        onChange={handleChange}
+                        placeholder="Phone"
+                        className="w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        required
+                    />
+                    <select
+                        name="expertise"
+                        value={formData.expertise}
+                        onChange={handleChange}
+                        className="w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        required
+                    >
+                        <option value="">Select Field</option>
+                        {areas.map((area) =>
+                            area.areas.map((subArea) => (
+                                <option key={subArea} value={subArea}>{subArea}</option>
+                            ))
+                        )}
+                    </select>
+
+                    <input
+                        type="text"
+                        name="experience"
+                        value={formData.experience}
+                        onChange={handleChange}
+                        placeholder="Experience"
+                        className="w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        required
+                    />
+                    <textarea
+                        name="bio"
+                        value={formData.bio}
+                        onChange={handleChange}
+                        placeholder="Bio"
+                        className="w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        required
+                    />
                     
-                    <select name="location" value={formData.location} onChange={handleChange} required>
+                    <select
+                        name="location"
+                        value={formData.location}
+                        onChange={handleChange}
+                        className="w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        required
+                    >
                         <option value="">Select County</option>
                         {counties.map((county) => (
                             <option key={county.number} value={county.name}>{county.name}</option>
                         ))}
                     </select>
 
-                    <input type="file" name="profilePicture" onChange={handleChange} accept="image/*" required />
+                    <input
+                        type="text"
+                        name="lawFirm"
+                        value={formData.lawFirm}
+                        onChange={handleChange}
+                        placeholder="Law Firm"
+                        className="w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        required
+                    />
                     
-                    <button type="submit" disabled={loading} className={`w-full bg-blue-500 text-white py-2 rounded ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}>
+                    <input
+                        type="file"
+                        name="profilePicture"
+                        onChange={handleChange}
+                        accept="image/*"
+                        className="w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        required
+                    />
+                    
+                    <button
+                        type="submit"
+                        disabled={loading}
+                        className={`w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition duration-300 ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                    >
                         {loading ? 'Submitting...' : 'Submit'}
                     </button>
 
-                    {error && <p className="text-red-500">{error}</p>}
-                    {success && <p className="text-green-500">Details updated successfully!</p>}
+                    {error && <p className="text-red-500 text-center">{error}</p>}
+                    {success && <p className="text-green-500 text-center">Details updated successfully!</p>}
                 </form>
             </div>
         </div>

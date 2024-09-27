@@ -10,22 +10,12 @@ const counties = [
 const PracticeLocations = () => {
   const navigate = useNavigate();
 
+  // Navigate to the lawyers page for the selected area
   const handleCountyClick = (county) => navigate(`/lawyers-county/${encodeURIComponent(county)}`);
 
   return (
     <div className="container mx-auto p-8">
-      {/* FAQ and Get Listed Buttons */}
-      <div className="flex justify-center mb-8">
-        {['FAQ', 'Lawyers Get Listed'].map((text, idx) => (
-          <button key={idx} className="bg-lime-700 hover:bg-lime-700 text-white py-2 px-6 rounded-md mx-2">
-            {text}
-          </button>
-        ))}
-      </div>
-
-      {/* Counties Section */}
-      {/* <h2 className="text-xl font-bold text-gray-700 mb-4">Find Lawyers by</h2>
-      <h1 className="text-3xl font-bold text-gray-800 mb-6">KENYAN COUNTIES</h1> */}
+      <h2 className="text-xl text-center font-bold text-gray-700 mb-4">Find Lawyers by KENYAN COUNTIES</h2>
 
       {/* Counties Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

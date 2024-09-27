@@ -2,22 +2,22 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import {server_url} from '../../../config.json'
 
-const LawyersByCounty = () => {
-  const { county } = useParams(); // Get the selected county from the URL
+const LawyersByExpertise = () => {
+  const { expertise } = useParams(); // Get the selected expertise from the URL
   const [lawyers, setLawyers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Fetch lawyers when the component mounts or when the county changes
+  // Fetch lawyers based on expertise when the component mounts or expertise changes
   useEffect(() => {
     const fetchLawyers = async () => {
       try {
-        const response = await fetch(`${server_url}/api/users/by-filters?location=${encodeURIComponent(county)}`);
+        const response = await fetch(`${server_url}/api/users/by-filters?expertise=${encodeURIComponent(expertise)}`);
         if (!response.ok) {
           throw new Error('Failed to fetch lawyers');
         }
         const data = await response.json();
-        setLawyers(data); 
+        setLawyers(data); // Set the list of lawyers
         setLoading(false);
       } catch (err) {
         setError(err.message);
@@ -26,7 +26,7 @@ const LawyersByCounty = () => {
     };
 
     fetchLawyers();
-  }, [county]);
+  }, [expertise]);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -38,29 +38,24 @@ const LawyersByCounty = () => {
 
   return (
     <div className="container mx-auto p-8">
-      <h1 className="text-3xl font-bold text-gray-800 mb-6">Lawyers in {county}</h1>
+      <h1 className="text-3xl font-bold text-gray-800 mb-6">Lawyers Specialized in {expertise}</h1>
 
       {lawyers.length > 0 ? (
         <ul className="space-y-4">
           {lawyers.map((lawyer) => (
             <li key={lawyer.id} className="border p-4 rounded-md shadow-sm">
               <h2 className="text-xl font-semibold">{lawyer.first_name} {lawyer.last_name}</h2>
-              <div className='flex justify-between'>
-                <img src={lawyer.profile_picture} alt={lawyer.first_name} className='w-[10vw] h-[10vw] ' />
-                <div>
-                  <p className="text-gray-700">{lawyer.expertise}</p>
-                  <p className="text-gray-700">{lawyer.experience} years of experience</p>
-                  <p className="text-gray-700">{lawyer.location}</p>
-                </div>
-              </div>              
+              <p className="text-gray-700">{lawyer.expertise}</p>
+              <p className="text-gray-700">{lawyer.experience} years of experience</p>
+              <p className="text-gray-700">{lawyer.location}</p>
             </li>
           ))}
         </ul>
       ) : (
-        <p>No lawyers found in {county}</p>
+        <p>No lawyers found with expertise in {expertise}</p>
       )}
     </div>
   );
 };
 
-export default LawyersByCounty;
+export default LawyersByExpertise;

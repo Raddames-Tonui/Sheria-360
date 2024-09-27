@@ -7,7 +7,7 @@ const AreYouALawyerModal = ({ isOpen, onClose, onConfirm }) => {
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
       <div className="bg-white rounded-lg shadow-lg p-6 max-w-md w-full">
         {/* Modal Header */}
-        <h2 className="text-lg font-bold mb-4">Are you a lawyer?</h2>
+        <h2 className="text-2xl font-bold mb-4 text-lime-700 text-center">Are you a lawyer?</h2>
 
         {/* Benefits List */}
         <div className="space-y-6">
@@ -81,18 +81,18 @@ const AreYouALawyerModal = ({ isOpen, onClose, onConfirm }) => {
         </div>
 
         {/* Buttons */}
-        <div className="flex justify-end mt-4">
+        <div className="flex justify-center mt-4">
           <button
             onClick={onClose}
             className="mr-2 px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded-md"
           >
-            Cancel
+            Not a Lawyer
           </button>
           <button
             onClick={onConfirm}
-            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md"
+            className="px-4 py-2 bg-lime-600 hover:bg-lime-600 text-white rounded-md"
           >
-            Yes
+            Create Profile
           </button>
         </div>
       </div>
