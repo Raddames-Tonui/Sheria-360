@@ -155,8 +155,7 @@ const LegalSearch = () => {
                     {result.first_name} {result.last_name}
                   </h3>
                   <p className="text-gray-700">
-                    Expertise: {result.expertise} <br />
-                    Location: {result.location}
+                  <span className='font-bold'>Expertise: </span> {result.expertise}   <span className='font-bold'>Location:</span>  {result.location}
                   </p>
                 </div>
               ))}

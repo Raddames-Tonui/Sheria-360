@@ -1,42 +1,64 @@
 import React from 'react';
-import logo from '../../assets/svgs/info-2.svg'; // Import as a file
+import info1 from '../../assets/svgs/info-1.svg'; 
+import info2 from '../../assets/svgs/info-2.svg';
+import info3 from '../../assets/svgs/info-3.svg'; 
+import { Link } from 'react-router-dom';
 
 function Considerations() {
   return (
-    <div className="p-4 bg-[#162F25] text-white  ">
-        <div className=' '>       
-            <div className="flex items-center mb-4">
-                {/* Render the SVG as an image */}
-                <img src={logo} alt="Logo" className="w-12 h-12 mr-4" />
-                <h2 className="text-2xl font-bold">Considerations When Choosing A Lawyer</h2>
-            </div>
-
-            <div className="mb-6">
-                <h3 className="text-xl font-semibold mb-1">Response and Communication</h3>
-                <ul className="list-disc list-inside space-y-1">
+    <div className="p-4 bg-lime-700 text-white">
+      <div className="max-w-4xl mx-auto">
+        <h2 className="text-2xl font-bold text-center mb-4">
+          Considerations When Choosing A Lawyer
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="flex space-x-4">
+            <img src={info1} alt="Response and Communication" className="w-16 h-16" />
+            <div>
+              <h3 className="text-xl font-semibold mb-1">Response and Communication</h3>
+              <ul className="list-disc list-inside space-y-1">
                 <li>Did the attorney or law firm respond promptly?</li>
                 <li>Did you get to speak to an attorney directly or with a receptionist?</li>
-                </ul>
+              </ul>
             </div>
+          </div>
 
-            <div className="mb-6">
-                <h3 className="text-xl font-semibold mb-1">Trustworthiness and Compatibility</h3>
-                <ul className="list-disc list-inside space-y-1">
+          <div className="flex space-x-4">
+            <img src={info2} alt="Trustworthiness and Compatibility" className="w-16 h-16" />
+            <div>
+              <h3 className="text-xl font-semibold mb-1">Trustworthiness and Compatibility</h3>
+              <ul className="list-disc list-inside space-y-1">
                 <li>Is the lawyer telling you what you want to hear or being straightforward and honest?</li>
                 <li>Do you trust his/her advice?</li>
                 <li>Are you compatible?</li>
-                </ul>
+              </ul>
             </div>
+          </div>
 
-            <div className="mb-6">
-                <h3 className="text-xl font-semibold mb-1">Professional Experience, Academics, and Community Service</h3>
-                <ul className="list-disc list-inside space-y-1">
+          <div className="flex space-x-4">
+            <img src={info3} alt="Professional Experience, Academics, and Community Service" className="w-16 h-16" />
+            <div>
+              <h3 className="text-xl font-semibold mb-1">Professional Experience, Academics, and Community Service</h3>
+              <ul className="list-disc list-inside space-y-1">
                 <li>Has the lawyer handled your specific issue before? If so, what were the results?</li>
                 <li>What associations and affiliations does the attorney have?</li>
                 <li>Which law school did the attorney attend?</li>
                 <li>Is the lawyer involved in his or her community?</li>
-                </ul>
+              </ul>
             </div>
+          </div>
+
+            <div className="flex justify-center items-center mt-6">
+            <Link 
+              to="/signup" 
+              className="bg-gray-200 text-black font-bold text-md p-4 rounded-md hover:bg-lime-800 hover:text-white"
+            >
+              CLAIM YOUR PROFILE NOW!
+            </Link>
+          </div>
+
+        </div>
+        
       </div>
     </div>
   );

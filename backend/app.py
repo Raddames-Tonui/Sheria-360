@@ -168,6 +168,22 @@ def search_users():
 
     return jsonify(users_list), 200
 
+# Route to get a lawyer by ID
+@app.route('/api/users/<int:id>', methods=['GET'])
+def get_lawyer_by_id(id):
+    try:
+        # Fetch the lawyer by ID from the database
+        lawyer = User.query.get(id)
+
+        if not lawyer:
+            return jsonify({"error": "Lawyer not found"}), 404
+
+        # Return lawyer details using to_dict method
+        return jsonify(lawyer.to_dict()), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
 
 
 if __name__ == '__main__':

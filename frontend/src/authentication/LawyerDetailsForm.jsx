@@ -32,7 +32,7 @@ const LawyerDetailsForm = () => {
         bio: '',
         location: '',
         profilePicture: null,
-        lawFirm: '', // New field for law firm
+        lawFirm: '',
     });
 
     const [loading, setLoading] = useState(false);
@@ -80,16 +80,15 @@ const LawyerDetailsForm = () => {
 
             const dataToSend = {
                 ...formData,
-                firebase_uid: token, // Use the token from AuthContext
-                profilePicture: imageUrl, // Send the uploaded image URL
+                firebase_uid: token,
+                profilePicture: imageUrl,
             };
 
-            // Send the request to update lawyer details
             const response = await fetch(`${server_url}/api/lawyer/update`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`, // Use the token from AuthContext
+                    'Authorization': `Bearer ${token}`,
                 },
                 body: JSON.stringify(dataToSend),
             });
@@ -112,122 +111,159 @@ const LawyerDetailsForm = () => {
     };
 
     return (
-        <div className="flex items-center justify-center h-screen bg-gray-200 p-4">
-            <div className="w-full max-w-lg bg-white rounded-lg shadow-lg p-8">
-                <h2 className="text-3xl font-bold text-center text-blue-600 mb-6">Update Lawyer Details</h2>
+        <div className="flex items-center justify-center  bg-gray-100 p-4">
+            <div className="w-full max-w-lg bg-white shadow-lg p-6">
+                <h2 className="text-3xl font-bold text-center text-lime-600 mb-6">Update Lawyer Details</h2>
                 <form onSubmit={handleSubmit} className="space-y-4">
-                    {/* Form Fields */}
-                    <input
-                        type="text"
-                        name="firstName"
-                        value={formData.firstName}
-                        onChange={handleChange}
-                        placeholder="First Name"
-                        className="w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        required
-                    />
-                    <input
-                        type="text"
-                        name="lastName"
-                        value={formData.lastName}
-                        onChange={handleChange}
-                        placeholder="Last Name"
-                        className="w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        required
-                    />
+                    <div className="flex flex-col md:flex-row md:space-x-4">
+                        <div className="flex flex-col w-full">
+                            <label htmlFor="firstName" className="mb-1 font-semibold">First Name</label>
+                            <input
+                                type="text"
+                                name="firstName"
+                                value={formData.firstName}
+                                onChange={handleChange}
+                                placeholder="First Name"
+                                className="w-full border p-2 focus:outline-none focus:ring-2 focus:ring-lime-500"
+                                required
+                            />
+                        </div>
+                        <div className="flex flex-col w-full">
+                            <label htmlFor="lastName" className="mb-1 font-semibold">Last Name</label>
+                            <input
+                                type="text"
+                                name="lastName"
+                                value={formData.lastName}
+                                onChange={handleChange}
+                                placeholder="Last Name"
+                                className="w-full border p-2 focus:outline-none focus:ring-2 focus:ring-lime-500"
+                                required
+                            />
+                        </div>
+                    </div>
+
+                    <div className="flex flex-col md:flex-row md:space-x-4">
+                        <div className="flex flex-col w-full">
+                            <label htmlFor="expertise" className="mb-1 font-semibold">Area of Expertise</label>
+                            <select
+                                name="expertise"
+                                value={formData.expertise}
+                                onChange={handleChange}
+                                className="w-full border p-2 focus:outline-none focus:ring-2 focus:ring-lime-500"
+                                required
+                            >
+                                <option value="">Select Field</option>
+                                {areas.map((area) =>
+                                    area.areas.map((subArea) => (
+                                        <option key={subArea} value={subArea}>{subArea}</option>
+                                    ))
+                                )}
+                            </select>
+                        </div>
+
+                        <div className="flex flex-col w-full">
+                            <label htmlFor="location" className="mb-1 font-semibold">County</label>
+                            <select
+                                name="location"
+                                value={formData.location}
+                                onChange={handleChange}
+                                className="w-full border p-2 focus:outline-none focus:ring-2 focus:ring-lime-500"
+                                required
+                            >
+                                <option value="">Select County</option>
+                                {counties.map((county) => (
+                                    <option key={county.number} value={county.name}>{county.name}</option>
+                                ))}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div className="flex flex-col md:flex-row md:space-x-4">
+                        <div className="flex flex-col w-full">
+                            <label htmlFor="phone" className="mb-1 font-semibold">Phone</label>
+                            <input
+                                type="text"
+                                name="phone"
+                                value={formData.phone}
+                                onChange={handleChange}
+                                placeholder="Phone"
+                                className="w-full border p-2 focus:outline-none focus:ring-2 focus:ring-lime-500"
+                                required
+                            />
+                        </div>
+
+                        <div className="flex flex-col w-full">
+                            <label htmlFor="experience" className="mb-1 font-semibold">Experience</label>
+                            <input
+                                type="text"
+                                name="experience"
+                                value={formData.experience}
+                                onChange={handleChange}
+                                placeholder="Experience"
+                                className="w-full border p-2 focus:outline-none focus:ring-2 focus:ring-lime-500"
+                                required
+                            />
+                        </div>
+                    </div>
+
                     <input
                         type="email"
                         name="workEmail"
                         value={formData.workEmail}
                         onChange={handleChange}
                         placeholder="Work Email"
-                        className="w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full border p-2 focus:outline-none focus:ring-2 focus:ring-lime-500"
                         required
                     />
-                    <input
-                        type="text"
-                        name="phone"
-                        value={formData.phone}
-                        onChange={handleChange}
-                        placeholder="Phone"
-                        className="w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        required
-                    />
-                    <select
-                        name="expertise"
-                        value={formData.expertise}
-                        onChange={handleChange}
-                        className="w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        required
-                    >
-                        <option value="">Select Field</option>
-                        {areas.map((area) =>
-                            area.areas.map((subArea) => (
-                                <option key={subArea} value={subArea}>{subArea}</option>
-                            ))
-                        )}
-                    </select>
 
-                    <input
-                        type="text"
-                        name="experience"
-                        value={formData.experience}
-                        onChange={handleChange}
-                        placeholder="Experience"
-                        className="w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        required
-                    />
-                    <textarea
-                        name="bio"
-                        value={formData.bio}
-                        onChange={handleChange}
-                        placeholder="Bio"
-                        className="w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        required
-                    />
                     
-                    <select
-                        name="location"
-                        value={formData.location}
-                        onChange={handleChange}
-                        className="w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        required
-                    >
-                        <option value="">Select County</option>
-                        {counties.map((county) => (
-                            <option key={county.number} value={county.name}>{county.name}</option>
-                        ))}
-                    </select>
 
-                    <input
-                        type="text"
-                        name="lawFirm"
-                        value={formData.lawFirm}
-                        onChange={handleChange}
-                        placeholder="Law Firm"
-                        className="w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        required
-                    />
-                    
-                    <input
-                        type="file"
-                        name="profilePicture"
-                        onChange={handleChange}
-                        accept="image/*"
-                        className="w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        required
-                    />
-                    
+                    <div className="flex flex-col w-full">
+                        <label htmlFor="bio" className="mb-1 font-semibold">Bio</label>
+                        <textarea
+                            name="bio"
+                            value={formData.bio}
+                            onChange={handleChange}
+                            placeholder="A brief bio about you"
+                            className="w-full border p-2 focus:outline-none focus:ring-2 focus:ring-lime-500"
+                            rows="4"
+                            required
+                        />
+                    </div>
+
+                    <div className="flex flex-col w-full">
+                        <label htmlFor="lawFirm" className="mb-1 font-semibold">Law Firm</label>
+                        <input
+                            type="text"
+                            name="lawFirm"
+                            value={formData.lawFirm}
+                            onChange={handleChange}
+                            placeholder="Law Firm"
+                            className="w-full border p-2 focus:outline-none focus:ring-2 focus:ring-lime-500"
+                        />
+                    </div>
+
+                    <div className="flex flex-col w-full">
+                        <label htmlFor="profilePicture" className="mb-1 font-semibold">Profile Picture</label>
+                        <input
+                            type="file"
+                            name="profilePicture"
+                            accept="image/*"
+                            onChange={handleChange}
+                            className="border p-2"
+                        />
+                    </div>
+
                     <button
                         type="submit"
+                        className={`w-full bg-lime-600 text-white p-2 hover:bg-lime-700 transition duration-300 ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
                         disabled={loading}
-                        className={`w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition duration-300 ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
                     >
-                        {loading ? 'Submitting...' : 'Submit'}
+                        {loading ? 'Updating...' : 'Update Details'}
                     </button>
 
-                    {error && <p className="text-red-500 text-center">{error}</p>}
-                    {success && <p className="text-green-500 text-center">Details updated successfully!</p>}
+                    {error && <div className="text-red-600 text-sm">{error}</div>}
+                    {success && <div className="text-green-600 text-sm">Details updated successfully!</div>}
                 </form>
             </div>
         </div>
