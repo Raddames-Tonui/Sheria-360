@@ -42,11 +42,12 @@ const LawyersByExpertise = () => {
   return (
     <div className='bg-gray-100'>
       <div className="container mx-auto p-8 ">
-      <h1 className="text-3xl font-bold text-gray-800 mb-6">Lawyers Specialized in {expertise}</h1>
+      <h1 className="text-center text-3xl font-bold text-gray-800 mb-6">Lawyers Specialized in {expertise}</h1>
+      <div className='bg-white py-4 shadow-xl  md:w-[80vw] mx-auto'>
       {lawyers.length > 0 ? (
         <ul className="space-y-4">
           {lawyers.map((lawyer) => (
-            <li key={lawyer.id} className="border border-gray-300 p-4 rounded-md shadow-sm bg-white hover:bg-gray-200 md:w-3/5 mx-auto">
+            <li key={lawyer.id} className="border border-gray-300 p-4 rounded-md shadow-sm bg-gray-100 hover:bg-gray-200 md:w-3/5 mx-auto">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center p-3  border-b border-gray-300">
                 <div className='p-4 flex justify-center'>
                   {lawyer.profile_picture ? (
@@ -84,6 +85,7 @@ const LawyersByExpertise = () => {
       ) : (
         <p>No lawyers found with expertise in {expertise}</p>
       )}
+      </div>
     </div>
     </div>
     

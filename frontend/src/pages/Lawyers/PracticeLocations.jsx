@@ -19,17 +19,16 @@ const PracticeLocations = () => {
   const handleCountyClick = (county) => navigate(`/lawyers-county/${encodeURIComponent(county)}`);
 
   return (
-    <div className='bg-lime-100  '>
-        <div className="container p-8 mx-auto" >
+    <div className='bg-lime-100'>
+      <div className="container p-8 mx-auto">
         <h2 className="text-2xl font-bold text-center text-gray-800 mb-4">FIND LAWYERS BY KENYAN COUNTIES</h2>
 
         {/* Counties Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:w-[80vw] mx-auto ">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:w-[80vw] mx-auto">
           {counties.map((county, index) => (
-            <div key={index} className="flex justify-center hover:rounded-sm hover:text-lime-600 hover:underline">
-              
+            <div key={index} className="flex items-start hover:rounded-sm hover:text-lime-600 hover:underline">
               <span 
-                className="hover:font-bold cursor-pointer hover:text-lime-600"
+                className="hover:font-bold cursor-pointer hover:text-lime-600 text-left w-full"
                 onClick={() => handleCountyClick(county)}
               >
                 {county}
@@ -39,7 +38,6 @@ const PracticeLocations = () => {
         </div>
       </div>
     </div>
-   
   );
 };
 

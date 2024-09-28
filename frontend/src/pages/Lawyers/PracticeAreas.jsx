@@ -24,13 +24,13 @@ const PracticeAreas = () => {
         {/* Areas Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:w-[80vw] mx-auto">
           {areas.map((group, index) => (
-            <div key={index} className="flex flex-col items-center p-4 hover:bg-lime-200 rounded-lg">
-              <h3 className="font-semibold text-lg text-gray-800 mb-2 text-center">{group.category}</h3>
-              <ul className="text-center">
+            <div key={index} className="flex flex-col p-4">
+              <h3 className="font-semibold text-lg text-gray-800 mb-2 text-start">{group.category}</h3>
+              <ul className="text-start">
                 {group.areas.map((area, i) => (
                   <li
                     key={i}
-                    className="text-gray-600 hover:text-lime-700 cursor-pointer"
+                    className="text-gray-600 cursor-pointer hover:font-bold hover:text-lime-600 hover:underline mb-1"
                     onClick={() => handleAreaClick(area)}
                   >
                     {area}
