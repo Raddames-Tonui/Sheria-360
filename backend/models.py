@@ -27,6 +27,7 @@ class User(db.Model, SerializerMixin):
     bio = db.Column(db.Text)
     location = db.Column(db.String(50))
     firebase_uid = db.Column(db.String(100), unique=True)
+    profile_picture = db.Column(db.String(300)) 
 
     created_at = db.Column(db.DateTime, server_default=db.func.now())
     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
@@ -45,6 +46,7 @@ class User(db.Model, SerializerMixin):
             'bio': self.bio,
             'location': self.location,
             'law_firm': self.law_firm,
+            'profile_picture': self.profile_picture, 
             'created_at': self.created_at,
             'updated_at': self.updated_at,
         }

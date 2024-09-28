@@ -13,12 +13,11 @@ const PracticeAreas = () => {
   ];
 
   const handleAreaClick = (area) => {
-    // Navigate to the lawyers page for the selected area
-    navigate(`/lawyers/${encodeURIComponent(area)}`);
+    navigate(`/lawyers-expertise/${encodeURIComponent(area)}`);
   };
 
   return (
-    <div className="  p-8">
+    <div className="p-8">
       <h1 className="text-2xl font-bold text-gray-800 mb-4">Find Lawyers by PRACTICE AREA</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {areas.map((group, index) => (
@@ -29,7 +28,7 @@ const PracticeAreas = () => {
                 <li
                   key={i}
                   className="text-gray-600 hover:text-lime-700 cursor-pointer"
-                  onClick={() => handleAreaClick(area)} // Navigate to new page
+                  onClick={() => handleAreaClick(area)}
                 >
                   {area}
                 </li>

@@ -1,68 +1,49 @@
-from models import db, User
-from app import app
+# seed.py
+from faker import Faker
+from app import app, db  # Import the app and db instances
+from models import User  # Import the User model
 
-# Sample data for the User table
-users = [
-    {
-        "first_name": "John",
-        "last_name": "Doe",
-        "email": "john.doe@example.com",
-        "phone": "1234567890",
-        "expertise": "Corporate Law",
-        "experience": 10,
-        "bio": "Experienced corporate lawyer with a decade of experience in handling complex cases.",
-        "location": "New York"
-    },
-    {
-        "first_name": "Jane",
-        "last_name": "Smith",
-        "email": "jane.smith@example.com",
-        "phone": "0987654321",
-        "expertise": "Criminal Law",
-        "experience": 5,
-        "bio": "Passionate about justice and defending clients in criminal cases.",
-        "location": "Los Angeles"
-    },
-    {
-        "first_name": "Alice",
-        "last_name": "Johnson",
-        "email": "alice.johnson@example.com",
-        "phone": "1122334455",
-        "expertise": "Family Law",
-        "experience": 8,
-        "bio": "Expert in family law with extensive experience in custody and divorce cases.",
-        "location": "Chicago"
-    },
-    {
-        "first_name": "Bob",
-        "last_name": "Williams",
-        "email": "bob.williams@example.com",
-        "phone": "5566778899",
-        "expertise": "Immigration Law",
-        "experience": 12,
-        "bio": "Helping individuals and families navigate complex immigration processes.",
-        "location": "San Francisco"
-    }
-]
+fake = Faker()
 
-# Seed the database with sample data
-with app.app_context():
-    db.create_all()  # Create tables if they don't exist
-    
-    # Add each user to the database session
-    for user_data in users:
+def seed_users(num_users=100):
+    for _ in range(num_users):
         user = User(
-            first_name=user_data['first_name'],
-            last_name=user_data['last_name'],
-            email=user_data['email'],
-            phone=user_data['phone'],
-            expertise=user_data['expertise'],
-            experience=user_data['experience'],
-            bio=user_data['bio'],
-            location=user_data['location']
+            first_name=fake.first_name(),
+            last_name=fake.last_name(),
+            email=fake.unique.email(), 
+            work_email=fake.email(),
+            law_firm=fake.company(),
+            phone=fake.phone_number(),
+            expertise=fake.random_element(elements=[
+                "Commercial Law", "Banking & Finance", "Real Estate", 
+                "Intellectual Property", "Public Law", "Constitutional Law", 
+                "Environmental Law", "Administrative Law", "Private Law", 
+                "Family Law", "Probate & Estate Administration", "Employment Law", 
+                "Criminal Law", "Criminal Defense", "Traffic Offenses", 
+                "Anti-Corruption", "Specialized Areas", "Maritime Law", 
+                "Aviation Law", "Sports Law"
+            ]),
+            experience=fake.random_int(min=1, max=30),  # Random experience between 1 and 30 years
+            bio=fake.text(max_nb_chars=200),  # Random bio text
+            location=fake.random_element(elements=[
+                "Mombasa", "Kwale", "Kilifi", "Tana River", "Lamu", 
+                "Taita Taveta", "Garissa", "Wajir", "Mandera", "Marsabit", 
+                "Isiolo", "Meru", "Tharaka-Nithi", "Embu", "Kitui", 
+                "Machakos", "Makueni", "Nyandarua", "Nyeri", "Kirinyaga", 
+                "Murang'a", "Kiambu", "Turkana", "West Pokot", "Samburu", 
+                "Trans Nzoia", "Uasin Gishu", "Elgeyo Marakwet", "Nandi", 
+                "Baringo", "Laikipia", "Nakuru", "Narok", "Kajiado", 
+                "Kericho", "Bomet", "Kakamega", "Vihiga", "Bungoma", 
+                "Busia", "Siaya", "Kisumu", "Homa Bay", "Migori", 
+                "Kisii", "Nyamira", "Nairobi"
+            ]),
+            profile_picture=fake.image_url()  # Random image URL
         )
         db.session.add(user)
     
-    # Commit the changes to the database
     db.session.commit()
-    print("Database seeded successfully!")
+    print(f"{num_users} users seeded successfully!")
+
+if __name__ == "__main__":
+    with app.app_context():  # Create an application context
+        seed_users()  # Seed users

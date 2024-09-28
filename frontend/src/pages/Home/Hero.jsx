@@ -9,7 +9,6 @@ const Hero = () => {
         className="w-full h-80 bg-cover bg-center rounded-lg"
         aria-label="Hero section"
       >
-        {/* Add content or overlay here if needed */}
       </div>
     </div>
   );

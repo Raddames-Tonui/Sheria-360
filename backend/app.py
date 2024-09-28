@@ -20,6 +20,10 @@ migrate = Migrate(app, db)
 # Enable CORS for all routes
 CORS(app)
 
+@app.route('/')
+def index():
+    return 'Welcome to the Sheria 360 API!'
+
 # ========================================= USER ==========================================
 
 # Register User
@@ -74,7 +78,9 @@ def update_lawyer():
         user.experience = data.get('experience', user.experience)
         user.bio = data.get('bio', user.bio)
         user.location = data.get('location', user.location)
-        user.law_firm = data.get('law_firm', user.law_firm)
+        user.law_firm = data.get('lawFirm', user.law_firm)
+        user.profile_picture = data.get('profilePicture', user.profile_picture) 
+
 
         db.session.commit()
 
@@ -106,9 +112,79 @@ def get_lawyer_details():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-@app.route('/')
-def index():
-    return 'Welcome to the Sheria 360 API!'
+# ========================================================================
+
+
+# Fetch users by County Locations, Expertise, and Experience
+@app.route('/api/users/by-filters', methods=['GET'])
+def get_users_by_filters():
+    location = request.args.get('location')  
+    expertise = request.args.get('expertise')  
+    experience = request.args.get('experience')
+    
+    query = User.query  # Start the query
+
+    # Apply filters only if parameters are provided
+    if location:
+        query = query.filter_by(location=location)
+    if expertise:
+        query = query.filter_by(expertise=expertise)
+    if experience:
+        try:
+            # Convert experience to integer before filtering
+            experience = int(experience)
+            query = query.filter_by(experience=experience)
+        except ValueError:
+            return jsonify({'error': 'Experience must be a number'}), 400
+
+    users = query.all()  # Execute the query and fetch users
+    
+    users_list = [user.to_dict() for user in users] 
+    
+    return jsonify(users_list), 200 
+
+@app.route('/api/users/search', methods=['GET'])
+def search_users():
+    query = request.args.get('query', '').lower()  # Get the search query
+    location = request.args.get('location', '')  # Get the location for sorting
+
+    # Search by first name, last name, or practice area
+    search_filter = User.query.filter(
+        db.or_(
+            db.func.lower(User.first_name).like(f"%{query}%"),
+            db.func.lower(User.last_name).like(f"%{query}%"),
+            db.func.lower(User.expertise).like(f"%{query}%")
+        )
+    )
+
+    # Sort by location if provided
+    if location:
+        search_filter = search_filter.order_by(User.location.asc())
+
+    users = search_filter.all()  # Fetch the filtered and sorted users
+
+    # Convert each user to a dictionary
+    users_list = [user.to_dict() for user in users]
+
+    return jsonify(users_list), 200
+
+# Route to get a lawyer by ID
+@app.route('/api/users/<int:id>', methods=['GET'])
+def get_lawyer_by_id(id):
+    try:
+        # Fetch the lawyer by ID from the database
+        lawyer = User.query.get(id)
+
+        if not lawyer:
+            return jsonify({"error": "Lawyer not found"}), 404
+
+        # Return lawyer details using to_dict method
+        return jsonify(lawyer.to_dict()), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=5555)

@@ -4,9 +4,8 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from './firebase';
 import axios from 'axios';  
 import toast from 'react-hot-toast';
-import backgroundImage from '../assets/books.jpeg';
 import AreYouALawyerModal from './AreYouALawyerModal';
-import {server_url} from "../../config.json"
+import { server_url } from "../../config.json";
 
 const Registration = () => {
   const [email, setEmail] = useState('');
@@ -50,68 +49,66 @@ const Registration = () => {
 
   return (
     <div className="h-[90vh] flex items-center justify-center bg-gray-100">
-      <div className="flex flex-col md:flex-row w-full max-w-4xl bg-white shadow-lg rounded-lg overflow-hidden">
-        <div className="md:w-1/2 p-8 flex flex-col justify-center">
-          <Link to="/" className="text-3xl text-center font-bold text-blue-600 hover:text-blue-800 transition duration-300 mb-2">
-            Sheria 360
-          </Link>
-          <h2 className="text-2xl font-bold mb-6 text-center">Register</h2>
+      <div className="flex flex-col w-full max-w-md bg-white shadow-lg p-8 rounded-lg overflow-hidden h-4/5">
+        <Link to="/" className="flex justify-center ">
+          <img src="/logo/Sheria360.png" alt="" className="object-cover h-16 w-40" />
+        </Link>
+        <h2 className="text-2xl font-bold mb-6 text-center">Register</h2>
 
-          <form className="space-y-4" onSubmit={handleRegister}>
-            <div>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className="block w-full border-b border-gray-300 py-2 px-3 text-gray-900"
-                placeholder="Email"
-              />
-            </div>
+        <form className="space-y-4" onSubmit={handleRegister}>
+          <div>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              className="block w-full border-b border-gray-300 py-2 px-3 text-gray-900"
+              placeholder="Email"
+            />
+          </div>
 
-            <div>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                className="block w-full border-b border-gray-300 py-2 px-3 text-gray-900"
-                placeholder="Password"
-              />
-            </div>
-
-            <button
-              type="submit"
-              className="w-full py-2 bg-blue-600 text-white font-bold rounded-md"
-            >
-              Register
-            </button>
-          </form>
-
-          <div className="flex items-center justify-center mt-4">
-            <span className="p-4 text-gray-500">OR</span>
+          <div>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              className="block w-full border-b border-gray-300 py-2 px-3 text-gray-900"
+              placeholder="Password"
+            />
           </div>
 
           <button
-            onClick={handleGoogleRegister}
-            className="w-full py-2 bg-red-500 text-white font-bold rounded-md"
+            type="submit"
+            className="w-full py-2 bg-lime-600 hover:bg-lime-700 text-white font-bold rounded-md transition duration-300"
           >
-            Register with Google
+            Register
           </button>
+        </form>
 
-          <p className="text-center mt-6 text-gray-600">
-            Already have an account?{' '}
-            <Link to="/login" className="text-blue-600 hover:text-blue-800">
-              Log In
-            </Link>
-          </p>
+        <div className="flex items-center justify-center my-2">
+          <div className="border-t w-full"></div>
+          <span className="px-4 text-gray-500">OR</span>
+          <div className="border-t w-full"></div>
         </div>
 
-        <div className="hidden md:block md:w-1/2 bg-cover bg-center" style={{ backgroundImage: `url(${backgroundImage})` }}></div>
+        <button
+          onClick={handleGoogleRegister}
+          className="w-full py-2 border border-black hover:bg-lime-600 font-bold rounded-md transition duration-300"
+        >
+          Register with Google
+        </button>
+
+        <p className="text-center mt-6 text-gray-600">
+          Already have an account?{' '}
+          <Link to="/login" className="text-lime-600 hover:text-lime-800">
+            Log In
+          </Link>
+        </p>
       </div>
 
       <AreYouALawyerModal
