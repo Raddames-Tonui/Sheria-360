@@ -12,12 +12,12 @@ function Home() {
       <div className='px-20'>
         <LawyerSearchCard/></div>
       <SheriaAiCard/>
-      <div className='px-20 bg-lime-200'>
+      {/* <div className='px-20 bg-lime-200'>
       <PracticeLocations/>
       </div>
       <div className='px-20 '>
       <PracticeAreas/>
-      </div>
+      </div> */}
     </div>
   )
 }

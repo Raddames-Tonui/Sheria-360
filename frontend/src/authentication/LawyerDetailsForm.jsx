@@ -6,10 +6,54 @@ import toast from 'react-hot-toast';
 import { server_url } from "../../config.json";
 
 const counties = [
-    { name: 'Nairobi', number: 1 },
-    { name: 'Mombasa', number: 2 },
-    // Add other counties...
-];
+    { name: "Mombasa", number: 1 },
+    { name: "Kwale", number: 2 },
+    { name: "Kilifi", number: 3 },
+    { name: "Tana River", number: 4 },
+    { name: "Lamu", number: 5 },
+    { name: "Taita Taveta", number: 6 },
+    { name: "Garissa", number: 7 },
+    { name: "Wajir", number: 8 },
+    { name: "Mandera", number: 9 },
+    { name: "Marsabit", number: 10 },
+    { name: "Isiolo", number: 11 },
+    { name: "Meru", number: 12 },
+    { name: "Tharaka-Nithi", number: 13 },
+    { name: "Embu", number: 14 },
+    { name: "Kitui", number: 15 },
+    { name: "Machakos", number: 16 },
+    { name: "Makueni", number: 17 },
+    { name: "Nyandarua", number: 18 },
+    { name: "Nyeri", number: 19 },
+    { name: "Kirinyaga", number: 20 },
+    { name: "Murang'a", number: 21 },
+    { name: "Kiambu", number: 22 },
+    { name: "Turkana", number: 23 },
+    { name: "West Pokot", number: 24 },
+    { name: "Samburu", number: 25 },
+    { name: "Trans Nzoia", number: 26 },
+    { name: "Uasin Gishu", number: 27 },
+    { name: "Elgeyo Marakwet", number: 28 },
+    { name: "Nandi", number: 29 },
+    { name: "Baringo", number: 30 },
+    { name: "Laikipia", number: 31 },
+    { name: "Nakuru", number: 32 },
+    { name: "Narok", number: 33 },
+    { name: "Kajiado", number: 34 },
+    { name: "Kericho", number: 35 },
+    { name: "Bomet", number: 36 },
+    { name: "Kakamega", number: 37 },
+    { name: "Vihiga", number: 38 },
+    { name: "Bungoma", number: 39 },
+    { name: "Busia", number: 40 },
+    { name: "Siaya", number: 41 },
+    { name: "Kisumu", number: 42 },
+    { name: "Homa Bay", number: 43 },
+    { name: "Migori", number: 44 },
+    { name: "Kisii", number: 45 },
+    { name: "Nyamira", number: 46 },
+    { name: "Nairobi", number: 47 },
+  ];
 
 const areas = [
     { category: 'Commercial Law', areas: ['Banking & Finance', 'Real Estate', 'Intellectual Property'] },
@@ -172,7 +216,7 @@ const LawyerDetailsForm = () => {
                             >
                                 <option value="">Select County</option>
                                 {counties.map((county) => (
-                                    <option key={county.number} value={county.name}>{county.name}</option>
+                                    <option key={county.number} value={county.name}> {county.number}. {county.name}</option>
                                 ))}
                             </select>
                         </div>

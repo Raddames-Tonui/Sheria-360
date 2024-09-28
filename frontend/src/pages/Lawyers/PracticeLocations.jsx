@@ -2,9 +2,14 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const counties = [
-  'Nairobi', 'Mombasa', 'Kisumu', 'Nakuru', 'Eldoret', 'Nyeri', 'Meru',
-  'Machakos', 'Uasin Gishu', 'Kakamega', 'Kitui', 'Bomet', 'Trans Nzoia', 'Kirinyaga',
-  'Embu', 'Homa Bay', 'Busia', 'Siaya', 'Taita Taveta', 'Narok', 'Laikipia'
+  "Mombasa", "Kwale", "Kilifi", "Tana River", "Lamu", "Taita Taveta",
+  "Garissa", "Wajir", "Mandera", "Marsabit", "Isiolo", "Meru",
+  "Tharaka-Nithi", "Embu", "Kitui", "Machakos", "Makueni", "Nyandarua",
+  "Nyeri", "Kirinyaga", "Murang'a", "Kiambu", "Turkana", "West Pokot",
+  "Samburu", "Trans Nzoia", "Uasin Gishu", "Elgeyo Marakwet", "Nandi",
+  "Baringo", "Laikipia", "Nakuru", "Narok", "Kajiado", "Kericho",
+  "Bomet", "Kakamega", "Vihiga", "Bungoma", "Busia", "Siaya",
+  "Kisumu", "Homa Bay", "Migori", "Kisii", "Nyamira", "Nairobi"
 ];
 
 const PracticeLocations = () => {
@@ -14,20 +19,27 @@ const PracticeLocations = () => {
   const handleCountyClick = (county) => navigate(`/lawyers-county/${encodeURIComponent(county)}`);
 
   return (
-    <div className="container mx-auto p-8">
-      <h2 className="text-xl text-center font-bold text-gray-700 mb-4">Find Lawyers by KENYAN COUNTIES</h2>
+    <div className='bg-gray-100  '>
+        <div className="container p-8 mx-auto" >
+        <h2 className="text-2xl font-bold text-center text-gray-800 mb-4">FIND LAWYERS BY KENYAN COUNTIES</h2>
 
-      {/* Counties Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {counties.map((county, index) => (
-          <ul key={index} className="space-y-2 text-gray-700">
-            <li className="hover:text-lime-700 cursor-pointer" onClick={() => handleCountyClick(county)}>
-              {county}
-            </li>
-          </ul>
-        ))}
+        {/* Counties Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:w-[80vw] mx-auto ">
+          {counties.map((county, index) => (
+            <div key={index} className="flex justify-center hover:rounded-sm hover:bg-lime-500">
+              
+              <span 
+                className="hover:font-bold hover:text-white text-xl  cursor-pointer text-gray-700"
+                onClick={() => handleCountyClick(county)}
+              >
+                {county}
+              </span>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
+   
   );
 };
 
