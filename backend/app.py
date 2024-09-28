@@ -143,12 +143,14 @@ def get_users_by_filters():
     
     return jsonify(users_list), 200 
 
+
+# Search by name , location, expertise
 @app.route('/api/users/search', methods=['GET'])
 def search_users():
-    query = request.args.get('query', '').lower()  # Get the search query
-    location = request.args.get('location', '')  # Get the location for sorting
+    query = request.args.get('query', '').lower() 
+    location = request.args.get('location', '')  
 
-    # Search by first name, last name, or practice area
+    # Search by first name, last name, or expertise (case-insensitive)
     search_filter = User.query.filter(
         db.or_(
             db.func.lower(User.first_name).like(f"%{query}%"),
@@ -157,16 +159,14 @@ def search_users():
         )
     )
 
-    # Sort by location if provided
     if location:
-        search_filter = search_filter.order_by(User.location.asc())
+        search_filter = search_filter.filter_by(location=location)
 
-    users = search_filter.all()  # Fetch the filtered and sorted users
-
-    # Convert each user to a dictionary
+    users = search_filter.all() 
     users_list = [user.to_dict() for user in users]
 
     return jsonify(users_list), 200
+
 
 # Route to get a lawyer by ID
 @app.route('/api/users/<int:id>', methods=['GET'])

@@ -32,7 +32,12 @@ const Navbar = () => {
           <Link to="/lawyers" className="hover:bg-lime-600 hover:text-white px-6 py-2 rounded-md text-md font-medium">Lawyers</Link>
           <Link to="/courts" className="hover:bg-lime-600 hover:text-white px-6 py-2 rounded-md text-md font-medium">Courts</Link>
           <Link to="/track-cases" className="hover:bg-lime-600 hover:text-white px-6 py-2 rounded-md text-md font-medium">Track Cases</Link>
-          <Link to="/lawyer-registration" className="hover:bg-lime-600 hover:text-white px-6 py-2 rounded-md text-md font-medium">Help</Link>
+          {token ? 
+          <Link to="/lawyer-registration" className="hover:bg-lime-600 hover:text-white px-6 py-2 rounded-md text-md font-medium">Profile</Link>
+            :
+            null
+          }
+          
         </div>
         <div className="flex items-center space-x-6">
           {token ? (

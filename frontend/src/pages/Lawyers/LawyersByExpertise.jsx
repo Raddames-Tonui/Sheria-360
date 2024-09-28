@@ -3,6 +3,8 @@ import { Link, useParams } from 'react-router-dom';
 import { server_url } from '../../../config.json';
 import { FaPhoneAlt, FaEnvelope, FaUser } from "react-icons/fa"; 
 import { BiUserCircle } from "react-icons/bi"; 
+import "../../App.css"
+
 
 const LawyersByExpertise = () => {
   const { expertise } = useParams(); 

@@ -7,7 +7,7 @@ import SheriaAiCard from './Home/SheriaAiCard'
 
 function Home() {
   return (
-    <div>
+    <div className='bg-gray-100'>
       <Hero/>
       <div className='px-20'>
         <LawyerSearchCard/></div>
