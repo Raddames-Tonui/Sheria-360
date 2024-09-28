@@ -16,6 +16,8 @@ import LawyersByExpertise from "./pages/Lawyers/LawyersByExpertise";
 import LawyerDetails from "./pages/Lawyers/LawyerDetailsForm";
 
 import SheriaAi from "./pages/SheriaAi";
+import Courts from "./pages/Courts";
+import TrackCases from "./pages/TrackCases";
 
 function App() {
   return (
@@ -26,6 +28,8 @@ function App() {
             <Route index element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Registration />} />
+            <Route path="/courts" element={<Courts />} />
+            <Route path="/track/cases" element={<TrackCases />} />
             <Route path="/lawyer-registration" element={<LawyerDetailsForm />} />
             {/* Lawyers */}
             <Route path="/lawyers" element={<Lawyers />} />
