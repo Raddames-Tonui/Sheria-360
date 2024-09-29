@@ -1,7 +1,4 @@
 import React from 'react';
-import info1 from '../../assets/svgs/info-1.svg'; 
-import info2 from '../../assets/svgs/info-2.svg';
-import info3 from '../../assets/svgs/info-3.svg'; 
 import { Link } from 'react-router-dom';
 
 function Considerations() {
@@ -13,7 +10,8 @@ function Considerations() {
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="flex space-x-4">
-            <img src={info1} alt="Response and Communication" className="w-16 h-16" />
+            {/* Using relative paths for SVGs in the public folder */}
+            <img src="/svgs/info-1.svg" alt="Response and Communication" className="w-16 h-16" />
             <div>
               <h3 className="text-xl font-semibold mb-1">Response and Communication</h3>
               <ul className="list-disc list-inside space-y-1">
@@ -24,7 +22,7 @@ function Considerations() {
           </div>
 
           <div className="flex space-x-4">
-            <img src={info2} alt="Trustworthiness and Compatibility" className="w-16 h-16" />
+            <img src="/svgs/info-2.svg" alt="Trustworthiness and Compatibility" className="w-16 h-16" />
             <div>
               <h3 className="text-xl font-semibold mb-1">Trustworthiness and Compatibility</h3>
               <ul className="list-disc list-inside space-y-1">
@@ -36,7 +34,7 @@ function Considerations() {
           </div>
 
           <div className="flex space-x-4">
-            <img src={info3} alt="Professional Experience, Academics, and Community Service" className="w-16 h-16" />
+            <img src="/svgs/info-3.svg" alt="Professional Experience, Academics, and Community Service" className="w-16 h-16" />
             <div>
               <h3 className="text-xl font-semibold mb-1">Professional Experience, Academics, and Community Service</h3>
               <ul className="list-disc list-inside space-y-1">
@@ -48,7 +46,7 @@ function Considerations() {
             </div>
           </div>
 
-            <div className="flex justify-center items-center mt-6">
+          <div className="flex justify-center items-center mt-6">
             <Link 
               to="/signup" 
               className="bg-gray-200 text-black font-bold text-md p-4 rounded-md hover:bg-lime-800 hover:text-white"
