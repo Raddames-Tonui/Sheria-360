@@ -13,7 +13,7 @@ import Registration from "./authentication/Registration";
 
 import LawyersByCountyPage from "./pages/Lawyers/LawyersByCountyPage";
 import LawyersByExpertise from "./pages/Lawyers/LawyersByExpertise";
-import LawyerDetails from "./pages/Lawyers/LawyerDetailsForm";
+import LawyerDetails from "./pages/Lawyers/LawyerDetails";
 
 import SheriaAi from "./pages/SheriaAi";
 import Courts from "./pages/Courts";

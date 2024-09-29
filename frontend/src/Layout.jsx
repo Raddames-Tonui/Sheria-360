@@ -7,9 +7,11 @@ function Layout() {
   return (
     <div>
       <Navbar />
+      {/* Toaster below the Navbar */}
       <Toaster
         position="top-right"
         reverseOrder={true}
+        containerStyle={{ top: '10vh' }}  
         toastOptions={{
           style: {
             zIndex: 100,
@@ -18,7 +20,6 @@ function Layout() {
             border: '1px solid #ddd',
             borderRadius: '8px',
             padding: '10px',
-            top: '12vh', // Position toast 12vh below the top
           },
           success: {
             duration: 4000,

@@ -50,3 +50,41 @@ class User(db.Model, SerializerMixin):
             'created_at': self.created_at,
             'updated_at': self.updated_at,
         }
+
+
+class Case(db.Model, SerializerMixin):
+    __tablename__ = 'cases'
+
+    id = db.Column(db.Integer, primary_key=True)
+    station = db.Column(db.String(100))
+    court = db.Column(db.String(100))
+    division = db.Column(db.String(100))
+    case_code = db.Column(db.String(100))  
+    case_number = db.Column(db.String(50))
+    parties = db.Column(db.Text)  
+    description = db.Column(db.Text) 
+    filed_by = db.Column(db.String(100))  
+
+    created_at = db.Column(db.DateTime, server_default=db.func.now())
+    updated_at = db.Column(db.DateTime, onupdate=db.func.now())
+
+    def to_dict(self):
+        """Convert the case instance to a dictionary."""
+        return {
+            'id': self.id,
+            'station': self.station,
+            'court': self.court,
+            'division': self.division,
+            'case_code': self.case_code,
+            'case_number': self.case_number,
+            'parties': self.parties,  
+            'description': self.description, 
+            'filed_by': self.filed_by, 
+            'created_at': self.created_at,
+            'updated_at': self.updated_at,
+        }
+
+
+
+
+
