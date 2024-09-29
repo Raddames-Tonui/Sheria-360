@@ -90,18 +90,18 @@ const Registration = () => {
           </button>
         </form>
 
-        <div className="flex items-center justify-center my-2">
+        {/* <div className="flex items-center justify-center my-2">
           <div className="border-t w-full"></div>
           <span className="px-4 text-gray-500">OR</span>
           <div className="border-t w-full"></div>
-        </div>
+        </div> */}
 
-        <button
+        {/* <button
           onClick={handleGoogleRegister}
           className="w-full py-2 border border-black hover:bg-lime-600 font-bold rounded-md transition duration-300"
         >
           Register with Google
-        </button>
+        </button> */}
 
         <p className="text-center mt-6 text-gray-600">
           Already have an account?{' '}

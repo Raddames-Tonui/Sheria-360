@@ -1,25 +1,25 @@
 import React, { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { AuthContext } from '../context/AuthContext'; // Adjust import path as necessary
-import toast from 'react-hot-toast'; // Import toast for notifications
+import { AuthContext } from '../context/AuthContext'; 
+import toast from 'react-hot-toast'; 
 
 const Navbar = () => {
   const { token, logout } = useContext(AuthContext); // Get token and logout from AuthContext
-  const navigate = useNavigate(); // Initialize useNavigate
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false); // State for mobile menu
+  const navigate = useNavigate(); 
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false); 
 
   const handleSignOut = async () => {
     try {
-      await logout(); // Call logout from AuthContext
-      toast.success('Signed out successfully!'); // Show success notification
-      navigate('/'); // Redirect to home or login page
+      await logout(); 
+      toast.success('Signed out successfully!'); 
+      navigate('/'); 
     } catch (err) {
-      toast.error(`Sign out failed: ${err.message}`); // Show error notification
+      toast.error(`Sign out failed: ${err.message}`); 
     }
   };
 
   // Debugging: Check current user token status
-  // console.log("User Token:", token);
+  console.log("User Token:", token);
 
   return (
     <nav className="h-[10vh] border-b py-4 my-2 bg-white text-lime-600 flex items-center">
@@ -30,18 +30,19 @@ const Navbar = () => {
         <div className="hidden md:flex space-x-4 bg-gray-200 rounded-md">
           <Link to="/" className="hover:bg-lime-600 hover:text-white px-6 py-2 rounded-md text-md font-medium">Home</Link>
           <Link to="/lawyers" className="hover:bg-lime-600 hover:text-white px-6 py-2 rounded-md text-md font-medium">Lawyers</Link>
-          <Link to="/courts" className="hover:bg-lime-600 hover:text-white px-6 py-2 rounded-md text-md font-medium">Courts</Link>
-
-          <Link to="/track/cases" className="hover:bg-lime-600 hover:text-white px-6 py-2 rounded-md text-md font-medium">Track Cases</Link>
-          <Link to="/lawyer-registration" className="hover:bg-lime-600 hover:text-white px-6 py-2 rounded-md text-md font-medium">Help</Link>
-
-          <Link to="/track-cases" className="hover:bg-lime-600 hover:text-white px-6 py-2 rounded-md text-md font-medium">Track Cases</Link>
           <Link to="/sheria/chat" className="hover:bg-lime-600 hover:text-white px-6 py-2 rounded-md text-md font-medium">Sheria Ai</Link>
+          <Link to="/sheria/docs" className="hover:bg-lime-600 hover:text-white px-6 py-2 rounded-md text-md font-medium">E-Sheria</Link>
+          <Link to="/track/cases" className="hover:bg-lime-600 hover:text-white px-6 py-2 rounded-md text-md font-medium">Track Cases</Link>
           {token ? 
-          <Link to="/lawyer-registration" className="hover:bg-lime-600 hover:text-white px-6 py-2 rounded-md text-md font-medium">Profile</Link>
+          <>
+            <Link to="/lawyer-registration" className="hover:bg-lime-600 hover:text-white px-6 py-2 rounded-md text-md font-medium">Profile</Link>
+            <Link to="/sheria/upload-doc" className="hover:bg-lime-600 hover:text-white px-6 py-2 rounded-md text-md font-medium">Upload</Link>
+          </>
+          
             :
             null
           }
+
           
 
         </div>

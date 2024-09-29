@@ -2,7 +2,7 @@ import React from 'react';
 
 const Hero = () => {
   return (
-    <div className="px-20 mt-8">
+    <div className="px-20 ">
       {/* Container with background image */}
       <div 
         style={{ backgroundImage: `url("/Images/AJS.jpg")` }}

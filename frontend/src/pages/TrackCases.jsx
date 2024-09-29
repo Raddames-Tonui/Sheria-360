@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios'; // Import axios
 
 const TrackCases = () => {
   const [selectedStation, setSelectedStation] = useState('');
@@ -13,34 +14,7 @@ const TrackCases = () => {
   const CaseTypes = [
     { id: 'yy4q-288', label: 'MCCGCR - Magistrates Court County Government Criminal Matters' },
     { id: '19vo-229', label: 'MCCHSO - Sexual Offence - Children' },
-    { id: '89w4-38', label: 'MCP&CPS - Magistrate Court Protection and Care - Police Station' },
-    { id: 'cj3r-72', label: 'MCSO - Sexual Offences' },
-    { id: 'gci0-33', label: 'MCCR - Magistrate Court Criminal Case' },
-    { id: '3jua-83', label: 'MCP&CCO - Magistrate Court Protection and Care-Children Office' },
-    { id: 'iqts-42', label: 'MCAC - Magistrate Court Anti-Corruption' },
-    { id: '0meo-84', label: 'MCCHCR - Magistrate Court Criminal - Children' },
-    { id: '4tty-289', label: 'MCCGCRMISC - Magistrates Court County Government Criminal Miscellaneous' },
-    { id: '5j56-73', label: 'MCEO - Election Offences' },
-    { id: '4o4p-116', label: 'MCPCR - Magistrate Court Petty Criminal' },
-    { id: '5xh4-71', label: 'MCINQ - Inquest' },
-    { id: 'r1g1-296', label: 'MGJCCR - Magistrates Gender Justice Criminal Case' },
-    { id: 'nkks-70', label: 'MCACMISC - Magistrate Court Anti-Corruption Miscellaneous' },
-    { id: 'wgds-35', label: 'MCTR - Magistrate Court Traffic Case' },
-    { id: '85db-34', label: 'MCCRMISC - Magistrate Court Criminal Miscellaneous' },
-  ];
-
-  const casesData = [
-    {
-      caseNumber: "MCCGCR/E001/2024",
-      citation: "Republic VS DANIEL MUTUA AND ERICK MUTWIRI AND 9 Other(s)",
-      trackingNumber: "JS6X2024",
-      filingDate: "18-Mar-2024 03:03:04",
-      station: "Nairobi Law Courts",
-      caseCategory: "Magistrates Court County Government Criminal Matters",
-      caseType: "BY-LAWS - City /County inspectorate/enforcement Act",
-      filedBy: "Fridah Mbae"
-    },
-    // ... other cases
+    // ... other case types
   ];
 
   const judiciaryData = {
@@ -80,7 +54,7 @@ const TrackCases = () => {
     setYear(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     
     // Input Validation
@@ -89,19 +63,26 @@ const TrackCases = () => {
       return;
     }
 
-    // Find the case based on user inputs
-    const foundCase = casesData.find(
-      (c) =>
-        c.caseNumber === caseNumber && // Match caseNumber directly with caseNumber input
-        c.station === selectedStation // Ensure station matches
-    );
+    try {
+      // Fetch case details from the API
+      const response = await axios.get(`/cases`, {
+        params: {
+          station: selectedStation,
+          caseNumber: caseNumber,
+        }
+      });
 
-    if (foundCase) {
-      setCaseDetails(foundCase);
-      setError('');
-    } else {
-      setCaseDetails(null);
-      setError('No case found matching the provided details.');
+      // Check if cases were found
+      if (response.data && response.data.length > 0) {
+        setCaseDetails(response.data[0]); // Assuming you want the first case
+        setError('');
+      } else {
+        setCaseDetails(null);
+        setError('No case found matching the provided details.');
+      }
+    } catch (err) {
+      console.error(err);
+      setError('An error occurred while fetching case details.');
     }
   };
 
@@ -171,7 +152,7 @@ const TrackCases = () => {
               <div className="mb-4">
                 <label htmlFor="caseNumber" className="block text-white font-medium mb-2">Case Number</label>
                 <input
-                  type="text" // Changed to text to allow full case number input
+                  type="text"
                   id="caseNumber"
                   placeholder="Enter Case Number"
                   className="p-2 w-full rounded-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-lime-300"
@@ -186,8 +167,8 @@ const TrackCases = () => {
                 <input
                   type="number"
                   id="year"
-                  min="2000" // Added min value
-                  max={new Date().getFullYear()} // Added max value as current year
+                  min="2000"
+                  max={new Date().getFullYear()}
                   className="p-2 w-full rounded-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-lime-300"
                   value={year}
                   onChange={handleYearChange}
@@ -210,64 +191,40 @@ const TrackCases = () => {
           {error && <div className="text-red-500 text-center mt-4">{error}</div>}
         </form>
 
-       
-      </div>
-      <div>
-         {/* Case Details Display */}
-         {caseDetails && (
+        {/* Case Details Display */}
+        {caseDetails && (
           <div className="mt-8 bg-white p-4 rounded-md">
             <div className='text-center space-y-4'>
-                <h2 className="text-lg text-center font-bold">Case Details</h2>
-            <p className='text-3xl font-semibold'><strong>Case Number:</strong> {caseDetails.caseNumber}</p>
-            <p className='text-2xl font-semibold'><strong>Citation:</strong> {caseDetails.citation}</p>
-            <p className='text-2xl font-semibold'><strong>Tracking Number:</strong> {caseDetails.trackingNumber}</p>
+              <h2 className="text-lg text-center font-bold">Case Details</h2>
+              <p className='text-3xl font-semibold'><strong>Case Number:</strong> {caseDetails.caseNumber}</p>
+              <p className='text-2xl font-semibold'><strong>Citation:</strong> {caseDetails.citation}</p>
+              <p className='text-2xl font-semibold'><strong>Tracking Number:</strong> {caseDetails.trackingNumber}</p>
             </div>
 
-            {/* info */}
-            
+            {/* Info */}
             <div className='border-t-2 mt-4 border-collapse border-amber-500'>
-                <div className='w-3/4'>
-                    <ul className='grid grid-cols-5  my-2 '>
-                        <li className='p-2 border'>Case Summary</li>
-                        <li className='p-2 border'>Parties</li>
-                        <li className='p-2 border'>Case Activities</li>
-                        <li className='p-2 border'>Invoice</li>
-                        <li className='p-2 border'>Receipts</li>
-                    </ul>
-                </div>
-  <table className='min-w-1/4 border border-collapse border-amber-500'>
-    <thead>
-      {/* <tr className='bg-amber-100'>
-        <th className='border border-grey-200 text-left p-2'><strong>Detail</strong></th>
-        <th className='border border-grey-200 text-left p-2'><strong>Value</strong></th>
-      </tr> */}
-    </thead>
-    <tbody>
-      <tr className='border-b border-grey-200'>
-        <td className='border border-grey-200 p-2 bg-amber-100'><strong>Filing Date:</strong></td>
-        <td className='border border-grey-200 p-2'>{caseDetails.filingDate}</td>
-      </tr>
-      <tr className='border-b border-grey-200'>
-        <td className='border border-grey-200 bg-amber-100 p-2'><strong>Station:</strong></td>
-        <td className='border border-grey-200 p-2'>{caseDetails.station}</td>
-      </tr>
-      <tr className='border-b border-grey-200'>
-        <td className='border border-grey-200 bg-amber-100 p-2'><strong>Case Category:</strong></td>
-        <td className='border border-grey-200 p-2'>{caseDetails.caseCategory}</td>
-      </tr>
-      <tr className='border-b border-grey-200'>
-        <td className='border border-grey-200 bg-amber-100 p-2'><strong>Case Type:</strong></td>
-        <td className='border border-grey-200 p-2'>{caseDetails.caseType}</td>
-      </tr>
-      <tr>
-        <td className='border border-grey-200 bg-amber-100 p-2'><strong>Filed By:</strong></td>
-        <td className='border border-grey-200 p-2'>{caseDetails.filedBy}</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-
+              <div className='w-3/4'>
+                <ul className='grid grid-cols-5  my-2 '>
+                  <li className='p-2 border'>Case Summary</li>
+                  <li className='p-2 border'>Parties</li>
+                  <li className='p-2 border'>Case Activities</li>
+                  <li className='p-2 border'>Invoice</li>
+                  <li className='p-2 border'>Receipts</li>
+                </ul>
+              </div>
+              <table className='min-w-1/4 border border-collapse border-amber-500'>
+                <tbody>
+                  <tr className='border-b border-grey-200'>
+                    <td className='border border-grey-200 p-2 bg-amber-100'>Case Status</td>
+                    <td className='border border-grey-200 p-2'>{caseDetails.status}</td>
+                  </tr>
+                  <tr className='border-b border-grey-200'>
+                    <td className='border border-grey-200 p-2 bg-amber-100'>Last Updated</td>
+                    <td className='border border-grey-200 p-2'>{caseDetails.lastUpdated}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         )}
       </div>
