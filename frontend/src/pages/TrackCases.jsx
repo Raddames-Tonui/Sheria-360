@@ -1,232 +1,227 @@
 import React, { useState } from 'react';
-import axios from 'axios'; // Import axios
+import CaseDetailsDisplay from '../components/CaseDetailsDisplay';
 
 const TrackCases = () => {
-  const [selectedStation, setSelectedStation] = useState('');
+  // Initialize form state as a single object
+  const [formState, setFormState] = useState({
+    selectedStation: '',
+    selectedCourt: '',
+    caseCode: '',
+    caseNumber: '',
+    year: ''
+  });
+  
   const [availableCourts, setAvailableCourts] = useState([]);
-  const [selectedCourt, setSelectedCourt] = useState('');
-  const [caseCode, setCaseCode] = useState('');
-  const [caseNumber, setCaseNumber] = useState('');
-  const [year, setYear] = useState('');
   const [caseDetails, setCaseDetails] = useState(null);
   const [error, setError] = useState('');
 
-  const CaseTypes = [
-    { id: 'yy4q-288', label: 'MCCGCR - Magistrates Court County Government Criminal Matters' },
-    { id: '19vo-229', label: 'MCCHSO - Sexual Offence - Children' },
-    // ... other case types
-  ];
-
   const judiciaryData = {
     stations: [
-      {
-        name: "Nairobi Law Courts",
-        courts: ["Milimani High Court", "Nairobi Magistrate Court"]
-      },
-      {
-        name: "Mombasa Law Courts",
-        courts: ["Mombasa High Court", "Mombasa Magistrate Court"]
-      }
-    ]
+      { name: "Milimani Law Courts" },
+      { name: "Nairobi Law Courts" },
+      { name: "Mombasa Law Courts" },
+    ],
+    availableCourts: [
+      "Milimani Environment and Land Court",
+      "Milimani High Court",
+      "Mombasa High Court",
+    ],
   };
+  
+  const CaseTypes = [
+    { id: "C835", label: "C835 - Environmental Case" },
+    { id: "C836", label: "C836 - Criminal Case" },
+    { id: "C837", label: "C837 - Civil Case" },
+  ];
+  
+  
+  
 
-  const handleStationChange = (e) => {
-    const station = e.target.value;
-    setSelectedStation(station);
-    const courts = judiciaryData.stations.find((s) => s.name === station)?.courts || [];
-    setAvailableCourts(courts);
-    setSelectedCourt('');
-  };
+  // Consolidated handleChange function for form fields
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormState({
+      ...formState,  // Keep other fields unchanged
+      [name]: value  // Update the changed field
+    });
 
-  const handleCourtChange = (e) => {
-    setSelectedCourt(e.target.value);
-  };
-
-  const handleCaseCodeChange = (e) => {
-    setCaseCode(e.target.value);
-  };
-
-  const handleCaseNumberChange = (e) => {
-    setCaseNumber(e.target.value);
-  };
-
-  const handleYearChange = (e) => {
-    setYear(e.target.value);
+    // Special handling for station change to update courts
+    if (name === 'selectedStation') {
+      const courts = judiciaryData.stations.find((s) => s.name === value)?.courts || [];
+      setAvailableCourts(courts);
+      setFormState((prevState) => ({
+        ...prevState,
+        selectedCourt: ''  // Reset selected court when station changes
+      }));
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    // Input Validation
-    if (!caseCode || !caseNumber || !year) {
+  
+    const { caseCode, caseNumber, year, selectedStation, selectedCourt } = formState;
+  
+    // Input validation
+    if (!caseCode || !caseNumber || !year || !selectedStation || !selectedCourt) {
       setError('Please fill in all fields.');
       return;
     }
-
+  
     try {
-      // Fetch case details from the API
-      const response = await axios.get(`/cases`, {
-        params: {
-          station: selectedStation,
-          caseNumber: caseNumber,
-        }
+      // Construct URL with query parameters
+      const url = `http://127.0.0.1:5555/case/search-case?station=${encodeURIComponent(selectedStation)}&court=${encodeURIComponent(selectedCourt)}&caseCode=${encodeURIComponent(caseCode)}&caseNumber=${encodeURIComponent(caseNumber)}&year=${year}`;
+  
+      // Make the API request
+      const response = await fetch(url, {
+        method: 'GET', // Assuming you are using GET for this API
       });
-
-      // Check if cases were found
-      if (response.data && response.data.length > 0) {
-        setCaseDetails(response.data[0]); // Assuming you want the first case
-        setError('');
+  
+      if (response.ok) {
+        const data = await response.json(); // Parse JSON response
+  
+       
+        if (data) {
+          setCaseDetails(data);
+          setError('');
+        } else {
+          setCaseDetails(null);
+          setError('No case found matching the provided details.');
+        }
       } else {
         setCaseDetails(null);
-        setError('No case found matching the provided details.');
+        setError('Error fetching case data from the backend.');
       }
-    } catch (err) {
-      console.error(err);
-      setError('An error occurred while fetching case details.');
+    } catch (error) {
+      console.error('Error fetching case data:', error);
+      setCaseDetails(null);
+      setError('Failed to connect to the server.');
     }
   };
+  
 
-  return (
-    <div className="px-20 py-8">
-      <div className="bg-lime-700 rounded-sm p-8">
-        <h1 className="text-white text-lg font-bold mb-6">Welcome to Enter your case details as per the fields below</h1>
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <div className="flex gap-8 px-4">
-              {/* Select Station */}
-              <div className="mb-4 w-1/3">
-                <label htmlFor="station" className="block text-white font-medium mb-2">Select Station</label>
-                <select
-                  id="station"
-                  className="p-2 w-full rounded-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-lime-300"
-                  value={selectedStation}
-                  onChange={handleStationChange}
-                >
-                  <option value="">Select Station</option>
-                  {judiciaryData.stations.map((station, index) => (
-                    <option key={index} value={station.name}>
-                      {station.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
+return (
+  <div className="px-20 py-8">
+    <div className="bg-lime-700 rounded-sm p-8">
+      <h1 className="text-white text-lg font-bold mb-6">Welcome to Enter your case details as per the fields below</h1>
+      <form onSubmit={handleSubmit}>
+  <div className="mb-4">
+    <div className="flex gap-8 px-4">
+      {/* Select Station */}
+      <div className="mb-4 w-1/3">
+        <label htmlFor="selectedStation" className="block text-white font-medium mb-2">Select Station</label>
+        <select
+          id="selectedStation"
+          name="selectedStation"
+          className="p-2 w-full rounded-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-lime-300"
+          value={formState.selectedStation}
+          onChange={handleChange} 
+        >
+          <option value="">Select Station</option>
+          {judiciaryData.stations.map((station, index) => (
+            <option key={index} value={station.name}>
+              {station.name}
+            </option>
+          ))}
+        </select>
+      </div>
 
-              {/* Select Court */}
-              <div className="mb-4 w-1/3">
-                <label htmlFor="court" className="block text-white font-medium mb-2">Choose the court in which your case is filed</label>
-                <select
-                  id="court"
-                  className="p-2 w-full rounded-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-lime-300"
-                  value={selectedCourt}
-                  onChange={handleCourtChange}
-                  disabled={!availableCourts.length}
-                >
-                  <option value="">Choose the court</option>
-                  {availableCourts.map((court, index) => (
-                    <option key={index} value={court}>
-                      {court}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
+      {/* Select Court */}
+      <div className="mb-4 w-1/3">
+        <label htmlFor="selectedCourt" className="block text-white font-medium mb-2">Choose the court in which your case is filed</label>
+        <select
+          id="selectedCourt"
+          name="selectedCourt" 
+          className="p-2 w-full rounded-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-lime-300"
+          value={formState.selectedCourt}
+          onChange={handleChange}
+          disabled={!judiciaryData.availableCourts.length}
+        >
+          <option value="">Choose the court</option>
+          {judiciaryData.availableCourts.map((court, index) => (
+            <option key={index} value={court}>
+              {court}
+            </option>
+          ))}
+        </select>
+      </div>
+    </div>
 
-            <div className="grid grid-cols-3 gap-4 pt-2 bg-lime-900 px-4 rounded-md justify-between">
-              {/* Case Code */}
-              <div className="mb-4">
-                <label htmlFor="caseCode" className="block text-white font-medium mb-2">Case Code</label>
-                <select
-                  id="caseCode"
-                  className="p-2 w-full rounded-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-lime-300"
-                  value={caseCode}
-                  onChange={handleCaseCodeChange}
-                >
-                  <option value="">Select Case Code</option>
-                  {CaseTypes.map((item) => (
-                    <option key={item.id} value={item.id}>{item.label}</option>
-                  ))}
-                </select>
-              </div>
+    <div className="grid grid-cols-3 gap-4 pt-2 bg-lime-900 px-4 rounded-md justify-between">
+      {/* Case Code */}
+      <div className="mb-4">
+        <label htmlFor="caseCode" className="block text-white font-medium mb-2">Case Code</label>
+        <select
+          id="caseCode"
+          name="caseCode" 
+          className="p-2 w-full rounded-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-lime-300"
+          value={formState.caseCode}
+          onChange={handleChange}
+        >
+          <option value="">Select Case Code</option>
+          {CaseTypes.map((item) => (
+            <option key={item.id} value={item.id}>{item.label}</option>
+          ))}
+        </select>
+      </div>
 
-              {/* Case Number */}
-              <div className="mb-4">
-                <label htmlFor="caseNumber" className="block text-white font-medium mb-2">Case Number</label>
-                <input
-                  type="text"
-                  id="caseNumber"
-                  placeholder="Enter Case Number"
-                  className="p-2 w-full rounded-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-lime-300"
-                  value={caseNumber}
-                  onChange={handleCaseNumberChange}
-                />
-              </div>
+      {/* Case Number */}
+      <div className="mb-4">
+        <label htmlFor="caseNumber" className="block text-white font-medium mb-2">Case Number</label>
+        <input
+          type="text"
+          id="caseNumber"
+          name="caseNumber" 
+          placeholder="Enter Case Number"
+          className="p-2 w-full rounded-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-lime-300"
+          value={formState.caseNumber}
+          onChange={handleChange}
+        />
+      </div>
 
-              {/* Year */}
-              <div className="mb-4">
-                <label htmlFor="year" className="block text-white font-medium mb-2">Year</label>
-                <input
-                  type="number"
-                  id="year"
-                  min="2000"
-                  max={new Date().getFullYear()}
-                  className="p-2 w-full rounded-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-lime-300"
-                  value={year}
-                  onChange={handleYearChange}
-                />
-              </div>
-            </div>
-          </div>
+      {/* Year */}
+      <div className="mb-4">
+        <label htmlFor="year" className="block text-white font-medium mb-2">Year</label>
+        <select
+          id="year"
+          name="year" 
+          className="p-2 w-full rounded-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-lime-300"
+          value={formState.year}
+          onChange={handleChange}
+        >
+          <option value="">Select Year</option>
+          {Array.from({ length: new Date().getFullYear() - 2000 + 1 }, (_, i) => (
+            <option key={i} value={2000 + i}>{2000 + i}</option>
+          ))}
+        </select>
+      </div>
+    </div>
+  </div>
 
-          {/* Search Button */}
-          <div className="flex justify-center mt-4">
-            <button
-              type="submit"
-              className="bg-white text-lime-700 py-2 px-4 rounded-md hover:bg-lime-300"
-            >
-              Search
-            </button>
-          </div>
+  {/* Search Button */}
+  <div className="flex justify-center mt-4">
+    <button
+      type="submit"
+      className="bg-white text-lime-700 py-2 px-4 rounded-md hover:bg-lime-300"
+    >
+      Search
+    </button>
+  </div>
 
-          {/* Error Message */}
-          {error && <div className="text-red-500 text-center mt-4">{error}</div>}
-        </form>
+  {/* Error Message */}
+</form>
 
-        {/* Case Details Display */}
-        {caseDetails && (
-          <div className="mt-8 bg-white p-4 rounded-md">
-            <div className='text-center space-y-4'>
-              <h2 className="text-lg text-center font-bold">Case Details</h2>
-              <p className='text-3xl font-semibold'><strong>Case Number:</strong> {caseDetails.caseNumber}</p>
-              <p className='text-2xl font-semibold'><strong>Citation:</strong> {caseDetails.citation}</p>
-              <p className='text-2xl font-semibold'><strong>Tracking Number:</strong> {caseDetails.trackingNumber}</p>
-            </div>
+    </div>
+    {error && <div className="text-red-500 text-center mt-4 font-bold">{error}</div>}
 
-            {/* Info */}
-            <div className='border-t-2 mt-4 border-collapse border-amber-500'>
-              <div className='w-3/4'>
-                <ul className='grid grid-cols-5  my-2 '>
-                  <li className='p-2 border'>Case Summary</li>
-                  <li className='p-2 border'>Parties</li>
-                  <li className='p-2 border'>Case Activities</li>
-                  <li className='p-2 border'>Invoice</li>
-                  <li className='p-2 border'>Receipts</li>
-                </ul>
-              </div>
-              <table className='min-w-1/4 border border-collapse border-amber-500'>
-                <tbody>
-                  <tr className='border-b border-grey-200'>
-                    <td className='border border-grey-200 p-2 bg-amber-100'>Case Status</td>
-                    <td className='border border-grey-200 p-2'>{caseDetails.status}</td>
-                  </tr>
-                  <tr className='border-b border-grey-200'>
-                    <td className='border border-grey-200 p-2 bg-amber-100'>Last Updated</td>
-                    <td className='border border-grey-200 p-2'>{caseDetails.lastUpdated}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        )}
+
+
+
+
+       
+      <div>
+         {/* Case Details Display */}
+         <CaseDetailsDisplay caseDetails={caseDetails} />
+
       </div>
     </div>
   );

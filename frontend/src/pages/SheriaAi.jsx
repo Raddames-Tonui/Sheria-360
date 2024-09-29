@@ -21,9 +21,11 @@ const SheriaAi = () => {
       setLoading(true);
       try {
         const result = await model.generateContent(query);
+        // Remove asterisks from the response
+        const cleanResponse = result.response.text().replace(/\*\*/g, '');
         setChatHistory(prevHistory => [
           ...prevHistory,
-          { question: query, response: result.response.text() }
+          { question: query, response: cleanResponse }
         ]);
         setQuery('');
       } catch (error) {
@@ -40,12 +42,12 @@ const SheriaAi = () => {
 
   return (
     <div className="p-2 h-[88vh] bg-white flex justify-center">
-      <div className=' bg-gray-200 border rounded-lg w-[60vw] h-[80vh] flex flex-col'>
-      <img src="/logo/Sheria360.png" alt="Logo" className="object-cover h-16 w-40 ml-8" />
-      <hr className='bg-lime-700 '/>
+      <div className='bg-gray-200 border rounded-lg w-[60vw] h-[80vh] flex flex-col'>
+        <img src="/logo/Sheria360.png" alt="Logo" className="object-cover h-16 w-40 ml-8" />
+        <hr className='bg-lime-700' />
 
         {/* Response section with scrolling and adjusted height */}
-        <div className="p-4 mx-10  bg-gray-100 border-x-1 shadow-md flex-1 h-[50vh] overflow-y-auto flex flex-col">
+        <div className="p-4 mx-10 bg-gray-100 border-x-1 shadow-md flex-1 h-[50vh] overflow-y-auto flex flex-col">
           {chatHistory.map((chat, index) => (
             <div key={index} className="mb-2">
               {/* User's question on the right */}
@@ -69,7 +71,7 @@ const SheriaAi = () => {
         </div>
 
         {/* Input area redesigned */}
-        <div className="flex mb-2 mx-10  rounded-lg">
+        <div className="flex mb-2 mx-10 rounded-lg">
           <input 
             type="text" 
             value={query} 
