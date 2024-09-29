@@ -27,7 +27,7 @@ const Navbar = () => {
         <div className="flex items-center">
           <img src="/logo/Sheria360.png" alt="Logo" className="object-cover pb-4 h-16 w-40" />
         </div>
-        <div className="hidden md:flex space-x-4">
+        <div className="hidden md:flex space-x-4 bg-gray-200 rounded-md">
           <Link to="/" className="hover:bg-lime-600 hover:text-white px-6 py-2 rounded-md text-md font-medium">Home</Link>
           <Link to="/lawyers" className="hover:bg-lime-600 hover:text-white px-6 py-2 rounded-md text-md font-medium">Lawyers</Link>
           <Link to="/courts" className="hover:bg-lime-600 hover:text-white px-6 py-2 rounded-md text-md font-medium">Courts</Link>
