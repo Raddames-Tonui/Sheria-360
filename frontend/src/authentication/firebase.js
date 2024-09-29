@@ -3,7 +3,7 @@ import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage"; // Import Storage
 
-// Your web app's Firebase configuration using environment variables
+//  web app's Firebase configuration using environment variables
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_API_KEY,
   authDomain: import.meta.env.VITE_AUTHDOMAIN,
@@ -21,4 +21,4 @@ const db = getFirestore(app); // Initialize Firestore
 const storage = getStorage(app); // Initialize Storage
 
 // Export the auth, db, and storage instances
-export { auth, db, storage, app }; // Make sure to export storage here
+export { auth, db, storage, app }; 

@@ -83,8 +83,27 @@ class Case(db.Model, SerializerMixin):
             'created_at': self.created_at,
             'updated_at': self.updated_at,
         }
+    
+
+class FileUpload(db.Model, SerializerMixin):
+    __tablename__ = 'file_uploads'
+
+    id = db.Column(db.Integer, primary_key=True)
+    file_name = db.Column(db.String(255), nullable=False) 
+    file_url = db.Column(db.String(500), nullable=False)  
+    firebase_uid = db.Column(db.String(100), nullable=False)
+    category = db.Column(db.String(100), nullable=False)  # To store the legal category of the document
+    parent_category = db.Column(db.String(100), nullable=False)  # To store the parent category of the document
+
+    uploaded_at = db.Column(db.DateTime, server_default=db.func.now())
 
 
-
-
-
+    def to_dict(self):
+        """Convert the file upload instance to a dictionary."""
+        return {
+            'id': self.id,
+            'file_name': self.file_name,
+            'file_url': self.file_url,
+            'category': self.category,
+            'parent_category': self.parent_category,
+        }

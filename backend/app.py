@@ -2,9 +2,10 @@
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from models import db, User,  Case
+from models import db, User, Case, FileUpload
 from flask_cors import CORS
 from firebase import verify_token  # Import only the verify_token function
+from blueprints.file_upload import file_upload_bp  # Import the blueprint from the blueprints folder
 
 # Initialize the Flask application
 app = Flask(__name__)
@@ -17,14 +18,26 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 migrate = Migrate(app, db)
 
-# Enable CORS for all routes
 CORS(app)
 
 @app.route('/')
 def index():
     return 'Welcome to the Sheria 360 API!'
 
-# ========================================= USER ==========================================
+# ============================= BLUEPRINTS ================================
+# Register the blueprint
+app.register_blueprint(file_upload_bp, url_prefix='/file')
+
+# ============================= USER =======================================
+# Check User if exists in login
+@app.route('/check-user', methods=['POST'])
+def check_user():
+    data = request.get_json()
+    email = data.get('email')
+    user = User.query.filter_by(email=email).first()
+    if user:
+        return jsonify({"exists": True, "firebase_uid": user.firebase_uid}), 200
+    return jsonify({"exists": False}), 200
 
 # Register User
 @app.route('/api/register', methods=['POST'])
@@ -36,7 +49,11 @@ def register_user():
         if 'email' not in data or 'firebase_uid' not in data:
             return jsonify({'error': 'Email and firebase_uid are required.'}), 400
 
-        # Create a new user entry in your database
+        # Create a new user entry in your database if they don't exist
+        existing_user = User.query.filter_by(email=data['email']).first()
+        if existing_user:
+            return jsonify({'message': 'User already exists!'}), 400
+
         new_user = User(
             email=data['email'],
             firebase_uid=data['firebase_uid']  # Use the UID from the request
@@ -81,7 +98,6 @@ def update_lawyer():
         user.law_firm = data.get('lawFirm', user.law_firm)
         user.profile_picture = data.get('profilePicture', user.profile_picture) 
 
-
         db.session.commit()
 
         return jsonify({'success': True, 'data': user.to_dict()}), 200
@@ -112,8 +128,22 @@ def get_lawyer_details():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-# ========================================================================
+# ============================== SEARCH USER ==========================================
 
+# Route to get a lawyer by ID
+@app.route('/api/users/<int:id>', methods=['GET'])
+def get_lawyer_by_id(id):
+    try:
+        # Fetch the lawyer by ID from the database
+        lawyer = User.query.get(id)
+
+        if not lawyer:
+            return jsonify({"error": "Lawyer not found"}), 404
+
+        # Return lawyer details using to_dict method
+        return jsonify(lawyer.to_dict()), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 # Fetch users by County Locations, Expertise, and Experience
 @app.route('/api/users/by-filters', methods=['GET'])
@@ -143,8 +173,7 @@ def get_users_by_filters():
     
     return jsonify(users_list), 200 
 
-
-# Search by name , location, expertise
+# Search by name, location, expertise
 @app.route('/api/users/search', methods=['GET'])
 def search_users():
     query = request.args.get('query', '').lower() 
@@ -166,25 +195,6 @@ def search_users():
     users_list = [user.to_dict() for user in users]
 
     return jsonify(users_list), 200
-
-
-# Route to get a lawyer by ID
-@app.route('/api/users/<int:id>', methods=['GET'])
-def get_lawyer_by_id(id):
-    try:
-        # Fetch the lawyer by ID from the database
-        lawyer = User.query.get(id)
-
-        if not lawyer:
-            return jsonify({"error": "Lawyer not found"}), 404
-
-        # Return lawyer details using to_dict method
-        return jsonify(lawyer.to_dict()), 200
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
-
-
-
 
 if __name__ == '__main__':
     app.run(debug=True, port=5555)
