@@ -22,6 +22,7 @@ import LawyersByExpertise from "./pages/Lawyers/LawyersByExpertise";
 import LawyerDetails from "./pages/Lawyers/LawyerDetails";
 
 import FileUpload from "./pages/E-sheria/FileUpload";
+import FileDownload from "./pages/E-sheria/FileDownload";
 
 function App() {
   return (
@@ -43,7 +44,8 @@ function App() {
 
             <Route path="/sheria/chat" element={<SheriaAi />} />
             <Route path="/sheria/docs" element={<ESheria/>}/>
-            <Route path="//sheria/upload-doc" element={<FileUpload/>}/>
+            <Route path="/sheria/upload-doc" element={<FileUpload/>}/>
+            <Route path="/sheria/download-doc" element={<FileDownload/>}/>
 
             <Route path="*" element={<NoPage />} />
           </Route>

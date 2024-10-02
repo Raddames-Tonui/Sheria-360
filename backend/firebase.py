@@ -5,7 +5,12 @@ from flask import request, jsonify
 
 # Initialize Firebase Admin SDK
 cred = credentials.Certificate("config/serviceAccountKey.json")
-firebase_admin.initialize_app(cred)
+
+# Check if an app is already initialized to avoid ValueError
+if not firebase_admin._apps:  # Ensure the app is only initialized once
+    firebase_admin.initialize_app(cred, {
+        'storageBucket': 'gs://sheria-365.appspot.com'  # Set your storage bucket
+    })
 
 # VERIFY TOKENS IN PROTECTED ROUTES
 def verify_token(token):
