@@ -52,68 +52,77 @@ def seed_users(num_users=100):
     print(f"{num_users} users seeded successfully!")
 
 def seed_cases():
-    # Define the stations, courts, and divisions
+    # Define the stations, courts, and divisions with case types
     stations = {
         "Milimani Law Courts": {
             "Milimani Environment and Land Court": [
-                "Environment and Land Court",
-                "ELC Land",
-                "ELC Environment & Planning"
+                ["C100", "Environment and Land Court"],
+                ["C101", "ELC Land"],
+                ["C102", "ELC Environment & Planning"],
             ],
             "Milimani High Court": [
-                "High Court Judicial Review",
-                "High Court Anti Corruption and Economic Crimes",
-                "High Court Family",
-                "High Court Commercial and Tax",
-                "High Court Constitution and Human Rights",
-                "High Court Civil",
-                "Court Annexed Mediation",
-                "High Court Criminal"
+                ["C103", "High Court Judicial Review"],
+                ["C104", "High Court Anti Corruption and Economic Crimes"],
+                ["C105", "High Court Family"],
+                ["C106", "High Court Commercial and Tax"],
+                ["C107", "High Court Constitution and Human Rights"],
+                ["C108", "High Court Civil"],
+                ["C109", "Court Annexed Mediation"],
+                ["C110", "High Court Criminal"],
             ],
             "Milimani Magistrate Court": [
-                "Magistrate Court Anti Corruption",
-                "Magistrate Court Criminal",
-                "Magistrate Court Traffic Case",
-                "Magistrate Court Children"
+                ["C111", "Magistrate Court Anti Corruption"],
+                ["C112", "Magistrate Court Criminal"],
+                ["C113", "Magistrate Court Traffic Case"],
+                ["C114", "Magistrate Court Children"],
             ],
-            "Nairobi City Court - old (Archived)": [
-                "Magistrate Court",
-                "Civil Division"
+        },
+        "Nairobi City Law Courts": {
+            "Nairobi City Magistrates Court": [
+                ["C115", "Magistrate Court Traffic Case"],
+                ["C116", "Magistrate Court Petty Criminal"],
+                ["C117", "Magistrate Court Traffic Case"],
+                ["C118", "Magistrates Gender Justice Criminal Case"],
+                ["C119", "Inquest"],
+                ["C120", "Magistrate Court Criminal Miscellaneous"],
             ],
-            "Nairobi Kadhi Court": [
-                "Kadhi Court"
-            ]
         },
         "Naivasha ELC Environment and Land Court": {
             "Naivasha High Court": [
-                "High Court Div"
+                ["C121", "High Court Div"],
             ],
             "Naivasha Magistrate Court": [
-                "Magistrate Court Traffic",
-                "Magistrate Court Civil",
-                "Magistrate Court Criminal"
+                ["C122", "Magistrate Court Traffic"],
+                ["C123", "Magistrate Court Civil"],
+                ["C124", "Magistrate Court Criminal"],
             ],
             "Naivasha Small Claims Court": [
-                "Small Claims Court"
-            ]
-        }
+                ["C125", "Small Claims Court"],
+            ],
+        },
     }
+
+    # Counter for case_number (starting from 1000)
+    case_number_counter = 1000
 
     # Seed the cases
     for station_name, courts in stations.items():
         for court_name, divisions in courts.items():
-            for division_name in divisions:
+            for case_code, division_name in divisions:
                 case = Case(
                     station=station_name,
                     court=court_name,
                     division=division_name,
-                    case_code=fake.unique.bothify(text='C###'),
-                    case_number=fake.unique.bothify(text='2024-####'),
+                    case_code=case_code,
+                    case_number=f"2024-{case_number_counter}",
                     parties=fake.name() + " vs " + fake.name(),
                     description=fake.text(max_nb_chars=200),
-                    filed_by=fake.name()
+                    filed_by=fake.name(),
                 )
                 db.session.add(case)
+
+                # Increment the case number
+                case_number_counter += 1
 
     db.session.commit()
     print("Cases seeded successfully!")

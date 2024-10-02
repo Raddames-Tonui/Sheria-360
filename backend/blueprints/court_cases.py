@@ -6,6 +6,7 @@ court_cases_bp = Blueprint('court_cases_bp', __name__)
 
 # Route for fetching cases
 @court_cases_bp.route('/search-case', methods=['GET'])
+@court_cases_bp.route('/search-case', methods=['GET'])
 def search_case():
     # Get parameters from the frontend request
     station = request.args.get('station')
@@ -46,4 +47,4 @@ def search_case():
         case_details = case.to_dict()
         return jsonify(case_details), 200
     else:
-        return jsonify({"error": "No case found matching the criteria"}), 404
+        return jsonify({"error": "No case found matching the criteria!"}), 404
