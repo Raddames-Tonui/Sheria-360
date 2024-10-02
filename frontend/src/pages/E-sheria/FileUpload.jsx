@@ -173,8 +173,8 @@ function FileUpload() {
     
 
     return (
-        <div className="flex justify-center min-h-screen bg-gray-100">
-            <div className="bg-white p-8 rounded shadow-lg w-full max-w-md h-[80vh] mt-5">
+        <div className="flex justify-center h-[90vh] bg-gray-100">
+            <div className="bg-white p-8 rounded shadow-lg w-full max-w-md h-[70vh] mt-5">
                 <h2 className='text-3xl text-center mb-10 text-lime-600 font-bold'>Upload Legal Document</h2>
     
                 <input

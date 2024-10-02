@@ -93,7 +93,7 @@ const LegalSearch = () => {
     <div className="bg-gray-100 h-[90vh]">
       {/* Background image wrapper */}
       <div 
-        className="h-[90vh]  mx-auto relative flex flex-col items-center justify-center overflow-hidden"
+        className="h-[90vh] p-20   relative flex flex-col items-center justify-center overflow-hidden"
         style={{ backgroundImage: `url("/Images/books2.jpeg")`, backgroundSize: 'cover', backgroundPosition: 'center' }}  
       >
         {/* Dark overlay */}

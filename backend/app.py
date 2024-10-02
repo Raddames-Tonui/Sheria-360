@@ -6,6 +6,8 @@ from models import db, User, Case, FileUpload
 from flask_cors import CORS
 from firebase import verify_token  # Import only the verify_token function
 from blueprints.file_upload import file_upload_bp  # Import the blueprint from the blueprints folder
+from blueprints.file_download import file_download_bp
+from blueprints.court_cases import court_cases_bp  
 
 # Initialize the Flask application
 app = Flask(__name__)
@@ -27,6 +29,8 @@ def index():
 # ============================= BLUEPRINTS ================================
 # Register the blueprint
 app.register_blueprint(file_upload_bp, url_prefix='/file')
+app.register_blueprint(file_download_bp, url_prefix='/file')
+app.register_blueprint(court_cases_bp, url_prefix='/case')
 
 # ============================= USER =======================================
 # Check User if exists in login
