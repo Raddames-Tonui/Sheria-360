@@ -204,7 +204,7 @@ const TrackCases = () => {
                                     <option value="">Select Case Code</option>
                                     {judiciaryData.caseCodes.map((code) => (
                                         <option key={code.code} value={code.code}>
-                                            {code.label}
+                                            {code.code}.  {code.label}
                                         </option>
                                     ))}
                                 </select>
