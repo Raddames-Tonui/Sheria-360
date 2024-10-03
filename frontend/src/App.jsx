@@ -10,6 +10,7 @@ import ESheria from "./pages/ESheria";
 import SheriaAi from "./pages/SheriaAi";
 import Courts from "./pages/Courts";
 import TrackCases from "./pages/TrackCases";
+import CaseForm from "./pages/track-case/CaseForm";
 
 
 
@@ -35,6 +36,7 @@ function App() {
             <Route path="/signup" element={<Registration />} />
             <Route path="/courts" element={<Courts />} />
             <Route path="/track/cases" element={<TrackCases />} />
+            <Route path="/create/case" element={<CaseForm />} />
             <Route path="/lawyer-registration" element={<LawyerDetailsForm />} />
             {/* Lawyers */}
             <Route path="/lawyers" element={<Lawyers />} />
