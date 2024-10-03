@@ -6,7 +6,6 @@ court_cases_bp = Blueprint('court_cases_bp', __name__)
 
 # Route for fetching cases
 @court_cases_bp.route('/search-case', methods=['GET'])
-@court_cases_bp.route('/search-case', methods=['GET'])
 def search_case():
     # Get parameters from the frontend request
     station = request.args.get('station')
@@ -48,3 +47,24 @@ def search_case():
         return jsonify(case_details), 200
     else:
         return jsonify({"error": "No case found matching the criteria!"}), 404
+
+# Route for creating new cases
+@court_cases_bp.route('/create', methods=['POST'])
+def create_case():
+    data = request.json
+    
+    new_case = Case(
+        station=data.get('station'),
+        court=data.get('court'),
+        division=data.get('division'),
+        case_code=data.get('caseCode'),
+        case_number=data.get('caseNumber'),
+        parties=data.get('parties'),
+        description=data.get('description'),
+        filed_by=data.get('filedBy')
+    )
+    
+    db.session.add(new_case)
+    db.session.commit()
+    
+    return jsonify(new_case.to_dict()), 201
