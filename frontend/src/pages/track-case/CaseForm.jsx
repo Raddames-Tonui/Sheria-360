@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {toast} from "react-hot-toast";
+import { toast } from "react-hot-toast";
 import { server_url } from "../../../config.json";
 
 const CaseForm = () => {
