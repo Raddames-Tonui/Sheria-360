@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import CaseDetailsDisplay from './track-case/CaseDetailsDisplay'; // Import your CaseDetailsDisplay component
+import CaseDetailsDisplay from './track-case/CaseDetailsDisplay';
 import { server_url } from '../../config.json';
 
 const TrackCases = () => {

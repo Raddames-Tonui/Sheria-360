@@ -31,7 +31,7 @@ const Navbar = () => {
           <Link to="/" className="hover:bg-lime-600 hover:text-white px-6 py-2 rounded-md text-md font-medium">Home</Link>
           <Link to="/lawyers" className="hover:bg-lime-600 hover:text-white px-6 py-2 rounded-md text-md font-medium">Lawyers</Link>
           <Link to="/sheria/chat" className="hover:bg-lime-600 hover:text-white px-6 py-2 rounded-md text-md font-medium">Sheria Ai</Link>
-          <Link to="/sheria/docs" className="hover:bg-lime-600 hover:text-white px-6 py-2 rounded-md text-md font-medium">E-Sheria</Link>
+          <Link to="/sheria/search-docs" className="hover:bg-lime-600 hover:text-white px-6 py-2 rounded-md text-md font-medium">E-Sheria</Link>
           <Link to="/track/cases" className="hover:bg-lime-600 hover:text-white px-6 py-2 rounded-md text-md font-medium">Track Cases</Link>
           {token ? 
           <>

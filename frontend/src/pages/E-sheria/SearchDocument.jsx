@@ -1,82 +1,134 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
+import { server_url } from "../../../config.json";
+import { AuthContext } from '../../context/AuthContext';
 
-const documents = [
+const document = [
   {
-    category: "Agency",
-    title: "Agent's Mandate Letter to Sell",
-    price: "250.00 KSh"
+    parentCategory: "Affidavits",
+    category: [
+      "Companies",
+      "Marriage",
+      "Motor Vehicle",
+      "Others",
+      "Real Estate",
+      "Travel"
+    ]
   },
   {
-    category: "Commercial",
-    title: "Arbitration Agreement",
-    price: "5000.00 KSh"
+    parentCategory: "Companies",
+    category: [
+      "Deeds and Agreements",
+      "Letters and Notices"
+    ]
   },
   {
-    category: "Commercial",
-    title: "Borehole Water Supply Agreement",
-    price: "2000.00 KSh"
+    parentCategory: "Employment",
+    category: [
+      "Employee Letters",
+      "Employer Letters",
+      "Employment Contracts"
+    ]
   },
   {
-    category: "Agency",
-    title: "Brokerage Agreement to find Goods or Services",
-    price: "5000.00 KSh"
+    parentCategory: "Family",
+    category: [
+      "Change of Name",
+      "Deeds and Agreement",
+      "Letters and Notices",
+      "Wills"
+    ]
   },
   {
-    category: "Commercial",
-    title: "Car Hire Agreement",
-    price: "5000.00 KSh"
+    parentCategory: "Letters and Notices",
+    category: [
+      "Agency & Brokerage",
+      "Companies",
+      "Employment",
+      "Finance & Credit",
+      "Others",
+      "Powers of Attorney",
+      "Real Estate",
+      "Travel"
+    ]
   },
   {
-    category: "Commercial",
-    title: "Car Sale Agreement",
-    price: "1000.00 KSh"
+    parentCategory: "Library",
+    category: [
+      "Articles",
+      "How To"
+    ]
   },
   {
-    category: "Agency",
-    title: "Commission Agreement to Sell",
-    price: "750.00 KSh"
+    parentCategory: "Resource Library",
+    category: [
+      "Articles",
+      "How To"
+    ]
   },
   {
-    category: "Commercial",
-    title: "Confidentiality, Non-Disclosure Agreement & Non-Circumvention Agreement",
-    price: "4500.00 KSh"
+    parentCategory: "Real Estate",
+    category: [
+      "Transfers",
+      "Agreements",
+      "Letters and Notices"
+    ]
   }
 ];
 
 const SearchDocument = () => {
+  const { token,  loading } = useContext(AuthContext); // Correctly destructure context
   const [filter, setFilter] = useState('');
+
+  if (loading) return <div>Loading...</div>; // Handle loading state
 
   const handleFilter = (e) => {
     setFilter(e.target.value);
   };
 
-  const filteredDocuments = documents.filter((doc) => doc.title.toLowerCase().includes(filter.toLowerCase()));
+  const filteredDocuments = document.filter((doc) => 
+    doc.parentCategory.toLowerCase().includes(filter.toLowerCase())
+  );
+
+  const handleDownload = async (fileId) => {
+    try {
+      const response = await fetch(`${server_url}/file/download/${fileId}`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`, // Use the token from context
+        },
+      });
+
+      if (response.ok) {
+        const fileUrl = response.url; // The redirected URL will be the file URL
+        const link = document.createElement('a');
+        link.href = fileUrl;
+        link.download = ''; // Optional: specify a filename if needed
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      } else {
+        const errorData = await response.json();
+        console.error('Error downloading file:', errorData.error);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
 
   return (
-    <div className="flex">
+    <div className="flex flex-col lg:flex-row">
       {/* Sidebar */}
-      <div className="w-1/4 p-4 bg-gray-100">
-        <h2 className="text-lg font-bold mb-4">Search By Category</h2>
-        <ul className="mb-4">
-          <li className="mb-2">
-            <input type="radio" name="category" id="employment" />
-            <label className="ml-2" htmlFor="employment">Employment</label>
-          </li>
-          <li className="mb-2">
-            <input type="radio" name="category" id="family" />
-            <label className="ml-2" htmlFor="family">Family</label>
-          </li>
-          <li className="mb-2">
-            <input type="radio" name="category" id="commercial" />
-            <label className="ml-2" htmlFor="commercial">Commercial</label>
-          </li>
+      <div className="hidden lg:block md:w-full lg:w-1/5 p-4 bg-gray-100 border border-gray-300 lg:mr-4 mb-4 lg:mb-0">
+        <h2 className="text-lg font-bold mb-4">Existing Documents</h2>
+        <ul>
+          {document.map((cat, index) => (
+            <li className='pl-4 font-semibold pb-4' key={index}>{cat.parentCategory}</li>
+          ))}
         </ul>
-        <button className="bg-yellow-600 text-white py-2 px-4 rounded-lg">Clear</button>
-        <button className="bg-orange-600 text-white py-2 px-4 rounded-lg ml-2">Filter</button>
       </div>
 
       {/* Main Content */}
-      <div className="w-3/4 p-4">
+      <div className="w-full lg:w-3/4 p-4">
         {/* Search */}
         <div className="flex mb-4">
           <input
@@ -89,13 +141,24 @@ const SearchDocument = () => {
         </div>
 
         {/* Document Grid */}
-        <div className="grid grid-cols-3 gap-4">
+        <div className='bg-gray-100 shadow-md border border-gray-300 pl-2 p-5'>
           {filteredDocuments.map((doc, index) => (
-            <div key={index} className="border p-4 rounded-lg shadow-lg">
-              <h4 className="text-sm text-gray-500">{doc.category}</h4>
-              <h3 className="font-bold text-lg mb-2">{doc.title}</h3>
-              <p className="text-orange-500 font-bold mb-4">{doc.price}</p>
-              <button className="bg-green-600 text-white py-2 px-4 rounded-lg">Add to cart</button>
+            <div key={index} className="mb-4">
+              <h3 className="text-xl font-semibold mb-2">{doc.parentCategory}</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                {doc.category.map((category, titleIndex) => (
+                  <div key={titleIndex} className="text-gray-700 p-3 border border-gray-300 hover:bg-gray-200 shadow-md cursor-pointer">
+                    <h5 className='text-md font-semibold text-center pb-3'>{category}</h5>
+                    <p className='pb-3'>Preview</p>
+                    <button
+                      className='bg-lime-400 px-2 rounded-md text-white hover:bg-lime-600'
+                      onClick={() => handleDownload(titleIndex + 1)}
+                    >
+                      Download
+                    </button>
+                  </div>
+                ))}
+              </div>
             </div>
           ))}
         </div>
