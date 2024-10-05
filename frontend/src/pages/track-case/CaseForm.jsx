@@ -1,13 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import CaseDetailsDisplay from './track-case/CaseDetailsDisplay';
-import { server_url } from '../../config.json';
+import React, { useState, useEffect } from "react";
+import { toast } from "react-hot-toast";
+import { server_url } from "../../../config.json";
 
-const TrackCases = () => {
+const CaseForm = () => {
   const [formState, setFormState] = useState({
     station: "",
     court: "",
+    division: "",
     caseCode: "",
     caseNumber: "",
+    parties: "",
+    description: "",
+    filedBy: "",
     year: "",
   });
 
@@ -18,7 +22,7 @@ const TrackCases = () => {
   });
 
   const [error, setError] = useState("");
-  const [caseDetails, setCaseDetails] = useState(null);
+  const [success, setSuccess] = useState("");
 
   const stations = {
     "Milimani Law Courts": {
@@ -26,6 +30,8 @@ const TrackCases = () => {
         { code: "C100", label: "Environment and Land Court" },
         { code: "C101", label: "ELC Land" },
         { code: "C102", label: "ELC Environment & Planning" },
+        { code: "C103", label: "ELC Tax" },
+        { code: "C104", label: "ELC Traffic" },
       ],
       "Milimani High Court": [
         { code: "C103", label: "High Court Judicial Review" },
@@ -39,12 +45,16 @@ const TrackCases = () => {
         { code: "C108", label: "High Court Civil" },
         { code: "C109", label: "Court Annexed Mediation" },
         { code: "C110", label: "High Court Criminal" },
+        { code: "C111", label: "High Court Traffic Case" },
+        { code: "C112", label: "High Court Petty Criminal" },
+        { code: "C113", label: "High Court Children" },
       ],
       "Milimani Magistrate Court": [
         { code: "C111", label: "Magistrate Court Anti Corruption" },
         { code: "C112", label: "Magistrate Court Criminal" },
         { code: "C113", label: "Magistrate Court Traffic Case" },
         { code: "C114", label: "Magistrate Court Children" },
+        { code: "C115", label: "Magistrate Court Tax" },
       ],
     },
     "Nairobi City Law Courts": {
@@ -63,9 +73,13 @@ const TrackCases = () => {
         { code: "C122", label: "Magistrate Court Traffic" },
         { code: "C123", label: "Magistrate Court Civil" },
         { code: "C124", label: "Magistrate Court Criminal" },
+        { code: "C125", label: "Magistrate Court Tax" },
       ],
       "Naivasha Small Claims Court": [
         { code: "C125", label: "Small Claims Court" },
+        { code: "C126", label: "Small Claims Court Tax" },
+        { code: "C127", label: "Small Claims Court Civil" },
+        { code: "C128", label: "Small Claims Court Criminal" },
       ],
     },
   };
@@ -124,38 +138,40 @@ const TrackCases = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const { station, court, caseCode, caseNumber, year } = formState;
-
-    if (!station || !court || !caseCode || !caseNumber || !year) {
-      setError("Please fill in all fields.");
-      return;
-    }
+    setError("");
+    setSuccess("");
 
     const serverUrl = `${server_url}`;
     try {
-      const response = await fetch(
-        `${serverUrl}/case/search-case?station=${encodeURIComponent(
-          station
-        )}&court=${encodeURIComponent(court)}&caseCode=${encodeURIComponent(
-          caseCode
-        )}&caseNumber=${encodeURIComponent(caseNumber)}&year=${year}`
-      );
+      const response = await fetch(`${serverUrl}/case/create`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formState),
+      });
 
       if (response.ok) {
         const data = await response.json();
-        setCaseDetails(data);
-        setError("");
+        toast.success("Case created successfully!");
+        // setSuccess("Case created successfully!");
+        setFormState({
+          station: "",
+          court: "",
+          division: "",
+          caseCode: "",
+          caseNumber: "",
+          parties: "",
+          description: "",
+          filedBy: "",
+          year: "",
+        });
       } else {
         const errorData = await response.json();
-        setError(
-          errorData.error || "Failed to fetch case details. Please try again."
-        );
-        setCaseDetails(null);
+        setError(errorData.error || "Failed to create case. Please try again.");
       }
     } catch (error) {
       setError("Network error. Please try again later.");
-      setCaseDetails(null);
     }
   };
 
@@ -163,12 +179,12 @@ const TrackCases = () => {
     <div className="px-20 py-8">
       <div className="bg-lime-700 rounded-sm p-8">
         <h1 className="text-white text-lg font-bold mb-6">
-          Enter your case details to track
+          Enter your case details
         </h1>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <div className="flex gap-8 px-4">
-              <div className="mb-4 w-1/2">
+              <div className="mb-4 w-1/3">
                 <label
                   htmlFor="station"
                   className="block text-white font-medium mb-2"
@@ -192,12 +208,12 @@ const TrackCases = () => {
                 </select>
               </div>
 
-              <div className="mb-4 w-1/2">
+              <div className="mb-4 w-1/3">
                 <label
                   htmlFor="court"
                   className="block text-white font-medium mb-2"
                 >
-                  Choose the court in which your case is filed
+                  Choose the court
                 </label>
                 <select
                   id="court"
@@ -215,6 +231,24 @@ const TrackCases = () => {
                     </option>
                   ))}
                 </select>
+              </div>
+
+              <div className="mb-4 w-1/3">
+                <label
+                  htmlFor="division"
+                  className="block text-white font-medium mb-2"
+                >
+                  Division
+                </label>
+                <input
+                  type="text"
+                  id="division"
+                  name="division"
+                  className="p-2 w-full rounded-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-lime-300"
+                  value={formState.division}
+                  onChange={handleChange}
+                  required
+                />
               </div>
             </div>
 
@@ -292,6 +326,59 @@ const TrackCases = () => {
                 </select>
               </div>
             </div>
+
+            <div className="mb-4">
+              <label
+                htmlFor="parties"
+                className="block text-white font-medium mb-2"
+              >
+                Parties
+              </label>
+              <input
+                type="text"
+                id="parties"
+                name="parties"
+                className="p-2 w-full rounded-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-lime-300"
+                value={formState.parties}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            <div className="mb-4">
+              <label
+                htmlFor="description"
+                className="block text-white font-medium mb-2"
+              >
+                Description
+              </label>
+              <textarea
+                id="description"
+                name="description"
+                className="p-2 w-full rounded-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-lime-300"
+                value={formState.description}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            <div className="mb-4">
+              <label
+                htmlFor="filedBy"
+                className="block text-white font-medium mb-2"
+              >
+                Filed By
+              </label>
+              <input
+                type="text"
+                id="filedBy"
+                name="filedBy"
+                className="p-2 w-full rounded-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-lime-300"
+                value={formState.filedBy}
+                onChange={handleChange}
+                required
+              />
+            </div>
           </div>
 
           <div className="mt-6">
@@ -299,18 +386,17 @@ const TrackCases = () => {
               type="submit"
               className="bg-white text-lime-700 font-semibold px-4 py-2 rounded hover:bg-gray-100"
             >
-              Search Case
+              Create Case
             </button>
           </div>
         </form>
       </div>
       <div className="text-center mt-2 font-semibold text-xl">
         {error && <p className="text-red-600">{error}</p>}
+        {success && <p className="text-green-600">{success}</p>}
       </div>
-
-      {caseDetails && <CaseDetailsDisplay caseDetails={caseDetails} />}
     </div>
   );
 };
 
-export default TrackCases;
+export default CaseForm;
