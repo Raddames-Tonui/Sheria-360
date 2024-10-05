@@ -24,6 +24,7 @@ import LawyerDetails from "./pages/Lawyers/LawyerDetails";
 
 import FileUpload from "./pages/E-sheria/FileUpload";
 import FileDownload from "./pages/E-sheria/FileDownload";
+import SearchDocument from "./pages/E-sheria/SearchDocument";
 
 function App() {
   return (
@@ -37,15 +38,17 @@ function App() {
             <Route path="/courts" element={<Courts />} />
             <Route path="/track/cases" element={<TrackCases />} />
             <Route path="/create/case" element={<CaseForm />} />
-            <Route path="/lawyer-registration" element={<LawyerDetailsForm />} />
+
             {/* Lawyers */}
             <Route path="/lawyers" element={<Lawyers />} />
+            <Route path="/lawyer-registration" element={<LawyerDetailsForm />} />
             <Route path="/lawyers-county/:county" element={<LawyersByCountyPage />} />
             <Route path="/lawyers-expertise/:expertise" element={<LawyersByExpertise />} />
             <Route path="/lawyer/:id" element={<LawyerDetails />} />  
 
             <Route path="/sheria/chat" element={<SheriaAi />} />
             <Route path="/sheria/docs" element={<ESheria/>}/>
+            <Route path="/sheria/search-docs" element={<SearchDocument/>}/>
             <Route path="/sheria/upload-doc" element={<FileUpload/>}/>
             <Route path="/sheria/download-doc" element={<FileDownload/>}/>
 

@@ -222,7 +222,7 @@ function FileUpload() {
                 </button>
     
                 {progress > 0 && (
-                    <div className="mt-4">
+                    <div className="mt-2">
                         <progress value={progress} max="100" className="w-full"></progress>
                         <p>{Math.round(progress)}% uploaded</p>
                     </div>

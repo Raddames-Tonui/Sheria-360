@@ -32,58 +32,28 @@ const Navbar = () => {
           />
         </div>
         <div className="hidden md:flex space-x-4 bg-gray-200 rounded-md">
-          <Link
-            to="/"
-            className="hover:bg-lime-600 hover:text-white px-6 py-2 rounded-md text-md font-medium"
-          >
-            Home
-          </Link>
-          <Link
-            to="/lawyers"
-            className="hover:bg-lime-600 hover:text-white px-6 py-2 rounded-md text-md font-medium"
-          >
-            Lawyers
-          </Link>
-          <Link
-            to="/sheria/chat"
-            className="hover:bg-lime-600 hover:text-white px-6 py-2 rounded-md text-md font-medium"
-          >
-            Sheria Ai
-          </Link>
-          <Link
-            to="/sheria/docs"
-            className="hover:bg-lime-600 hover:text-white px-6 py-2 rounded-md text-md font-medium"
-          >
-            E-Sheria
-          </Link>
-          <Link
-            to="/track/cases"
-            className="hover:bg-lime-600 hover:text-white px-6 py-2 rounded-md text-md font-medium"
-          >
-            Track Cases
-          </Link>
+
+          <Link to="/" className="hover:bg-lime-600 hover:text-white px-6 py-2 rounded-md text-md font-medium">Home</Link>
+          <Link to="/lawyers" className="hover:bg-lime-600 hover:text-white px-6 py-2 rounded-md text-md font-medium">Lawyers</Link>
+          <Link to="/sheria/chat" className="hover:bg-lime-600 hover:text-white px-6 py-2 rounded-md text-md font-medium">Sheria Ai</Link>
+          <Link to="/sheria/search-docs" className="hover:bg-lime-600 hover:text-white px-6 py-2 rounded-md text-md font-medium">E-Sheria</Link>
+          <Link to="/track/cases" className="hover:bg-lime-600 hover:text-white px-6 py-2 rounded-md text-md font-medium">Track Cases</Link>
           <Link
             to="/create/case"
             className="hover:bg-lime-600 hover:text-white px-6 py-2 rounded-md text-md font-medium"
           >
             Create Case
           </Link>
-          {token ? (
-            <>
-              <Link
-                to="/lawyer-registration"
-                className="hover:bg-lime-600 hover:text-white px-6 py-2 rounded-md text-md font-medium"
-              >
-                Profile
-              </Link>
-              <Link
-                to="/sheria/upload-doc"
-                className="hover:bg-lime-600 hover:text-white px-6 py-2 rounded-md text-md font-medium"
-              >
-                Upload
-              </Link>
-            </>
-          ) : null}
+          {token ? 
+          <>
+            <Link to="/lawyer-registration" className="hover:bg-lime-600 hover:text-white px-6 py-2 rounded-md text-md font-medium">Profile</Link>
+            <Link to="/sheria/upload-doc" className="hover:bg-lime-600 hover:text-white px-6 py-2 rounded-md text-md font-medium">Upload</Link>
+          </>
+          
+            :
+            null
+          }
+
         </div>
         <div className="flex items-center space-x-6">
           {token ? (
