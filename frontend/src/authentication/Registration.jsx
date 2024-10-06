@@ -25,7 +25,7 @@ const Registration = () => {
       const user = userCredential.user;
       setUserId(user.uid);
 
-      await axios.post(`${server_url}/api/register`, {
+      await axios.post(`${server_url}/auth/register`, {
         email: user.email,
         firebase_uid: user.uid,
       });
@@ -46,7 +46,7 @@ const Registration = () => {
       const user = userCredential.user;
       setUserId(user.uid);
 
-      await axios.post(`${server_url}/api/register`, {
+      await axios.post(`${server_url}/auth/register`, {
         email: user.email,
         firebase_uid: user.uid,
       });

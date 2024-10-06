@@ -20,9 +20,10 @@ import LawyersByCountyPage from "./pages/Lawyers/LawyersByCountyPage";
 import LawyersByExpertise from "./pages/Lawyers/LawyersByExpertise";
 import LawyerDetails from "./pages/Lawyers/LawyerDetails";
 
-import FileUpload from "./pages/E-sheria/FileUpload";
-import FileDownload from "./pages/E-sheria/FileDownload";
-import SearchDocument from "./pages/E-sheria/SearchDocument";
+import FileUpload from "./pages/E-sheria-documents/FileUpload";
+import FileDownload from "./pages/E-sheria-documents/FileDownload";
+import SearchDocument from "./pages/E-sheria-documents/SearchDocument";
+import About from "./pages/About";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
+            <Route path="/about" element={<About/>} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Registration />} />
             <Route path="/courts" element={<Courts />} />

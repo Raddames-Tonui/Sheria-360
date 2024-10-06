@@ -6,9 +6,9 @@ import ESheria from "./Home/ESheria";
 
 function Home() {
   return (
-    <div className="">
+    <div className="md:mx-20">
       <Hero />
-      <div className="px-20">
+      <div className="">
         <LawyerSearchCard />
       </div>
       <ESheria />

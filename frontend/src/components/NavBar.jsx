@@ -26,7 +26,6 @@ const Navbar = () => {
       { to: "/sheria/upload-doc", label: "Upload" },
       { to: "/lawyer/dashboard", label: "Lawyer Dashboard" },
     ],
-    admin: [{ to: "/admin/dashboard", label: "Admin Dashboard" }],
     user: [{ to: "/lawyers", label: "Lawyers" }],
     court: [{ to: "/create/case", label: "Upload Case" }],
   };
@@ -52,7 +51,7 @@ const Navbar = () => {
     const fetchUserDetails = async () => {
       if (token) {
         try {
-          const response = await fetch(`${server_url}/api/lawyer/details`, {
+          const response = await fetch(`${server_url}/api/user/details`, {
             method: 'GET',
             headers: {
               'Authorization': `Bearer ${token}`,
@@ -87,6 +86,7 @@ const Navbar = () => {
         </div>
 
         <div className="hidden md:flex space-x-4 rounded-md">
+          
           <NavLink 
             to="/" 
             className={({ isActive }) => 
@@ -95,8 +95,19 @@ const Navbar = () => {
                     >
             Home
           </NavLink>
-          
+          {userRole === "user"? 
+          <>
           <NavLink 
+            to="/lawyers" 
+            className={({ isActive }) => `hover:bg-lime-600 hover:text-white px-6 py-2 rounded-md text-md font-medium ${isActive ? 'underline font-bold' : ''}`}
+          >
+            Lawyers
+          </NavLink>
+          </>:
+          null}
+          {token? (
+            <>
+            <NavLink 
             to="/sheria/search-docs" 
             className={({ isActive }) => `hover:bg-lime-600 hover:text-white px-6 py-2 rounded-md text-md font-medium ${isActive ? 'underline font-bold' : ''}`}
           >
@@ -114,9 +125,31 @@ const Navbar = () => {
           >
             Track Case
           </NavLink>
+            </>
+          ):
+          <>
+            <NavLink 
+            to= "/about"
+            className={({ isActive }) => `hover:bg-lime-600 hover:text-white px-6 py-2 rounded-md text-md font-medium ${isActive ? 'underline font-bold' : ''}`}
+>
+              About Us
+            </NavLink>
+          </>}
+          
         </div>
-
+          
         <div className="flex items-center space-x-6 rounded-full">
+          {/* TYPE OF USERS */}
+        {userRole === "lawyer" ? (
+  <div>Lawyer dashboard</div>
+) : userRole === "user" ? (
+  <div>Citizen dashboard</div>
+) : userRole === "court" ? (
+  <div>Court Dashboard</div>
+) : null} 
+
+
+        
           {token ? (
             <div className="relative">
               <button
