@@ -34,19 +34,25 @@ SHERIA 360 supports three primary user roles:
 - **Authentication:** Firebase.
   
 ## Installation and Setup
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/your-repo/sheria360.git
+1. Clone the repository
+    
+    `git clone https://github.com/your-repo/sheria360.git`
 
-2. Navigate to the project directory
-   ```
-   cd sheria360
-3. Install dependencies:
-    ```
-    npm install
-4. Start the development server
-    ```
-    npm start
+2. Navigate to the frontend directory
+    `cd frontend`
+
+3. Install frontend dependencies
+    `npm install`
+
+4. Start the frontend development server
+    `npm run dev`
+5. Open a new terminal and navigate to the backend directory
+    `cd backend`
+6. Activate the Python environment using Pipenv
+    `pipenv shell`
+7. Start the backend server
+    `python app.py`
+
 
 ## Contributing
 Contributions are welcome! Please fork this repository and submit a pull request with your proposed changes.
