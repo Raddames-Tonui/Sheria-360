@@ -90,7 +90,7 @@ const LegalSearch = () => {
   const totalPages = Math.ceil(results.length / resultsPerPage);
 
   return (
-    <div className="bg-gray-100 h-[90vh]">
+    <div className="bg-slate-100 h-[90vh]">
       {/* Background image wrapper */}
       <div 
         className="h-[90vh] p-20   relative flex flex-col items-center justify-center overflow-hidden"
@@ -99,7 +99,7 @@ const LegalSearch = () => {
         {/* Dark overlay */}
         <div className="absolute inset-0 bg-black opacity-50"></div>
 
-        <div className="relative z-10 text-center text-white p-4 md:p-6 overflow-auto">
+        <div className="relative z-10 text-center text-white p-4 ">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-semibold mb-4 md:mb-6">
             Helping You With Your Legal Needs
           </h1>

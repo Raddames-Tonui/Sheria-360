@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const SearchResults = ({ isSearching, currentResults }) => {
   return (
-    <div className="mt-2 w-full max-w-3xl bg-white p-4 rounded-md shadow-lg">
+    <div className="mt-2 w-full max-w-3xl bg-white  p-2 ">
       {isSearching ? (
         <div className="text-center text-gray-600">Searching...</div>
       ) : currentResults.length > 0 ? (
@@ -12,7 +12,7 @@ const SearchResults = ({ isSearching, currentResults }) => {
             <Link 
               to={`/lawyer/${result.id}`} 
               key={index} 
-              className="border border-gray-200 rounded-lg p-2 bg-gray-100 hover:bg-lime-200 transition-colors duration-300"
+              className="border border-gray-200 p-2 bg-slate-100 hover:bg-slate-200 transition-colors duration-300"
             >
               <h3 className="text-lg font-bold text-gray-900">
                 {result.first_name} {result.last_name}

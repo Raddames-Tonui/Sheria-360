@@ -8,6 +8,7 @@ from firebase import verify_token  # Import only the verify_token function
 from blueprints.file_upload import file_upload_bp  # Import the blueprint from the blueprints folder
 from blueprints.file_download import file_download_bp
 from blueprints.court_cases import court_cases_bp  
+from blueprints.authentication import authentication_bp  
 
 # Initialize the Flask application
 app = Flask(__name__)
@@ -31,6 +32,7 @@ def index():
 app.register_blueprint(file_upload_bp, url_prefix='/file')
 app.register_blueprint(file_download_bp, url_prefix='/file')
 app.register_blueprint(court_cases_bp, url_prefix='/case')
+app.register_blueprint(authentication_bp, url_prefix='/auth')  
 
 # ============================= USER =======================================
 # Check User if exists in login
@@ -43,32 +45,7 @@ def check_user():
         return jsonify({"exists": True, "firebase_uid": user.firebase_uid}), 200
     return jsonify({"exists": False}), 200
 
-# Register User
-@app.route('/api/register', methods=['POST'])
-def register_user():
-    data = request.json
-    
-    try:
-        # Ensure both email and firebase_uid are provided
-        if 'email' not in data or 'firebase_uid' not in data:
-            return jsonify({'error': 'Email and firebase_uid are required.'}), 400
 
-        # Create a new user entry in your database if they don't exist
-        existing_user = User.query.filter_by(email=data['email']).first()
-        if existing_user:
-            return jsonify({'message': 'User already exists!'}), 400
-
-        new_user = User(
-            email=data['email'],
-            firebase_uid=data['firebase_uid']  # Use the UID from the request
-        )
-        db.session.add(new_user)
-        db.session.commit()
-
-        return jsonify({'message': 'User registered successfully!'}), 201
-    except Exception as e:
-        print(f"Error during user registration: {str(e)}")  # Log the error for debugging
-        return jsonify({'error': str(e)}), 500
 
 # Update User details
 @app.route('/api/lawyer/update', methods=['PUT'])
@@ -108,8 +85,40 @@ def update_lawyer():
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
 
+# Update User details
+@app.route('/user/update', methods=['PATCH'])
+def update_user():
+    token = request.headers.get('Authorization')
+    if not token:
+        return jsonify({'error': 'Authorization header is missing'}), 401
+
+    # Extract the token from the 'Bearer' prefix
+    token = token.split("Bearer ")[-1]
+    
+    uid = verify_token(token)  # Use the verify_token function from firebase.py
+    if uid is None:
+        return jsonify({'error': 'Invalid token'}), 401
+
+    data = request.json
+    try:
+        user = User.query.filter_by(firebase_uid=uid).first()
+        if not user:
+            return jsonify({'success': False, 'error': 'User not found'}), 404
+
+        # Update the user's details
+        user.first_name = data.get('firstName', user.first_name)
+        user.last_name = data.get('lastName', user.last_name)
+        user.phone = data.get('phone', user.phone)
+        user.profile_picture = data.get('profilePicture', user.profile_picture)
+
+        db.session.commit()
+
+        return jsonify({'success': True, 'data': user.to_dict()}), 200
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
 # Fetch user details 
-@app.route('/api/lawyer/details', methods=['GET'])
+@app.route('/api/user/details', methods=['GET'])
 def get_lawyer_details():
     token = request.headers.get('Authorization')
     if not token:

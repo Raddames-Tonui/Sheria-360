@@ -160,7 +160,7 @@ const TrackCases = () => {
   };
 
   return (
-    <div className="px-20 py-8">
+    <div className="md:px-20 md:py-8  h-[90vh]">
       <div className="bg-lime-700 rounded-sm p-8">
         <h1 className="text-white text-lg font-bold mb-6">
           Enter your case details to track

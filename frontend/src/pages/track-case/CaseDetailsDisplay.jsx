@@ -4,7 +4,7 @@ const CaseDetailsDisplay = ({ caseDetails }) => {
   if (!caseDetails) return null; // Return null if no case details are provided
 
   return (
-    <div className="mt-8 bg-white p-4 rounded-md">
+    <div className="mt-8 p-4 rounded-md">
       <div className="text-center space-y-4">
         <h2 className="text-xl font-bold underline">Case Details</h2>
         <p className="text-3xl font-semibold">

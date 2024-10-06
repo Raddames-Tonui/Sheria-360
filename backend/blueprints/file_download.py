@@ -1,11 +1,10 @@
 from flask import Blueprint, request, jsonify, redirect
-import firebase_admin
 from firebase_admin import auth  # Assuming you have Firebase Admin SDK initialized
 from models import db, FileUpload 
 
 file_download_bp = Blueprint('file_download_bp', __name__)
 
-@file_download_bp.route('/file/download/<int:file_id>', methods=['GET'])
+@file_download_bp.route('/download/<int:file_id>', methods=['GET'])
 def download_file(file_id):
     auth_header = request.headers.get('Authorization')
 
