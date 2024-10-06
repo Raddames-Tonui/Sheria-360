@@ -85,6 +85,38 @@ def update_lawyer():
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
 
+# Update User details
+@app.route('/user/update', methods=['PATCH'])
+def update_user():
+    token = request.headers.get('Authorization')
+    if not token:
+        return jsonify({'error': 'Authorization header is missing'}), 401
+
+    # Extract the token from the 'Bearer' prefix
+    token = token.split("Bearer ")[-1]
+    
+    uid = verify_token(token)  # Use the verify_token function from firebase.py
+    if uid is None:
+        return jsonify({'error': 'Invalid token'}), 401
+
+    data = request.json
+    try:
+        user = User.query.filter_by(firebase_uid=uid).first()
+        if not user:
+            return jsonify({'success': False, 'error': 'User not found'}), 404
+
+        # Update the user's details
+        user.first_name = data.get('firstName', user.first_name)
+        user.last_name = data.get('lastName', user.last_name)
+        user.phone = data.get('phone', user.phone)
+        user.profile_picture = data.get('profilePicture', user.profile_picture)
+
+        db.session.commit()
+
+        return jsonify({'success': True, 'data': user.to_dict()}), 200
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
 # Fetch user details 
 @app.route('/api/user/details', methods=['GET'])
 def get_lawyer_details():

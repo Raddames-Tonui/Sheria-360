@@ -3,20 +3,20 @@ import { Link } from 'react-router-dom';
 
 function About() {
   return (
-    <div className="p-4 h-[90vh] flex items-center justify-center">
-      <div className='bg-gray-100 m-2 h-[82vh] border border-gray-300 shadow-md p-4 overflow-y-auto'>
+    <div className="p-4 h-[90vh] bg-slate-100 flex items-center justify-center">
+      <div className='bg-white m-2 h-[82vh] border border-gray-300 shadow-xl p-4 overflow-y-auto'>
         <Link to="/" className="flex justify-center mb-4">
           <img src="/logo/Sheria360.png" alt="Sheria 360 Logo" className="object-cover h-16 w-40" />
         </Link>
         <h1 className='text-2xl font-bold text-center underline text-lime-700 pb-3 md:text-3xl'>About</h1>
-        <p className="mb-2 text-center text-sm md:text-base">
+        <p className="mb-2 text-center text-sm md:text-base font-semibold">
           Sheria 360 is a comprehensive platform dedicated to empowering citizens 
           by providing accessible legal information and resources. Our mission is 
           to bridge the gap between individuals and the legal system, ensuring that 
           everyone has the support they need to navigate their legal challenges effectively.
         </p>
         <h2 className="text-xl font-bold text-center underline text-lime-700 pb-3 md:text-2xl">Key Features:</h2>
-        <ul className="list-disc list-inside mb-2 flex flex-col justify-center">
+        <ul className="list-disc list-inside mb-2 flex flex-col justify-center font-semibold">
           <li className="text-sm md:text-base">Comprehensive legal information available at your fingertips.</li>
           <li className="text-sm md:text-base">Connection to qualified legal aid services for case assistance.</li>
           <li className="text-sm md:text-base">Real-time tracking of court cases, keeping users informed.</li>

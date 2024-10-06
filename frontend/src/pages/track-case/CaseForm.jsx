@@ -178,8 +178,8 @@ const CaseForm = () => {
   return (
     <div className="px-20 py-8">
       <div className="bg-lime-700 rounded-sm p-8">
-        <h1 className="text-white text-lg font-bold mb-6">
-          Enter your case details
+        <h1 className="text-white text-center text-lg font-bold mb-6">
+          Enter  case details
         </h1>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
