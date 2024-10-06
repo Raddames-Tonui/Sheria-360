@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
-import emailjs from '@emailjs/browser';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { server_url } from '../../../config.json';
 import { FaPhoneAlt, FaEnvelope } from 'react-icons/fa';
@@ -10,8 +9,6 @@ const LawyerDetails = () => {
   const [lawyer, setLawyer] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [showContactForm, setShowContactForm] = useState(false);
-  const form = useRef();
 
   useEffect(() => {
     const fetchLawyer = async () => {
@@ -57,6 +54,7 @@ const LawyerDetails = () => {
     work_email
   } = lawyer;
 
+  // Default SVG for profile picture
   const DEFAULT_PROFILE_IMAGE_SVG = (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -74,28 +72,11 @@ const LawyerDetails = () => {
     </svg>
   );
 
-  const sendEmail = (e) => {
-    e.preventDefault();
-  
-    emailjs
-      .sendForm('service_u2eng7g', 'template_88yjp5h', form.current, 'RlUTpTp2Kj8YRExYO')
-      .then(
-        () => {
-          console.log('SUCCESS!');
-          setShowContactForm(false);
-        },
-        (error) => {
-          console.log('FAILED...', error);
-        }
-      );
-  };
-
   return (
     <div className=" p-10 h-[90vh]">
       <div className="bg-gray-100 border border-gray-300   py-10 w-[80vw] mx-auto bottom-2 shadow-xl">
         <div className="ml-10 flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-6 ">
           
-
           {profile_picture ? (
             <img
               src={profile_picture}
@@ -103,7 +84,7 @@ const LawyerDetails = () => {
               className="w-32 h-32 border border-gray-300 object-cover"
             />
           ) : (
-            DEFAULT_PROFILE_IMAGE_SVG
+            DEFAULT_PROFILE_IMAGE_SVG // Use the SVG when there's no profile picture
           )}
           <div className="text-center md:text-left">
             <h1 className="text-3xl font-bold">{`${first_name} ${last_name}`}</h1>
@@ -112,15 +93,17 @@ const LawyerDetails = () => {
             <p className="text-gray-700">Law Firm: {law_firm}</p>
           </div>
         </div>
-        <div className="mt-6 ml-10">
+        <div className="mt-6 ml-10 ">
           <h2 className='text-xl font-semibold text-lime-500'>Expertise</h2>
           <p className="text-gray-700">{expertise}</p>     
         </div>
-        <div className="mt-6 ml-10">
+
+        <div className="mt-6 ml-10 ">
           <h2 className="text-xl font-semibold text-lime-500">Bio</h2>
           <p className="text-gray-700">{bio}</p>
         </div>
-        <div className="mt-6 ml-10">
+
+        <div className="mt-6 ml-10 ">
           <h2 className="text-xl font-semibold text-lime-500">Contact Information</h2>
           <p className="flex items-center">
             <FaPhoneAlt className="mr-2" />
@@ -129,69 +112,8 @@ const LawyerDetails = () => {
           {work_email && (
             <p className="flex items-center">
               <FaEnvelope className="mr-2" />
-              <span>{work_email}</span>
+              <span>{`${work_email} `}</span>
             </p>
-          )}
-          <button
-            onClick={() => setShowContactForm(!showContactForm)}
-            className="mt-8 inline-flex items-center justify-center rounded-xl bg-green-600 py-3 px-6 font-dm text-base font-medium text-white shadow-xl shadow-green-400/75 transition-transform duration-200 ease-in-out hover:scale-[1.02]"
-          >
-            Contact Us
-          </button>
-          {showContactForm && (
-            <div className="mt-6 w-[60vw] mx-auto">
-              <form ref={form} onSubmit={sendEmail}>
-                <input type="hidden" name="work_email" value={work_email} />
-                <label htmlFor="user_name" className="block text-sm font-medium text-gray-700 mb-2">
-                  Your Name
-                </label>
-                <input
-                  type="text"
-                  id="user_name"
-                  name="user_name"
-                  className="shadow-sm rounded-md w-full px-3 py-2 border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                  placeholder="Jon Doe"
-                  required
-                />
-                <label htmlFor="user_email" className="block text-sm font-medium text-gray-700 mb-2 mt-4">
-                  Your Email
-                </label>
-                <input
-                  type="email"
-                  id="user_email"
-                  name="user_email"
-                  className="shadow-sm rounded-md w-full px-3 py-2 border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                  placeholder="your@email.com"
-                  required
-                />
-                <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2 mt-4">
-                  Message
-                </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  className="shadow-sm rounded-md w-full px-3 py-2 border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                  placeholder="Type your message here..."
-                  rows="4"
-                  required
-                />
-                <div className="flex justify-between mt-4">
-                  <button
-                    type="submit"
-                    className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                  >
-                    Send Message
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setShowContactForm(false)}
-                    className="ml-2 w-full py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </form>
-            </div>
           )}
         </div>
       </div>
