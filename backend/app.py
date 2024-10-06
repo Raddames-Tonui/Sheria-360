@@ -9,6 +9,7 @@ from blueprints.file_upload import file_upload_bp  # Import the blueprint from t
 from blueprints.file_download import file_download_bp
 from blueprints.court_cases import court_cases_bp  
 from blueprints.authentication import authentication_bp  
+from blueprints.mpesa import mpesa_bp  
 
 # Initialize the Flask application
 app = Flask(__name__)
@@ -33,6 +34,7 @@ app.register_blueprint(file_upload_bp, url_prefix='/file')
 app.register_blueprint(file_download_bp, url_prefix='/file')
 app.register_blueprint(court_cases_bp, url_prefix='/case')
 app.register_blueprint(authentication_bp, url_prefix='/auth')  
+app.register_blueprint(mpesa_bp, url_prefix='/mpesa')  
 
 # ============================= USER =======================================
 # Check User if exists in login

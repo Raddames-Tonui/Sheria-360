@@ -27,7 +27,7 @@ const ESheria = () => {
 
             {/* Step 1 */}
             <div className="flex flex-col items-center">
-              <img src="svgs/experience.svg" alt="Step 1 Icon" />
+              <img src="/svgs/experience.svg" alt="Step 1 Icon" />
               <h3 className="text-xl font-semibold text-gray-700 mt-4">Search for Document</h3>
               <p className="text-gray-600 mt-2 text-sm">
                 Search category and name of your document.
@@ -62,7 +62,7 @@ const ESheria = () => {
             </div>
           </div>
           <div className="mt-6">
-          <Link to="/sheria/search-docs" className="mt-8 bg-lime-600 hover:bg-lime-800 text-white font-bold px-8 py-5 rounded-md">
+          <Link to="/sheria/search-docs" className="mt-8 bg-lime-600 hover:bg-lime-700 text-white font-bold px-8 py-5 rounded-md">
             View All Documents
           </Link>
           </div>

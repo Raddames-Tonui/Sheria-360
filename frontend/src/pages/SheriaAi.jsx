@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { MdArrowUpward } from 'react-icons/md';
 
 const SheriaAi = () => {
   const [query, setQuery] = useState('');
@@ -41,13 +40,13 @@ const SheriaAi = () => {
   };
 
   return (
-    <div className=" h-[90vh] flex justify-center">
+    <div className=" h-[90vh] flex justify-center bg-slate-100">
       <div className='bg-gray-200 border border-gray-300 w-[60vw] h-[86vh] mt-4  flex flex-col'>
         <img src="/logo/Sheria360.png" alt="Logo" className="object-cover h-16 w-40 ml-8" />
         <hr className='bg-lime-700' />
 
         {/* Response section with scrolling and adjusted height */}
-        <div className="p-4 mx-10 bg-gray-100 border-x-1 shadow-md flex-1 h-[50vh] overflow-y-auto flex flex-col">
+        <div className="p-4 mx-10 bg-white border-x-1 shadow-md flex-1 h-[50vh] overflow-y-auto flex flex-col">
           {chatHistory.map((chat, index) => (
             <div key={index} className="mb-2">
               {/* User's question on the right */}
@@ -81,10 +80,10 @@ const SheriaAi = () => {
           />
           <button 
             onClick={handleAsk} 
-            className="ml-2 flex items-center bg-lime-700 text-white rounded-md px-4 pb-2" 
+            className="ml-2 flex items-center bg-lime-700 text-white  rounded-md px-4 pb-2 font-bold" 
             aria-label="Ask"
           >
-            Send <MdArrowUpward />
+           <span className=''> Send</span> 
           </button>
         </div>
       </div>

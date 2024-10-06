@@ -5,8 +5,7 @@ import { FaPhoneAlt, FaEnvelope, FaUser } from "react-icons/fa";
 import { BiUserCircle } from "react-icons/bi"; 
 import "../../App.css"
 
-
-const LawyersByCounty = () => {
+const LawyersByCountyPage = () => {
   const { county } = useParams();
   const [lawyers, setLawyers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -40,14 +39,15 @@ const LawyersByCounty = () => {
   }
 
   return (
-    <div className='bg-gray-100'>
-      <div className="container mx-auto p-8">
-        <h1 className="text-center text-3xl font-bold text-gray-800 mb-6">Lawyers in {county}</h1>
-        <div className='bg-white border border-gray-300 py-4 shadow-xl  md:w-[80vw] mx-auto'>
-            {lawyers.length > 0 ? (
-            <ul className="space-y-4">
+    <div className='bg-slate-100 '>
+      <div className="container mx-auto p-8 ">
+        <div className='bg-white border border-gray-300 py-4 h-[90vh] shadow-xl md:w-[80vw] mx-auto'>
+        <h1 className="text-center text-3xl font-bold text-lime-600 mb-3">Lawyers in {county}</h1>
+
+          {lawyers.length > 0 ? (
+            <ul className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
               {lawyers.map((lawyer) => (
-                <li key={lawyer.id} className="border border-gray-300 p-4 rounded-md shadow-sm bg-gray-100 hover:bg-gray-200 md:w-3/5 mx-auto">
+                <li key={lawyer.id} className="border border-gray-300 p-4 rounded-md shadow-sm bg-gray-100 hover:bg-gray-200">
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center p-3 border-b border-gray-300">
                     <div className='p-4 flex justify-center'>
                       {lawyer.profile_picture ? (
@@ -83,13 +83,12 @@ const LawyersByCounty = () => {
               ))}
             </ul>
           ) : (
-            <p>No lawyers found in {county}</p>
+            <p className='text-center font-semibold text-red-600'>No lawyers found in {county}!</p>
           )}
         </div>
-        
       </div>
     </div>
   );
 };
 
-export default LawyersByCounty;
+export default LawyersByCountyPage;

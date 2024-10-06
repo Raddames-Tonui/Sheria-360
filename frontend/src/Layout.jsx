@@ -5,8 +5,9 @@ import { Outlet } from 'react-router-dom';
 
 function Layout() {
   return (
-    <div>
-      <Navbar />
+    <div className="h-screen overflow-y-scroll no-scrollbar">
+         <Navbar />
+     
       {/* Toaster below the Navbar */}
       <Toaster
         position="top-right"
@@ -37,7 +38,9 @@ function Layout() {
           },
         }}
       />
-      <Outlet />
+        <Outlet />
+ 
+      
     </div>
   );
 }
