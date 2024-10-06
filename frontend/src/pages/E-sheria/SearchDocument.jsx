@@ -1,6 +1,9 @@
 import React, { useContext, useState } from 'react';
+import { NavLink } from 'react-router-dom'; // Import NavLink
 import { server_url } from "../../../config.json";
 import { AuthContext } from '../../context/AuthContext';
+import { FaArrowAltCircleDown } from "react-icons/fa";
+
 
 const document = [
   {
@@ -76,7 +79,7 @@ const document = [
 ];
 
 const SearchDocument = () => {
-  const { token,  loading } = useContext(AuthContext); // Correctly destructure context
+  const { token, loading, userRole } = useContext(AuthContext); // Destructure userRole from context
   const [filter, setFilter] = useState('');
 
   if (loading) return <div>Loading...</div>; // Handle loading state
@@ -116,7 +119,7 @@ const SearchDocument = () => {
   };
 
   return (
-    <div className="flex flex-col lg:flex-row">
+    <div className="flex flex-col lg:flex-row ">
       {/* Sidebar */}
       <div className="hidden lg:block md:w-full lg:w-1/5 p-4 bg-gray-100 border border-gray-300 lg:mr-4 mb-4 lg:mb-0">
         <h2 className="text-lg font-bold mb-4">Existing Documents</h2>
@@ -129,6 +132,16 @@ const SearchDocument = () => {
 
       {/* Main Content */}
       <div className="w-full lg:w-3/4 p-4">
+        <div className='flex justify-center mb-2'>
+          {userRole === "lawyer" ? (
+            <NavLink to="/sheria/upload-doc" className='bg-lime-400 p-2 border border-lime-700 text-lime-800 hover:text-white font-semibold hover:bg-lime-500 rounded-md'>
+              Upload Document
+            </NavLink>
+          ) : (
+            <div className='bg-lime-400 rounded-md font-semibold p-2'>Documents</div>
+          )}
+        </div>
+
         {/* Search */}
         <div className="flex mb-4">
           <input
@@ -151,10 +164,11 @@ const SearchDocument = () => {
                     <h5 className='text-md font-semibold text-center pb-3'>{category}</h5>
                     <p className='pb-3'>Preview</p>
                     <button
-                      className='bg-lime-400 px-2 rounded-md text-white hover:bg-lime-600'
+                      className='hover:bg-lime-600 hover:text-white text-lime-600 font-semibold p-2 rounded-md flex items-center '
                       onClick={() => handleDownload(titleIndex + 1)}
                     >
-                      Download
+                      Download <span className='pl-1'><FaArrowAltCircleDown />
+                      </span>
                     </button>
                   </div>
                 ))}

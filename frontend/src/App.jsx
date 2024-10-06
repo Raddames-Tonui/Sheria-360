@@ -6,17 +6,15 @@ import { AuthProvider } from "./context/AuthContext";
 import Home from "./pages/Home";
 import NoPage from "./pages/NoPage";
 import Lawyers from "./pages/Lawyers";
-import ESheria from "./pages/ESheria";
+import ESheria from "./pages/Home/ESheria";
 import SheriaAi from "./pages/SheriaAi";
 import Courts from "./pages/Courts";
 import TrackCases from "./pages/TrackCases";
 import CaseForm from "./pages/track-case/CaseForm";
 
-
-
 import Login from "./authentication/Login";
 import LawyerDetailsForm from "./authentication/LawyerDetailsForm";
-import Registration from "./authentication/Registration"; 
+import Registration from "./authentication/Registration";
 
 import LawyersByCountyPage from "./pages/Lawyers/LawyersByCountyPage";
 import LawyersByExpertise from "./pages/Lawyers/LawyersByExpertise";
@@ -41,16 +39,16 @@ function App() {
 
             {/* Lawyers */}
             <Route path="/lawyers" element={<Lawyers />} />
-            <Route path="/lawyer-registration" element={<LawyerDetailsForm />} />
-            <Route path="/lawyers-county/:county" element={<LawyersByCountyPage />} />
+            <Route path="/lawyer-registration" element={<LawyerDetailsForm />}   />
+            <Route  path="/lawyers-county/:county" element={<LawyersByCountyPage />}/>
             <Route path="/lawyers-expertise/:expertise" element={<LawyersByExpertise />} />
-            <Route path="/lawyer/:id" element={<LawyerDetails />} />  
+            <Route path="/lawyer/:id" element={<LawyerDetails />} />
 
             <Route path="/sheria/chat" element={<SheriaAi />} />
-            <Route path="/sheria/docs" element={<ESheria/>}/>
-            <Route path="/sheria/search-docs" element={<SearchDocument/>}/>
-            <Route path="/sheria/upload-doc" element={<FileUpload/>}/>
-            <Route path="/sheria/download-doc" element={<FileDownload/>}/>
+            <Route path="/sheria/docs" element={<ESheria />} />
+            <Route path="/sheria/search-docs" element={<SearchDocument />} />
+            <Route path="/sheria/upload-doc" element={<FileUpload />} />
+            <Route path="/sheria/download-doc" element={<FileDownload />} />
 
             <Route path="*" element={<NoPage />} />
           </Route>

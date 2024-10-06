@@ -1,30 +1,21 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const ESheria = () => {
   return (
-    <div className="font-sans">
+    <div className="font-sans mt-4 mx-4">
       {/* Hero Section */}
-      <section className="bg-gray-100 py-16">
+      <section className=" mt-4">
         <div className="container mx-auto text-center">
           <h1 className="text-4xl font-bold text-gray-800">
-            Legal Documents Made for Everyone
+            Legal Documents Made Easy for Everyone
           </h1>
           <p className="text-gray-600 mt-4">
             Download and print your customised legal documents in under 5
             minutes.
           </p>
 
-          {/* Search Bar */}
-          <div className="mt-8 flex justify-center">
-            <input
-              type="text"
-              className="w-1/3 px-4 py-2 border rounded-l-md focus:outline-none"
-              placeholder="Search..."
-            />
-            <button className="bg-green-500 text-white px-6 py-2 rounded-r-md">
-              Search
-            </button>
-          </div>
+        
         </div>
       </section>
 
@@ -36,16 +27,16 @@ const ESheria = () => {
 
             {/* Step 1 */}
             <div className="flex flex-col items-center">
-              <img src="https://via.placeholder.com/80" alt="Step 1 Icon" />
-              <h3 className="text-xl font-semibold text-gray-700 mt-4">Complete a questionnaire</h3>
+              <img src="svgs/experience.svg" alt="Step 1 Icon" />
+              <h3 className="text-xl font-semibold text-gray-700 mt-4">Search for Document</h3>
               <p className="text-gray-600 mt-2 text-sm">
-                Input the details needed in your document.
+                Search category and name of your document.
               </p>
             </div>
 
             {/* Step 2 */}
             <div className="flex flex-col items-center">
-              <img src="https://via.placeholder.com/80" alt="Step 2 Icon" />
+              <img src="/svgs/contact-info.svg" alt="Step 2 Icon" />
               <h3 className="text-xl font-semibold text-gray-700 mt-4">Preview & Pay</h3>
               <p className="text-gray-600 mt-2 text-sm">
                 Confirm that you have put the correct details and pay.
@@ -54,7 +45,7 @@ const ESheria = () => {
 
             {/* Step 3 */}
             <div className="flex flex-col items-center">
-              <img src="https://via.placeholder.com/80" alt="Step 3 Icon" />
+              <img src="/svgs/visibility.svg" alt="Step 3 Icon" />
               <h3 className="text-xl font-semibold text-gray-700 mt-4">Download & Print</h3>
               <p className="text-gray-600 mt-2 text-sm">
                 Download your document and print it.
@@ -63,7 +54,7 @@ const ESheria = () => {
 
             {/* Step 4 */}
             <div className="flex flex-col items-center">
-              <img src="https://via.placeholder.com/80" alt="Step 4 Icon" />
+              <img src="/svgs/profile-photo.svg" alt="Step 4 Icon" />
               <h3 className="text-xl font-semibold text-gray-700 mt-4">Sign it & make it legal</h3>
               <p className="text-gray-600 mt-2 text-sm">
                 Sign your document and have it witnessed if necessary.
@@ -71,9 +62,9 @@ const ESheria = () => {
             </div>
           </div>
 
-          <button className="mt-8 bg-green-500 text-white px-6 py-2 rounded-md">
+          <Link to="/sheria/search-docs" className="mt-8 bg-lime-600 hover:bg-lime-800 text-white font-bold px-8 py-5 rounded-md">
             View All Documents
-          </button>
+          </Link>
         </div>
       </section>
     </div>

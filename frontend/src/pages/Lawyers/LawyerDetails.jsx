@@ -73,8 +73,8 @@ const LawyerDetails = () => {
   );
 
   return (
-    <div className="bg-gray-100 p-10 h-[90vh]">
-      <div className="bg-lime-100 border border-gray-300   py-10 w-[80vw] mx-auto bottom-2 shadow-xl">
+    <div className=" p-10 h-[90vh]">
+      <div className="bg-gray-100 border border-gray-300   py-10 w-[80vw] mx-auto bottom-2 shadow-xl">
         <div className="ml-10 flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-6 ">
           
           {profile_picture ? (

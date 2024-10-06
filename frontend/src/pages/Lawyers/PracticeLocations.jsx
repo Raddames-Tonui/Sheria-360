@@ -19,7 +19,7 @@ const PracticeLocations = () => {
   const handleCountyClick = (county) => navigate(`/lawyers-county/${encodeURIComponent(county)}`);
 
   return (
-    <div className='bg-lime-100'>
+    <div className='bg-gray-100'>
       <div className="container p-8 mx-auto">
         <h2 className="text-2xl font-bold text-center text-gray-800 mb-4">FIND LAWYERS BY KENYAN COUNTIES</h2>
 
