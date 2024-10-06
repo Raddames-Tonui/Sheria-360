@@ -140,7 +140,8 @@ const SearchDocument = () => {
               Upload Document
             </NavLink>
           ) : (
-            <div className='bg-lime-400 rounded-md font-semibold p-2'>Documents</div>
+            null
+            // <div className='bg-lime-400 rounded-md font-semibold p-2'>Documents</div>
           )}
         </div>
 
@@ -187,7 +188,10 @@ const SearchDocument = () => {
           <div className="bg-white p-6 rounded-md w-1/2">
             <h2 className="text-xl font-bold mb-4">{selectedDoc.name}</h2>
             <p>{selectedDoc.summary}</p>
-            <button className="mt-4 bg-red-500 text-white p-2 rounded" onClick={() => setIsModalOpen(false)}>Close</button>
+            <div className='flex  justify-center'>
+            <button className="mt-4 bg-gray-500  text-white p-2 rounded" onClick={() => setIsModalOpen(false)}>Close</button>
+
+            </div>
           </div>
         </div>
       )}

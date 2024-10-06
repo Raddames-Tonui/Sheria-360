@@ -7,7 +7,7 @@ const ESheria = () => {
       {/* Hero Section */}
       <section className=" mt-4">
         <div className="container mx-auto text-center">
-          <h1 className="text-4xl font-bold text-gray-800">
+          <h1 className="text-4xl font-bold ">
             Legal Documents Made Easy for Everyone
           </h1>
           <p className="text-gray-600 mt-4">
@@ -22,7 +22,7 @@ const ESheria = () => {
       {/* How It Works Section */}
       <section className="bg-white py-10">
         <div className="container mx-auto text-center">
-          <h2 className="text-3xl font-bold text-gray-800 mb-8">How It Works</h2>
+          <h2 className="text-3xl font-bold  mb-8">How It Works</h2>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
 
             {/* Step 1 */}
