@@ -1,25 +1,20 @@
-import React from 'react'
-import Hero from './Home/Hero'
-import LawyerSearchCard from './Home/LawyerSearchCard'
-// import PracticeLocations from './Lawyers/PracticeLocations'
-// import PracticeAreas from './Lawyers/PracticeAreas'
-import SheriaAiCard from './Home/SheriaAiCard'
+import React from "react";
+import Hero from "./Home/Hero";
+import LawyerSearchCard from "./Home/LawyerSearchCard";
+import SheriaAiCard from "./Home/SheriaAiCard";
+import ESheria from "./Home/ESheria";
 
 function Home() {
   return (
-    <div className=''>
-      <Hero/>
-      <div className='px-20'>
-        <LawyerSearchCard/></div>
-      <SheriaAiCard/>
-      {/* <div className=''>
-      <PracticeLocations/>
+    <div className="">
+      <Hero />
+      <div className="px-20">
+        <LawyerSearchCard />
       </div>
-      <div className=''>
-      <PracticeAreas/>
-      </div> */}
+      <ESheria />
+      <SheriaAiCard />
     </div>
-  )
+  );
 }
 
-export default Home
+export default Home;

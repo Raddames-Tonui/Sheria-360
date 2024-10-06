@@ -13,10 +13,10 @@ const Login = () => {
     e.preventDefault();
     await login(email, password);
     if (error) {
-      toast.error(`Login failed: ${error}`);
+      toast.error(`Login failed, please check your credentials`);
     } else {
       toast.success('Login successful!');
-      navigate('../Lawyers');
+      navigate('/Lawyers');
     }
   };
 
@@ -26,13 +26,13 @@ const Login = () => {
       toast.error(`Google login failed: ${error}`);
     } else {
       toast.success('Google login successful!');
-      navigate('../Lawyers');
+      navigate('/Lawyers');
     }
   };
 
   return (
     <div className="h-[90vh] flex items-center justify-center bg-gray-100">
-      <div className="flex flex-col w-full max-w-md bg-white shadow-lg p-8 overflow-hidden">
+      <div className="flex flex-col w-full max-w-md bg-white shadow-lg p-8 overflow-hidden border border-gray-300">
       <Link to="/" className="flex justify-center ">
           <img src="/logo/Sheria360.png" alt="" className="object-cover h-16 w-40" />
         </Link>

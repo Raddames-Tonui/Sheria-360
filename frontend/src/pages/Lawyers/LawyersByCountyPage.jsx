@@ -43,7 +43,7 @@ const LawyersByCounty = () => {
     <div className='bg-gray-100'>
       <div className="container mx-auto p-8">
         <h1 className="text-center text-3xl font-bold text-gray-800 mb-6">Lawyers in {county}</h1>
-        <div className='bg-white py-4 shadow-xl  md:w-[80vw] mx-auto'>
+        <div className='bg-white border border-gray-300 py-4 shadow-xl  md:w-[80vw] mx-auto'>
             {lawyers.length > 0 ? (
             <ul className="space-y-4">
               {lawyers.map((lawyer) => (

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { server_url } from '../../../config.json';
-import SearchResults from '../../components/SearchResults';
+import SearchResults from './SearchResults';
 import Pagination from '../../components/Pagination';
 
 

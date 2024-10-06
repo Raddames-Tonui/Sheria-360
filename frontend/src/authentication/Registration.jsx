@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from './firebase';
-import axios from 'axios';  
+import { createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+import { auth, db } from './firebase'; // Import Firestore instance
+import { doc, setDoc } from "firebase/firestore";  // Firestore functions
+import axios from 'axios';
 import toast from 'react-hot-toast';
 import AreYouALawyerModal from './AreYouALawyerModal';
 import { server_url } from "../../config.json";
@@ -11,40 +12,101 @@ const Registration = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [userId, setUserId] = useState('');
+  const [loading, setLoading] = useState(false); // Loading state
   const navigate = useNavigate();
+  const googleProvider = new GoogleAuthProvider();
 
   const handleRegister = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
-      // Register with Firebase
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
+      setUserId(user.uid);
 
-      // Now send the email and Firebase UID to your backend
       await axios.post(`${server_url}/api/register`, {
         email: user.email,
-        firebase_uid: user.uid,  // Get the UID from the Firebase user
+        firebase_uid: user.uid,
       });
 
       toast.success('Registration successful!');
       setIsModalOpen(true);
     } catch (err) {
       toast.error(`Registration failed: ${err.message}`);
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleGoogleRegister = async () => {
-    // Google registration logic (not modified)
+    setLoading(true);
+    try {
+      const userCredential = await signInWithPopup(auth, googleProvider);
+      const user = userCredential.user;
+      setUserId(user.uid);
+
+      await axios.post(`${server_url}/api/register`, {
+        email: user.email,
+        firebase_uid: user.uid,
+      });
+
+      toast.success('Google registration successful!');
+      setIsModalOpen(true);
+    } catch (err) {
+      toast.error(`Google registration failed: ${err.message}`);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleConfirmLawyer = () => {
+  const handleConfirmLawyer = async () => {
+    console.log("Confirmed as lawyer");
     setIsModalOpen(false);
-    navigate('/lawyer-registration');
+    setLoading(true); // Start loading
+
+    try {
+      await setDoc(doc(db, "users", userId), {
+        email: email,
+        role: "lawyer"
+      });
+
+      toast.success('You are now registered as a lawyer!');
+
+      // Delay navigation to allow user to see the success message
+      setTimeout(() => {
+        navigate('/lawyer-registration'); // Redirect to lawyer-specific page
+      }, 1000); // 1 second delay
+    } catch (err) {
+      console.error("Error saving lawyer role:", err);
+      toast.error('Failed to register as a lawyer.');
+    } finally {
+      setLoading(false); // Stop loading
+    }
   };
 
-  const handleCloseModal = () => {
+  const handleCloseModal = async () => {
+    console.log("Not a lawyer selected");
     setIsModalOpen(false);
-    navigate('/lawyers');
+    
+    setLoading(true); // Start loading
+    
+    try {
+      await setDoc(doc(db, "users", userId), {
+        email: email,
+        role: "user"
+      });
+
+      toast.success('You are now registered as a user!');
+      setTimeout(() => {
+        navigate('/lawyers'); // Redirect to regular user-specific page
+      }, 1000); // 1 second delay
+    } catch (err) {
+      console.error("Error saving user role:", err);
+      toast.error('Failed to register as a user.');
+    } finally {
+      setLoading(false); // Stop loading
+    }
   };
 
   return (
@@ -84,24 +146,26 @@ const Registration = () => {
 
           <button
             type="submit"
+            disabled={loading}
             className="w-full py-2 bg-lime-600 hover:bg-lime-700 text-white font-bold rounded-md transition duration-300"
           >
-            Register
+            {loading ? 'Registering...' : 'Register'}
           </button>
         </form>
 
-        {/* <div className="flex items-center justify-center my-2">
+        <div className="flex items-center justify-center my-2">
           <div className="border-t w-full"></div>
           <span className="px-4 text-gray-500">OR</span>
           <div className="border-t w-full"></div>
-        </div> */}
+        </div> 
 
-        {/* <button
+        <button
           onClick={handleGoogleRegister}
+          disabled={loading}
           className="w-full py-2 border border-black hover:bg-lime-600 font-bold rounded-md transition duration-300"
         >
-          Register with Google
-        </button> */}
+          {loading ? 'Registering...' : 'Register with Google'}
+        </button> 
 
         <p className="text-center mt-6 text-gray-600">
           Already have an account?{' '}
@@ -113,8 +177,8 @@ const Registration = () => {
 
       <AreYouALawyerModal
         isOpen={isModalOpen}
-        onClose={handleCloseModal}
-        onConfirm={handleConfirmLawyer}
+        onClose={handleCloseModal}   // If not a lawyer
+        onConfirm={handleConfirmLawyer}  // If a lawyer
       />
     </div>
   );

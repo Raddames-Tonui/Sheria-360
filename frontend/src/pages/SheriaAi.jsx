@@ -41,8 +41,8 @@ const SheriaAi = () => {
   };
 
   return (
-    <div className="p-2 h-[88vh] bg-white flex justify-center">
-      <div className='bg-gray-200 border rounded-lg w-[60vw] h-[80vh] flex flex-col'>
+    <div className=" h-[90vh] flex justify-center">
+      <div className='bg-gray-200 border border-gray-300 w-[60vw] h-[86vh] mt-4  flex flex-col'>
         <img src="/logo/Sheria360.png" alt="Logo" className="object-cover h-16 w-40 ml-8" />
         <hr className='bg-lime-700' />
 
