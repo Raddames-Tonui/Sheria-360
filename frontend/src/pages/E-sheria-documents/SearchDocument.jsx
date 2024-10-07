@@ -96,7 +96,7 @@ const SearchDocument = () => {
   };
 
   const handleDownload = async (fileId) => {
-    try {
+
       const response = await fetch(`${server_url}/file/download/${fileId}`, {
         method: 'GET',
         headers: {
@@ -115,10 +115,8 @@ const SearchDocument = () => {
       } else {
         toast.error('File is not available');
       }
-    } catch (error) {
-      toast.error('An error occurred');
-    }
-  };
+    } 
+   
 
   return (
     <div className="flex flex-col lg:flex-row ">

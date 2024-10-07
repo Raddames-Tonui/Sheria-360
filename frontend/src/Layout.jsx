@@ -19,8 +19,8 @@ function Layout() {
             background: '#fff',
             color: '#333',
             border: '1px solid #ddd',
-            borderRadius: '8px',
-            padding: '10px',
+            borderRadius: '6px',
+            padding: '6px',
           },
           success: {
             duration: 4000,
