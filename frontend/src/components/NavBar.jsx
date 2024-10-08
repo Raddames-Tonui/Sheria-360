@@ -37,9 +37,9 @@ const Navbar = () => {
             },
           });
 
-          if (!response.ok) {
-            throw new Error("Failed to fetch user details");
-          }
+          // if (!response.ok) {
+          //   throw new Error("Failed to fetch user details");
+          // }
 
           const data = await response.json();
           setUserDetails(data);
