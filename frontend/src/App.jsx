@@ -20,7 +20,6 @@ import LawyersByExpertise from "./pages/Lawyers/LawyersByExpertise";
 import LawyerDetails from "./pages/Lawyers/LawyerDetails";
 
 import FileUpload from "./pages/E-sheria-documents/FileUpload";
-import FileDownload from "./pages/E-sheria-documents/FileDownload";
 import SearchDocument from "./pages/E-sheria-documents/SearchDocument";
 import About from "./pages/About";
 import UserUpdateForm from "./authentication/UserUpdateForm";
@@ -65,7 +64,6 @@ function App() {
             <Route path="/sheria/docs" element={<ESheria />} />
             <Route path="/sheria/search-docs" element={<SearchDocument />} />
             <Route path="/sheria/upload-doc" element={<FileUpload />} />
-            <Route path="/sheria/download-doc" element={<FileDownload />} />
 
             <Route path="*" element={<NoPage />} />
           </Route>

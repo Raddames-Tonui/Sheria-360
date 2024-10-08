@@ -11,6 +11,8 @@ sqlalchemy-serializer = "*"
 flask-cors = "*"
 psycopg2-binary = "*"
 firebase-admin = "*"
+python-dotenv = "*"
+gunicorn = "*"
 
 [dev-packages]
 
