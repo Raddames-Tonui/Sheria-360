@@ -89,20 +89,7 @@ const Navbar = () => {
               </NavLink>
             </>
           ) : null}
-          {userRole === "court" ? (
-            <>
-              <NavLink
-                to="/court/create/case"
-                className={({ isActive }) =>
-                  `hover:bg-lime-600 hover:text-white px-6 py-2 rounded-md text-md font-medium ${
-                    isActive ? "bg-lime-600 text-white" : ""
-                  }`
-                }
-              >
-                Create case
-              </NavLink>
-            </>
-          ) : null}
+          
           {userRole === "lawyer" ? (
             <>
               <NavLink
@@ -139,6 +126,20 @@ const Navbar = () => {
               >
                 Sheria Ai
               </NavLink>
+              {userRole === "court" ? (
+            <>
+              <NavLink
+                to="/court/create/case"
+                className={({ isActive }) =>
+                  `hover:bg-lime-600 hover:text-white px-6 py-2 rounded-md text-md font-medium ${
+                    isActive ? "bg-lime-600 text-white" : ""
+                  }`
+                }
+              >
+                Create case
+              </NavLink>
+            </>
+          ) : null}
               <NavLink
                 to="/track/cases"
                 className={({ isActive }) =>
