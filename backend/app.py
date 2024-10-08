@@ -1,4 +1,6 @@
 # app.py ( main Flask application)
+
+import os
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -10,12 +12,17 @@ from blueprints.file_download import file_download_bp
 from blueprints.court_cases import court_cases_bp  
 from blueprints.authentication import authentication_bp  
 from blueprints.mpesa import mpesa_bp  
+from dotenv import load_dotenv
+
+load_dotenv()  # take environment variables from .env.
+postgres_pwd = os.getenv("POSTGRES_PWD")
+# print(postgres_pwd)
 
 # Initialize the Flask application
 app = Flask(__name__)
 
 # Database configuration
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://sheria_360_user:RLNVcu1n6K9DFenTd0xqexAaQ8oxU7lS@dpg-cs1td6tds78s73bai4q0-a.oregon-postgres.render.com/sheria_360' 
+app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://sheria_360_user:{postgres_pwd}' 
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db' 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
