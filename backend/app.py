@@ -15,7 +15,8 @@ from blueprints.mpesa import mpesa_bp
 app = Flask(__name__)
 
 # Database configuration
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db' 
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://sheria_360_user:RLNVcu1n6K9DFenTd0xqexAaQ8oxU7lS@dpg-cs1td6tds78s73bai4q0-a.oregon-postgres.render.com/sheria_360' 
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db' 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Initialize the database and migration
