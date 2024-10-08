@@ -73,8 +73,7 @@ export const AuthProvider = ({ children }) => {
       const user = userCredential.user;
       const token = await user.getIdToken();
       setToken(token);
-      console.log("User Token:", token); // Log the token to the console
-
+      // console.log("User Token:", token); 
       // Fetch the user role from Firestore
       const userDoc = await getDoc(doc(db, 'users', user.uid));
       if (userDoc.exists()) {
@@ -116,7 +115,7 @@ export const AuthProvider = ({ children }) => {
     logout,
     token, 
     refreshToken,
-    userRole, // Add userRole to context data
+    userRole, 
   };
 
   return (

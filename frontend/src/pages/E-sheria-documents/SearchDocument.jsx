@@ -96,7 +96,7 @@ const SearchDocument = () => {
   };
 
   const handleDownload = async (fileId) => {
-    try {
+
       const response = await fetch(`${server_url}/file/download/${fileId}`, {
         method: 'GET',
         headers: {
@@ -115,15 +115,13 @@ const SearchDocument = () => {
       } else {
         toast.error('File is not available');
       }
-    } catch (error) {
-      toast.error('An error occurred');
-    }
-  };
+    } 
+   
 
   return (
     <div className="flex flex-col lg:flex-row ">
       {/* Sidebar */}
-      <div className="hidden lg:block md:w-full lg:w-1/5 p-4 bg-gray-100 border border-gray-300 lg:mr-4 mb-4 lg:mb-0">
+      <div className="hidden lg:block md:w-full lg:w-1/5 p-4 bg-slate-100 border border-gray-300 lg:mr-4  lg:mb-0 mb-10">
         <h2 className="text-lg font-bold mb-4">Existing Documents</h2>
         <ul>
           {document.map((cat, index) => (
@@ -134,15 +132,7 @@ const SearchDocument = () => {
 
       {/* Main Content */}
       <div className="w-full lg:w-3/4 p-4">
-        <div className='flex justify-center mb-2'>
-          {userRole === "lawyer" ? (
-            <NavLink to="/sheria/upload-doc" className='bg-lime-400 p-2 border border-lime-700 text-lime-800 hover:text-white font-semibold hover:bg-lime-500 rounded-md'>
-              Upload Document
-            </NavLink>
-          ) : (
-            <div className='bg-lime-400 rounded-md font-semibold p-2'>Documents</div>
-          )}
-        </div>
+        
 
         {/* Search */}
         <div className="flex mb-4">
@@ -156,12 +146,12 @@ const SearchDocument = () => {
         </div>
 
         {/* Document Grid */}
-        <div className='bg-gray-100 shadow-md border border-gray-300 pl-2 p-5'>
+        <div className='bg-slate-100 shadow-md border border-gray-300 pl-2 p-5 mb-10'>
           {document
             .filter(doc => doc.parentCategory.toLowerCase().includes(filter.toLowerCase()))
             .map((doc, index) => (
               <div key={index} className="mb-4">
-                <h3 className="text-xl font-semibold mb-2">{doc.parentCategory}</h3>
+                <h3 className="text-xl font-semibold mb-2 underline text-lime-700">{doc.parentCategory}</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                   {doc.category.map((category, titleIndex) => (
                     <div key={titleIndex} className="text-gray-700 p-3 border border-gray-300 hover:bg-gray-200 shadow-md cursor-pointer">
@@ -187,7 +177,10 @@ const SearchDocument = () => {
           <div className="bg-white p-6 rounded-md w-1/2">
             <h2 className="text-xl font-bold mb-4">{selectedDoc.name}</h2>
             <p>{selectedDoc.summary}</p>
-            <button className="mt-4 bg-red-500 text-white p-2 rounded" onClick={() => setIsModalOpen(false)}>Close</button>
+            <div className='flex  justify-center'>
+            <button className="mt-4 bg-gray-500  text-white p-2 rounded" onClick={() => setIsModalOpen(false)}>Close</button>
+
+            </div>
           </div>
         </div>
       )}

@@ -3,12 +3,15 @@ import { useParams } from 'react-router-dom';
 import { server_url } from '../../../config.json';
 import { FaPhoneAlt, FaEnvelope } from 'react-icons/fa';
 import '../../App.css';
+import ContactLawyerModal from './ContactLawyerModal';
+import { PiPhoneCallFill } from "react-icons/pi";
 
 const LawyerDetails = () => {
   const { id } = useParams(); 
   const [lawyer, setLawyer] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showContactForm, setShowContactForm] = useState(false);
 
   useEffect(() => {
     const fetchLawyer = async () => {
@@ -41,69 +44,38 @@ const LawyerDetails = () => {
     return <div>No details available for this lawyer.</div>;
   }
 
-  const {
-    profile_picture,
-    first_name,
-    last_name,
-    expertise,
-    experience,
-    location,
-    law_firm,
-    bio,
-    phone,
-    work_email
-  } = lawyer;
-
-  // Default SVG for profile picture
-  const DEFAULT_PROFILE_IMAGE_SVG = (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      className="w-32 h-32 text-gray-400"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={2}
-        d="M12 14c-3.313 0-6-2.686-6-6s2.687-6 6-6 6 2.686 6 6-2.687 6-6 6zm0 2c4.418 0 8 2.686 8 6v2H4v-2c0-3.314 3.582-6 8-6z"
-      />
-    </svg>
-  );
+  const { profile_picture, first_name, last_name, expertise, experience, location, law_firm, bio, phone, work_email } = lawyer;
 
   return (
-    <div className=" p-10 h-[90vh]">
-      <div className="bg-gray-100 border border-gray-300   py-10 w-[80vw] mx-auto bottom-2 shadow-xl">
-        <div className="ml-10 flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-6 ">
+    <div className="bg-slate-100 md:p-5 h-[90vh] overflow-y-scroll no-scrollbar">
+      <div className="bg-white border border-gray-300 py-10 md:w-[80vw] mx-auto shadow-xl">
+        <div className="ml-10 flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-6">
           
-          {profile_picture ? (
-            <img
-              src={profile_picture}
-              alt={`${first_name} ${last_name}`}
-              className="w-32 h-32 border border-gray-300 object-cover"
-            />
-          ) : (
-            DEFAULT_PROFILE_IMAGE_SVG // Use the SVG when there's no profile picture
-          )}
+          <img
+            src={profile_picture || "/svgs/lawyer-icon.svg"}
+            alt="User Avatar"
+            className="w-32 h-32 border border-gray-300 object-cover "
+            onError={(e) => {
+              e.target.src = "/svgs/lawyer-icon.svg"; // Set to default avatar on error
+            }}
+          />
+
           <div className="text-center md:text-left">
-            <h1 className="text-3xl font-bold">{`${first_name} ${last_name}`}</h1>
+            <h1 className="text-3xl font-bold">{`${first_name || 'Profile not available'} ${last_name || ''}`}</h1>
             <p className="text-gray-700">{`${experience} years of experience`}</p>
             <p className="text-gray-700">Location: {location}</p>
             <p className="text-gray-700">Law Firm: {law_firm}</p>
           </div>
         </div>
-        <div className="mt-6 ml-10 ">
+        <div className="mt-6 ml-10">
           <h2 className='text-xl font-semibold text-lime-500'>Expertise</h2>
           <p className="text-gray-700">{expertise}</p>     
         </div>
-
-        <div className="mt-6 ml-10 ">
+        <div className="mt-6 ml-10">
           <h2 className="text-xl font-semibold text-lime-500">Bio</h2>
           <p className="text-gray-700">{bio}</p>
         </div>
-
-        <div className="mt-6 ml-10 ">
+        <div className="mt-6 ml-10">
           <h2 className="text-xl font-semibold text-lime-500">Contact Information</h2>
           <p className="flex items-center">
             <FaPhoneAlt className="mr-2" />
@@ -112,11 +84,26 @@ const LawyerDetails = () => {
           {work_email && (
             <p className="flex items-center">
               <FaEnvelope className="mr-2" />
-              <span>{`${work_email} `}</span>
+              <span>{work_email}</span>
             </p>
           )}
+          <div className='flex justify-center'>
+            <button
+              onClick={() => setShowContactForm(true)}
+              className="m-8 bg-lime-600 hover:bg-lime-700 shadow-xl text-white font-bold px-6 py-3 rounded-md flex"
+            >
+              Contact Us <span className='pl-2 text-2xl'><PiPhoneCallFill /></span>
+            </button>
+          </div>
         </div>
       </div>
+
+      {/* Render the ContactForm Modal */}
+      <ContactLawyerModal 
+        showContactForm={showContactForm} 
+        setShowContactForm={setShowContactForm} 
+        work_email={work_email} 
+      />
     </div>
   );
 };

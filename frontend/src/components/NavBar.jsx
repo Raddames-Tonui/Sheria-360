@@ -54,7 +54,7 @@ const Navbar = () => {
   }, [token]);
 
   return (
-    <nav className="h-[10vh] border-b py-4 bg-gray-200 text-lime-600 flex items-center">
+    <nav className="h-[10vh] border-b py-4 bg-white text-lime-600 flex items-center">
       <div className="max-w-7xl mx-auto w-full px-4 flex justify-between items-center">
         <div className="flex items-center">
           <img
@@ -64,12 +64,12 @@ const Navbar = () => {
           />
         </div>
 
-        <div className="hidden md:flex space-x-4 rounded-md">
+        <div className="hidden md:flex space-x-4 rounded-md bg-slate-200">
           <NavLink
             to="/"
             className={({ isActive }) =>
               `hover:bg-lime-600 hover:text-white px-6 py-2 rounded-md text-md font-medium ${
-                isActive ? "underline" : ""
+                isActive ? " bg-lime-600 text-white" : ""
               } ${isActive ? "font-bold" : ""}`
             }
           >
@@ -81,7 +81,7 @@ const Navbar = () => {
                 to="/lawyers"
                 className={({ isActive }) =>
                   `hover:bg-lime-600 hover:text-white px-6 py-2 rounded-md text-md font-medium ${
-                    isActive ? "underline font-bold" : ""
+                    isActive ? "bg-lime-600 text-white" : ""
                   }`
                 }
               >
@@ -89,17 +89,18 @@ const Navbar = () => {
               </NavLink>
             </>
           ) : null}
-          {userRole === "court" ? (
+          
+          {userRole === "lawyer" ? (
             <>
               <NavLink
-                to="/court/create/case"
+                to="/sheria/upload-doc"
                 className={({ isActive }) =>
                   `hover:bg-lime-600 hover:text-white px-6 py-2 rounded-md text-md font-medium ${
-                    isActive ? "underline font-bold" : ""
+                    isActive ? "bg-lime-600 text-white" : ""
                   }`
                 }
               >
-                Create case
+                Upload doc
               </NavLink>
             </>
           ) : null}
@@ -109,7 +110,7 @@ const Navbar = () => {
                 to="/sheria/search-docs"
                 className={({ isActive }) =>
                   `hover:bg-lime-600 hover:text-white px-6 py-2 rounded-md text-md font-medium ${
-                    isActive ? "underline font-bold" : ""
+                    isActive ? "bg-lime-600 text-white" : ""
                   }`
                 }
               >
@@ -119,17 +120,31 @@ const Navbar = () => {
                 to="/sheria/chat"
                 className={({ isActive }) =>
                   `hover:bg-lime-600 hover:text-white px-6 py-2 rounded-md text-md font-medium ${
-                    isActive ? "underline font-bold" : ""
+                    isActive ? "bg-lime-600 text-white" : ""
                   }`
                 }
               >
                 Sheria Ai
               </NavLink>
+              {userRole === "court" ? (
+            <>
+              <NavLink
+                to="/court/create/case"
+                className={({ isActive }) =>
+                  `hover:bg-lime-600 hover:text-white px-6 py-2 rounded-md text-md font-medium ${
+                    isActive ? "bg-lime-600 text-white" : ""
+                  }`
+                }
+              >
+                Create case
+              </NavLink>
+            </>
+          ) : null}
               <NavLink
                 to="/track/cases"
                 className={({ isActive }) =>
                   `hover:bg-lime-600 hover:text-white px-6 py-2 rounded-md text-md font-medium ${
-                    isActive ? "underline font-bold" : ""
+                    isActive ? "bg-lime-600 text-white" : ""
                   }`
                 }
               >
@@ -142,7 +157,7 @@ const Navbar = () => {
                 to="/about"
                 className={({ isActive }) =>
                   `hover:bg-lime-600 hover:text-white px-6 py-2 rounded-md text-md font-medium ${
-                    isActive ? "underline font-bold" : ""
+                    isActive ? "bg-lime-600 text-white" : ""
                   }`
                 }
               >
@@ -155,11 +170,11 @@ const Navbar = () => {
         <div className="flex items-center space-x-6 rounded-full">
           {/* TYPE OF USERS */}
           {userRole === "lawyer" ? (
-            <div className="font-bold ">Lawyer dashboard</div>
+            <div className="font-bold ">Lawyer </div>
           ) : userRole === "user" ? (
-            <div className="font-bold ">Citizen dashboard</div>
+            <div className="font-bold ">Citizen </div>
           ) : userRole === "court" ? (
-            <div className="font-bold ">Court Dashboard</div>
+            <div className="font-bold ">Court</div>
           ) : null}
 
           {token ? (

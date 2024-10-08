@@ -173,17 +173,18 @@ function FileUpload() {
     
 
     return (
-        <div className="flex justify-center h-[90vh] bg-gray-100">
-            <div className="bg-white p-8 rounded shadow-lg w-full max-w-md h-[70vh] mt-5">
+        <div className="flex justify-center h-[90vh] bg-slate-100">
+            <div className="bg-white p-8 border border-gray-300 shadow-lg w-full max-w-md h-[80vh] mt-5">
                 <h2 className='text-3xl text-center mb-10 text-lime-600 font-bold'>Upload Legal Document</h2>
-    
+
                 <input
                     type="file"
                     name="file"
                     onChange={handleChange}
                     className='mb-8 w-full'
                 />
-    
+                <label htmlFor="category" className="mb-1 font-semibold">Category</label>
+
                 <select
                     name="parentCategory"
                     value={parentCategory}

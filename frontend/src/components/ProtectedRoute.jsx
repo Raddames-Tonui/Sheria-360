@@ -1,17 +1,12 @@
-// src/ProtectedRoute.js
-import React from "react";
+// src/components/ProtectedRoute.js
+import React, { useContext } from "react";
 import { Navigate } from "react-router-dom";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../authentication/firebase";
+import { AuthContext } from "../context/AuthContext";
 
 const ProtectedRoute = ({ children }) => {
-  const [user] = useAuthState(auth);
+  const { token } = useContext(AuthContext);
 
-  if (!user) {
-    return <Navigate to="/signin" />;
-  }
-
-  return children;
+  return token ? children : <Navigate to="/auth/login" />;
 };
 
 export default ProtectedRoute;
