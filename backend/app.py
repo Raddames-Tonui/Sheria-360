@@ -42,7 +42,7 @@ app.register_blueprint(file_upload_bp, url_prefix='/file')
 app.register_blueprint(file_download_bp, url_prefix='/file')
 app.register_blueprint(court_cases_bp, url_prefix='/case')
 app.register_blueprint(authentication_bp, url_prefix='/auth')  
-app.register_blueprint(mpesa_bp, url_prefix='/mpesa')  
+app.register_blueprint(mpesa_bp)  
 
 # ============================= USER =======================================
 # Check User if exists in login

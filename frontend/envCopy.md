@@ -1,0 +1,11 @@
+## Gemini setting
+    VITE_GEMINI_API_KEY=
+
+## Firebase settings
+    VITE_API_KEY=
+    VITE_AUTHDOMAIN=
+    VITE_PROJECT_ID=
+    VITE_STORAGE_BUCKET=
+    VITE_MESSAGING_SENDER_ID=
+    VITE_APP_ID=
+    VITE_MEASUREMENT_ID=
