@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { server_url } from "../../../config.json";
 
-
-const MpesaPayment = () => {
+const MpesaPayment = ({ onClose, onSuccess }) => { // Accept onClose and onSuccess as props
     const [amount, setAmount] = useState('');
     const [phone, setPhone] = useState('');
     const [response, setResponse] = useState(null);
@@ -26,6 +25,8 @@ const MpesaPayment = () => {
                     details: data.details
                 });
                 setError(null);
+                onSuccess(); // Call the onSuccess function
+                onClose(); // Close the modal on success
             } else {
                 throw new Error(data.message || 'An error occurred');
             }
@@ -37,7 +38,7 @@ const MpesaPayment = () => {
     };
 
     return (
-        <div className='bg-gray-50 p-6 max-w-md mx-auto mt-10 rounded-lg shadow-lg'>
+        <div className='p-6'>
             <h2 className='text-2xl font-semibold mb-6 text-center text-gray-800'>M-Pesa Payment</h2>
             <form onSubmit={handlePayment} className='space-y-4'>
                 <div className='flex flex-col'>
@@ -50,8 +51,7 @@ const MpesaPayment = () => {
                         className='py-2 px-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500'
                         required
                         min="1"
-                        />
-
+                    />
                 </div>
                 <div className='flex flex-col'>
                     <label htmlFor="phone" className='text-gray-700 font-medium mb-1'>Phone Number:</label>
@@ -81,9 +81,9 @@ const MpesaPayment = () => {
                 </div>
             )}
             {error && (
-                <div className='mt-6 p-4 bg-green-50 border border-green-200 rounded-lg'>
-                    <h3 className='text-lg font-medium text-green-800'>Success</h3>
-                    <p className='text-green-700'>Your payment request has been successfully submitted and is being processed. </p>
+                <div className='mt-6 p-4 bg-red-50 border border-red-200 rounded-lg'>
+                    <h3 className='text-lg font-medium text-red-800'>Error:</h3>
+                    <p className='text-red-700'>{error}</p>
                     <p>Please Enter Your MPESA Pin</p>
                 </div>
             )}
