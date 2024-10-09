@@ -22,8 +22,8 @@ postgres_pwd = os.getenv("POSTGRES_PWD")
 app = Flask(__name__)
 
 # Database configuration
-app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://sheria_360_user:{postgres_pwd}' 
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db' 
+# app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://sheria_360_user:{postgres_pwd}' 
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db' 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Initialize the database and migration
