@@ -1,9 +1,0 @@
-# Ignore Python compiled files
-__pycache__/
-*.pyc
-
-# Ignore environment files
-.env
-
-# Ignore Firebase service account key
-serviceAccountKey.json
