@@ -32,6 +32,10 @@ SHERIA 360 supports three primary user roles:
 - **Backend:** RESTful APIs are used to manage interactions between the frontend and backend. Used Python(Flask),  
 - **Database:** Stores user data, case information, and legal resources.
 - **Authentication:** Firebase.
+# Important Links
+Deployed Frontend: [Render](https://sheria360.netlify.app/)
+
+Deployed Backend: [Render](https://sheria-360.onrender.com/)
   
 ## Installation and Setup
 1. Clone the repository
