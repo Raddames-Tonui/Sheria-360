@@ -33,7 +33,7 @@ SHERIA 360 supports three primary user roles:
 - **Database:** Stores user data, case information, and legal resources.
 - **Authentication:** Firebase.
 # Important Links
-Deployed Frontend: [Render](https://sheria360.netlify.app/)
+Deployed Frontend: [Netlify](https://sheria360.netlify.app/)
 
 Deployed Backend: [Render](https://sheria-360.onrender.com/)
   
