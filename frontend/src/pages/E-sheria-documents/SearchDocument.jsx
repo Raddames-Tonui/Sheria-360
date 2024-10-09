@@ -93,7 +93,7 @@ const SearchDocument = () => {
 
   const handlePreview = (doc) => {
     setSelectedDoc(doc); // Set the selected document for preview
-    setIsModalOpen(true); // Open the modal
+    setIsModalOpen(true); 
   };
 
   const handleDownload = async (fileId) => {
@@ -164,11 +164,11 @@ const SearchDocument = () => {
                       >
                         Download <span className='pl-1'><FaArrowAltCircleDown /></span>
                       </button>
+                  
                     </div>
                   ))}
-                  {/* FOR INITIATING PAYMENT. Still in testing mode
-                  
-                  {doc.category.map((category, titleIndex) => (
+                  {/* {/* FOR INITIATING PAYMENT. Still in testing mode */}                  
+                  {/* {doc.category.map((category, titleIndex) => (
                         <div key={titleIndex} className="text-gray-700 p-3 border border-gray-300 hover:bg-gray-200 shadow-md cursor-pointer">
                             <h5 className='text-md font-semibold text-center pb-3'>{category.name}</h5>
                             <p className='pb-3 cursor-pointer' onClick={() => handlePreview(category)}>Preview</p>
@@ -177,7 +177,7 @@ const SearchDocument = () => {
                                 handleDownload={handleDownload} // Pass the handleDownload function
                             />
                         </div>
-                    ))} */}
+                    ))}  */}
 
                 </div>
               </div>
