@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { FaArrowAltCircleDown } from 'react-icons/fa';
 import MpesaPayment from './MpesaPayment'; // Import your payment component
 
-const DownloadButton = ({ titleIndex }) => {
+const DownloadButton = ({ titleIndex, handleDownload }) => {
     const [showPayment, setShowPayment] = useState(false);
 
-    const handleDownload = () => {
+    const handleDownloadClick = () => {
         setShowPayment(true); // Show payment form
     };
 
@@ -13,13 +13,19 @@ const DownloadButton = ({ titleIndex }) => {
         <div>
             <button
                 className='hover:bg-lime-600 hover:text-white text-lime-600 font-semibold p-2 rounded-md flex items-center'
-                onClick={handleDownload}
+                onClick={handleDownloadClick}
             >
                 Download <span className='pl-1'><FaArrowAltCircleDown /></span>
             </button>
 
             {showPayment && (
-                <MpesaPayment onClose={() => setShowPayment(false)} />
+                <MpesaPayment 
+                    onSuccess={() => {
+                        handleDownload(titleIndex); // Call handleDownload when payment is successful
+                        setShowPayment(false); // Optionally hide payment form after success
+                    }}
+                    onClose={() => setShowPayment(false)} // Close handler for MpesaPayment
+                />
             )}
         </div>
     );

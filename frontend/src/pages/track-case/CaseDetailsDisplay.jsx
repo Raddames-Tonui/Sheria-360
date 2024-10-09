@@ -20,15 +20,17 @@ const CaseDetailsDisplay = ({ caseDetails }) => {
 
       {/* Info Section */}
       <div className="bg-gray-100 p-10 mt-3 border border-gray-300">
+      <h2 className='text-center font-bold text-xl text-lime-600'>Case Summary</h2>
         <div className="border-t-2 mt-4 border-collapse border-lime-500">
+          <br />
           <div className="w-3/4 mx-auto">
-            <ul className="grid grid-cols-5 my-2 bg-lime-300 font-bold text-lg">
+            {/* <ul className="grid grid-cols-5 my-2 bg-lime-300 font-bold text-lg">
               <li className="p-2 border">Case Summary</li>
               <li className="p-2 border">Parties</li>
               <li className="p-2 border">Case Activities</li>
               <li className="p-2 border">Invoice</li>
               <li className="p-2 border">Receipts</li>
-            </ul>
+            </ul> */}
           </div>
 
           {/* Wrapper for horizontal scrolling on small screens */}
