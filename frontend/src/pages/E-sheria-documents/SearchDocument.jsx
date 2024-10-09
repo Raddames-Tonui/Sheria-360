@@ -4,6 +4,7 @@ import { server_url } from "../../../config.json";
 import { AuthContext } from '../../context/AuthContext';
 import { FaArrowAltCircleDown } from "react-icons/fa";
 import toast from 'react-hot-toast';
+import DownloadButton from './DownLoadButton';
 
 //  document array with summaries
 const document = [
@@ -113,7 +114,7 @@ const SearchDocument = () => {
         link.click();
         document.body.removeChild(link);
       } else {
-        toast.error('File is not available');
+        toast.error('Document not yet uploaded. ');
       }
     } 
    
@@ -165,6 +166,19 @@ const SearchDocument = () => {
                       </button>
                     </div>
                   ))}
+                  {/* FOR INITIATING PAYMENT. Still in testing mode
+                  
+                  {doc.category.map((category, titleIndex) => (
+                        <div key={titleIndex} className="text-gray-700 p-3 border border-gray-300 hover:bg-gray-200 shadow-md cursor-pointer">
+                            <h5 className='text-md font-semibold text-center pb-3'>{category.name}</h5>
+                            <p className='pb-3 cursor-pointer' onClick={() => handlePreview(category)}>Preview</p>
+                            <DownloadButton 
+                                titleIndex={titleIndex + 1} 
+                                handleDownload={handleDownload} // Pass the handleDownload function
+                            />
+                        </div>
+                    ))} */}
+
                 </div>
               </div>
           ))}

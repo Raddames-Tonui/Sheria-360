@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { server_url } from '../../../config.json';
 import { FaPhoneAlt, FaEnvelope, FaUser } from "react-icons/fa"; 
-import { BiUserCircle } from "react-icons/bi"; 
 import "../../App.css"
 
 const LawyersByExpertise = () => {
@@ -39,7 +38,7 @@ const LawyersByExpertise = () => {
   }
 
   return (
-    <div className='bg-gray-100'>
+    <div className='bg-slate-100 min-h-[90vh]'>
       <div className="container mx-auto p-8 ">
         <div className='bg-white py-4 shadow-2xl md:w-[80vw] mx-auto border border-gray-300'>
         <h1 className="text-center text-3xl font-bold text-lime-600 mb-3">Lawyers Specialized in {expertise}</h1>
@@ -50,11 +49,22 @@ const LawyersByExpertise = () => {
                 <li key={lawyer.id} className="border border-gray-300 p-4 rounded-md shadow-sm bg-gray-100 hover:bg-gray-200">
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center p-3 border-b border-gray-300">
                     <div className='p-4 flex justify-center'>
-                      {lawyer.profile_picture ? (
-                        <img src={lawyer.profile_picture} alt={`${lawyer.first_name} ${lawyer.last_name}`} className="w-40 h-40 object-cover rounded-lg" />
-                      ) : (
-                        <BiUserCircle className="w-24 h-24 text-gray-400" />
-                      )}
+                    {lawyer.profile_picture ? (
+                          <img
+                            src={lawyer.profile_picture}
+                            alt={`${lawyer.first_name} ${lawyer.last_name}`}
+                            className="w-40 h-40 object-cover rounded-lg"
+                            onError={(e) => {
+                              e.target.src = "/svgs/lawyer-icon.svg"; 
+                            }}
+                          />
+                        ) : (
+                          <img
+                            src="/svgs/lawyer-icon.svg"
+                            alt="Default Avatar"
+                            className="w-40 h-40 object-cover rounded-lg"
+                          />
+                        )}
                     </div>
                     <div className="flex flex-col col-span-2 space-y-2">
                       <h2 className="text-2xl font-semibold">{lawyer.first_name} {lawyer.last_name}</h2>

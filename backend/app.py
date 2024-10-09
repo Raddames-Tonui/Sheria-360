@@ -22,8 +22,8 @@ postgres_pwd = os.getenv("POSTGRES_PWD")
 app = Flask(__name__)
 
 # Database configuration
-app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://sheria_360_user:{postgres_pwd}' 
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db' 
+# app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://sheria_360_user:{postgres_pwd}' 
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db' 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Initialize the database and migration
@@ -42,7 +42,7 @@ app.register_blueprint(file_upload_bp, url_prefix='/file')
 app.register_blueprint(file_download_bp, url_prefix='/file')
 app.register_blueprint(court_cases_bp, url_prefix='/case')
 app.register_blueprint(authentication_bp, url_prefix='/auth')  
-app.register_blueprint(mpesa_bp, url_prefix='/mpesa')  
+app.register_blueprint(mpesa_bp)  
 
 # ============================= USER =======================================
 # Check User if exists in login

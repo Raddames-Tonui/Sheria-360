@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import toast from "react-hot-toast";
 import { server_url } from "../../config.json";
@@ -57,11 +57,14 @@ const Navbar = () => {
     <nav className="h-[10vh] border-b py-4 bg-white text-lime-600 flex items-center">
       <div className="max-w-7xl mx-auto w-full px-4 flex justify-between items-center">
         <div className="flex items-center">
+          <Link to="/">
           <img
             src="/logo/Sheria360.png"
             alt="Logo"
             className="object-cover pb-4 h-16 w-40"
           />
+          </Link>
+          
         </div>
 
         <div className="hidden md:flex space-x-4 rounded-md bg-slate-200">
@@ -75,9 +78,7 @@ const Navbar = () => {
           >
             Home
           </NavLink>
-          {userRole === "user" ? (
-            <>
-              <NavLink
+          <NavLink
                 to="/lawyers"
                 className={({ isActive }) =>
                   `hover:bg-lime-600 hover:text-white px-6 py-2 rounded-md text-md font-medium ${
@@ -87,6 +88,9 @@ const Navbar = () => {
               >
                 Lawyers
               </NavLink>
+          {userRole === "user" ? (
+            <>
+              
             </>
           ) : null}
           

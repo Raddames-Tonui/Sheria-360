@@ -1,28 +1,44 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useContext } from "react";
+import { Navigate } from "react-router-dom";
+import { AuthContext } from "../../context/AuthContext";
+import toast from "react-hot-toast"; 
 
 const ESheria = () => {
+  const { token } = useContext(AuthContext); 
+  const [redirectTo, setRedirectTo] = React.useState(null);
+
+  const handleDocumentClick = () => {
+    if (!token) {
+      toast.error("Please login to access the contents!"); 
+      setRedirectTo('/auth/login'); 
+    } else {
+      setRedirectTo('/sheria/search-docs'); 
+    }
+  };
+
+  // If redirectTo is set, redirect the user
+  if (redirectTo) {
+    return <Navigate to={redirectTo} />;
+  }
+
   return (
     <div className="font-sans mt-4 mx-4">
       {/* Hero Section */}
-      <section className=" mt-4">
+      <section className="mt-4">
         <div className="container mx-auto text-center">
           <h1 className="text-4xl font-bold ">
             Legal Documents Made Easy for Everyone
           </h1>
           <p className="text-gray-600 mt-4">
-            Download and print your customised legal documents in under 5
-            minutes.
+            Download and print your customised legal documents in under 5 minutes.
           </p>
-
-        
         </div>
       </section>
 
       {/* How It Works Section */}
       <section className="bg-white py-10">
         <div className="container mx-auto text-center">
-          <h2 className="text-3xl font-bold  mb-8">How It Works</h2>
+          <h2 className="text-3xl font-bold mb-8">How It Works</h2>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
 
             {/* Step 1 */}
@@ -62,11 +78,13 @@ const ESheria = () => {
             </div>
           </div>
           <div className="mt-6">
-          <Link to="/sheria/search-docs" className="mt-8 bg-lime-600 hover:bg-lime-700 text-white font-bold px-8 py-5 rounded-md">
-            View All Documents
-          </Link>
+            <button 
+              onClick={handleDocumentClick} 
+              className="mt-8 bg-lime-600 hover:bg-lime-700 text-white font-bold px-8 py-5 rounded-md"
+            >
+              View All Documents
+            </button>
           </div>
-          
         </div>
       </section>
     </div>
