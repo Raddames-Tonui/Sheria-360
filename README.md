@@ -36,6 +36,9 @@ SHERIA 360 supports three primary user roles:
 Deployed Frontend: [Netlify](https://sheria360.netlify.app/)
 
 Deployed Backend: [Render](https://sheria-360.onrender.com/)
+
+Pitch Deck: [Canva](https://www.canva.com/design/DAGTJlU2jDE/ZnUUBcU2d1agOVX5IdN64g/edit?ui=eyJIIjp7IkEiOnRydWV9fQ)
+
   
 ## Installation and Setup
 1. Clone the repository
